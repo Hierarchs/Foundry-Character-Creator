@@ -143,6 +143,9 @@
 .genesis-theme-oblivion .genesis-thumb.focused img { border-color: var(--o-highlight); box-shadow: 0 0 0 2px rgba(140, 47, 18, 0.35); filter: none; }
 .genesis-theme-oblivion .genesis-thumb-check { background: var(--o-highlight); color: var(--o-parch-light); }
 .genesis-theme-oblivion .genesis-count { color: var(--o-ink-soft); }
+.genesis-theme-oblivion .genesis-carousel-search input { background: var(--o-parch-light) !important; border-color: var(--o-bronze) !important; color: var(--o-ink) !important; font-family: var(--g-font-ui); }
+.genesis-theme-oblivion .genesis-carousel-all { background: var(--o-parch-light); border-color: var(--o-bronze); color: var(--o-ink); font-family: var(--g-font-display); }
+.genesis-theme-oblivion :is(.genesis-carousel-all:hover, .expanded .genesis-carousel-all) { color: var(--o-highlight); border-color: var(--o-highlight); }
 .genesis-theme-oblivion .genesis-drawer-tab { background: var(--o-parch); border-color: var(--o-bronze); color: var(--o-highlight); }
 .genesis-theme-oblivion .genesis-drawer-tab span { color: var(--o-ink-soft); }
 .genesis-theme-oblivion .genesis-drawer-head h2 { color: var(--o-ink); }

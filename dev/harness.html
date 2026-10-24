@@ -10,6 +10,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
   <style>
     /* A rough imitation of the Foundry tabletop behind the wizard. */
+    /* Mimic Foundry's fixed-height form controls so the wizard's reset is exercised. */
+    button { height: 28px; line-height: 28px; }
+    input, select, textarea { height: 28px; }
     html, body { margin: 0; height: 100%; background: #1b1d22; color: #ddd; font-family: Signika, system-ui, sans-serif; }
     #board { position: fixed; inset: 0; background: repeating-linear-gradient(0deg, #23262d 0 49px, #2b2f37 49px 50px), repeating-linear-gradient(90deg, transparent 0 49px, #2b2f37 49px 50px); }
     #interface { position: fixed; inset: 0; z-index: 30; pointer-events: none; }

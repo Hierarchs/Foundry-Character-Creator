@@ -53,6 +53,9 @@
 .character-genesis *::before,
 .character-genesis *::after { box-sizing: border-box; }
 
+/* Foundry gives buttons and fields a fixed height; let the wizard's own rules size them instead.
+   :where() keeps this at the lowest specificity so every component rule below still wins. */
+.character-genesis :where(button, input, select, textarea) { height: auto; min-height: 0; line-height: normal; }
 .character-genesis button { font-family: inherit; cursor: pointer; }
 .character-genesis button:disabled { cursor: not-allowed; }
 .character-genesis :focus-visible { outline: 2px solid var(--g-gold-bright); outline-offset: 2px; }
@@ -541,6 +544,63 @@
   font-size: 9px;
 }
 .genesis-count { flex: none; padding: 0 8px; color: var(--g-dim); font-size: 11px; letter-spacing: 0.1em; }
+
+/* Carousel search and "All" grid toggle */
+.genesis-carousel-search { position: relative; display: flex; align-items: center; flex: none; }
+.genesis-carousel-search i { position: absolute; left: 11px; font-size: 11px; color: var(--g-dim); pointer-events: none; }
+.character-genesis .genesis-carousel-search input {
+  width: 150px;
+  height: 30px;
+  padding: 0 10px 0 28px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: var(--g-field);
+  color: var(--g-ink);
+  font-size: 12px;
+}
+.character-genesis .genesis-carousel-search input:focus { border-color: var(--g-gold); outline: none; }
+.genesis-carousel-all {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--g-line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--g-muted);
+  font-size: 12px;
+}
+.genesis-carousel-all:hover,
+.expanded .genesis-carousel-all { color: var(--g-gold-bright); border-color: var(--g-line-strong); }
+
+/* Expanded: every option in a scrollable grid, hero hidden until one is picked. */
+.genesis-hero { transition: transform 0.5s var(--g-ease), opacity 0.25s; }
+.genesis-gallery.expanded .genesis-hero { opacity: 0; pointer-events: none; }
+.genesis-gallery.expanded .genesis-carousel {
+  flex-wrap: wrap;
+  justify-content: center;
+  width: min(1180px, 94vw);
+  max-width: none;
+  padding: 12px;
+  border-radius: 14px;
+}
+.genesis-gallery.expanded .genesis-carousel-track {
+  order: 5;
+  flex: 1 1 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-height: 62vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-snap-type: none;
+  scrollbar-width: thin;
+}
+.genesis-gallery.expanded .genesis-arrow { display: none; }
+.genesis-gallery.expanded .genesis-thumb { width: 104px; }
+.genesis-gallery.expanded .genesis-thumb img { width: 64px; height: 64px; }
+.genesis-gallery.expanded .genesis-thumb-name { white-space: normal; text-align: center; font-size: 11px; line-height: 1.25; }
 
 /* Details drawer */
 .genesis-drawer {

@@ -1,4 +1,4 @@
-<div class="genesis-gallery kind-{{kind}} {{#if drawer}}drawer-open{{/if}}">
+<div class="genesis-gallery kind-{{kind}} {{#if drawer}}drawer-open{{/if}} {{#if expanded}}expanded{{/if}}">
   {{#if empty}}
   <div class="genesis-empty">
     <i class="fa-solid fa-book-open-reader" aria-hidden="true"></i>
@@ -69,13 +69,17 @@
   </section>
 
   <nav class="genesis-carousel" aria-label="{{heading}}">
+    <label class="genesis-carousel-search">
+      <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      <input type="search" name="gallerySearch" value="{{search}}" placeholder="{{localize "GENESIS.Gallery.Search"}}" autocomplete="off">
+    </label>
     <button type="button" class="genesis-arrow" data-action="cycle" data-dir="-1" aria-label="{{localize "GENESIS.Gallery.Previous"}}">
       <i class="fa-solid fa-chevron-left"></i>
     </button>
     <div class="genesis-carousel-track" role="listbox">
       {{#each entries}}
       <button type="button" role="option" class="genesis-thumb {{#if focused}}focused{{/if}} {{#if selected}}selected{{/if}}"
-              data-action="focus" data-uuid="{{uuid}}" aria-selected="{{#if focused}}true{{else}}false{{/if}}"
+              data-action="focus" data-uuid="{{uuid}}" data-search="{{search}}" aria-selected="{{#if focused}}true{{else}}false{{/if}}"
               data-tooltip="{{name}}{{#if book}} — {{book}}{{/if}}">
         <img src="{{img}}" alt="" loading="lazy">
         <span class="genesis-thumb-name">{{name}}</span>
@@ -87,6 +91,9 @@
       <i class="fa-solid fa-chevron-right"></i>
     </button>
     <span class="genesis-count">{{position}}</span>
+    <button type="button" class="genesis-carousel-all" data-action="expand" aria-pressed="{{#if expanded}}true{{else}}false{{/if}}">
+      <i class="fa-solid fa-table-cells" aria-hidden="true"></i> {{localize "GENESIS.Gallery.All"}}
+    </button>
   </nav>
   {{/if}}
 </div>

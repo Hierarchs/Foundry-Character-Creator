@@ -61,7 +61,7 @@
     "Gallery": {
       "Details": "Details", "Features": "Features by Level", "Equipment": "Starting Equipment", "Description": "Description",
       "StartingLevel": "Starting Level", "Continue": "Continue", "Confirm": "Confirm Selection",
-      "Previous": "Previous", "Next": "Next",
+      "Previous": "Previous", "Next": "Next", "Search": "Search… (or just type)", "All": "Show all",
       "class": { "Heading": "Choose Your Class", "Empty": "No classes were found in your compendiums. Check the dnd5e Compendium Browser sources and the Rules Edition setting.", "Incomplete": "Choose a class to continue." },
       "subclass": { "Heading": "Choose Your Subclass", "Empty": "No subclasses were found for this class.", "Incomplete": "Choose a subclass to continue." },
       "background": { "Heading": "Choose Your Background", "Empty": "No backgrounds were found in your compendiums.", "Incomplete": "Choose a background to continue." },

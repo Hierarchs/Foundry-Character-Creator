@@ -17,6 +17,10 @@ export class GalleryStep extends Step {
 
   focus = null;
   drawer = false;
+  /** Carousel filter text and whether the carousel is expanded into a grid of every option. */
+  search = "";
+  expanded = false;
+  #stage = null;
   #entries = null;
   #entriesKey = null;
 
@@ -93,8 +97,11 @@ export class GalleryStep extends Step {
         img: e.img,
         focused: e.uuid === entry?.uuid,
         selected: e.uuid === this.selected,
-        book: books.size > 1 ? e.book : ""
+        book: books.size > 1 ? e.book : "",
+        search: `${e.name} ${books.size > 1 ? e.book : ""}`.toLowerCase()
       })),
+      search: this.search,
+      expanded: this.expanded,
       focus: entry ? {
         uuid: entry.uuid,
         name: entry.name,
@@ -128,8 +135,21 @@ export class GalleryStep extends Step {
 
   async onAction(action, event, target) {
     switch ( action ) {
-      case "focus": return this.setFocus(target.dataset.uuid);
+      case "focus":
+        // Picking from the full grid returns to the cinematic view of that option.
+        if ( this.expanded ) {
+          this.expanded = false;
+          this.search = "";
+          if ( target.dataset.uuid === this.focus ) return this.app.refresh();
+        }
+        return this.setFocus(target.dataset.uuid);
       case "cycle": return this.cycle(Number(target.dataset.dir) || 1);
+      case "expand":
+        this.expanded = !this.expanded;
+        this.#stage?.querySelector(".genesis-gallery")?.classList.toggle("expanded", this.expanded);
+        target.setAttribute("aria-pressed", String(this.expanded));
+        if ( this.expanded ) this.#stage?.querySelector("[name=gallerySearch]")?.focus();
+        return;
       case "drawer":
         this.drawer = !this.drawer;
         return this.app.refresh();
@@ -165,17 +185,88 @@ export class GalleryStep extends Step {
     this.app.invalidateBuild();
   }
 
+  /** Jump to the first / last / ±5th visible (search-matching) option. */
+  async jump(where) {
+    const visible = this.#visibleUuids();
+    if ( !visible.length ) return;
+    const i = Math.max(0, visible.indexOf(this.focus));
+    const target = { first: 0, last: visible.length - 1, back: Math.max(0, i - 5), forward: Math.min(visible.length - 1, i + 5) }[where];
+    return this.setFocus(visible[target]);
+  }
+
+  #visibleUuids() {
+    return Array.from(this.#stage?.querySelectorAll(".genesis-thumb:not([hidden])") ?? []).map(t => t.dataset.uuid);
+  }
+
   onKey(event) {
     switch ( event.key ) {
       case "ArrowLeft": this.cycle(-1); return true;
       case "ArrowRight": this.cycle(1); return true;
+      case "Home": this.jump("first"); return true;
+      case "End": this.jump("last"); return true;
+      case "PageUp": this.jump("back"); return true;
+      case "PageDown": this.jump("forward"); return true;
       case "Enter": this.confirm(); return true;
-      default: return false;
+      case "Escape":
+        if ( !this.expanded ) return false;
+        this.onAction("expand", event, this.#stage.querySelector("[data-action=expand]"));
+        return true;
+      default: {
+        // Typing a letter anywhere in the gallery starts a search.
+        const input = this.#stage?.querySelector("[name=gallerySearch]");
+        if ( !input || (event.key.length !== 1) || event.ctrlKey || event.metaKey || event.altKey ) return false;
+        input.focus();
+        input.value += event.key;
+        this.search = input.value;
+        this.#applySearch();
+        return true;
+      }
+    }
+  }
+
+  onInput(event) {
+    if ( event.target.name !== "gallerySearch" ) return;
+    this.search = event.target.value;
+    this.#applySearch();
+  }
+
+  #applySearch() {
+    const query = this.search.trim().toLowerCase();
+    for ( const thumb of this.#stage?.querySelectorAll(".genesis-thumb") ?? [] ) {
+      thumb.hidden = !!query && !thumb.dataset.search.includes(query);
     }
   }
 
   activate(element) {
-    centerInScroller(element.querySelector(".genesis-carousel-track"), element.querySelector(".genesis-thumb.focused"));
+    this.#stage = element;
+    this.#applySearch();
+    const track = element.querySelector(".genesis-carousel-track");
+    centerInScroller(track, element.querySelector(".genesis-thumb.focused"));
+    // A vertical mouse wheel scrolls the strip sideways (the grid view scrolls normally).
+    track?.addEventListener("wheel", event => {
+      if ( this.expanded || (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) ) return;
+      track.scrollLeft += event.deltaY;
+      event.preventDefault();
+    }, { passive: false });
+    const input = element.querySelector("[name=gallerySearch]");
+    input?.addEventListener("keydown", event => {
+      if ( event.key === "Enter" ) {
+        event.preventDefault();
+        event.stopPropagation();
+        const first = this.#visibleUuids()[0];
+        if ( !first ) return;
+        this.expanded = false;
+        this.search = "";
+        if ( first === this.focus ) this.app.refresh();
+        else this.setFocus(first);
+      } else if ( event.key === "Escape" ) {
+        event.stopPropagation();
+        input.value = "";
+        this.search = "";
+        this.#applySearch();
+        input.blur();
+      }
+    });
   }
 }
 
@@ -205,7 +296,7 @@ export class ClassStep extends GalleryStep {
   }
 
   async onInput(event) {
-    if ( event.target.name !== "level" ) return;
+    if ( event.target.name !== "level" ) return super.onInput(event);
     this.state.level = Math.clamp?.(Number(event.target.value), 1, 20) ?? Number(event.target.value);
     this.app.invalidateBuild();
     await this.app.syncDocs();
