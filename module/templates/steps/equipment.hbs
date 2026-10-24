@@ -1,0 +1,62 @@
+<div class="genesis-equipment genesis-scroll">
+  <div class="genesis-panel-head">
+    <h2 class="genesis-display">{{localize "GENESIS.Steps.equipment"}}</h2>
+    <p class="genesis-sub">{{localize "GENESIS.Equipment.Hint"}}</p>
+  </div>
+
+  <div class="equip-layout">
+    <div class="equip-panels">
+      {{#each panels}}
+      <section class="equip-panel {{#if complete}}complete{{/if}}">
+        <header class="equip-panel-head">
+          <img src="{{img}}" alt="">
+          <div>
+            <span class="genesis-eyebrow">{{label}}</span>
+            <strong>{{name}}</strong>
+          </div>
+          {{#if canGold}}{{#if hasItems}}
+          <div class="genesis-tabs compact">
+            <button type="button" class="{{#if isItems}}active{{/if}}" data-action="equipMode" data-source="{{kind}}" data-mode="items">
+              <i class="fa-solid fa-sack-xmark"></i> {{localize "GENESIS.Equipment.Items"}}
+            </button>
+            <button type="button" class="{{#if isGold}}active{{/if}}" data-action="equipMode" data-source="{{kind}}" data-mode="gold">
+              <i class="fa-solid fa-coins"></i> {{localize "GENESIS.Equipment.Gold" formula=wealth}}
+            </button>
+          </div>
+          {{/if}}{{/if}}
+        </header>
+
+        {{#if isItems}}
+        <div class="equip-tree">
+          {{#each nodes}}{{> "modules/character-genesis/templates/steps/equipment-entry.hbs" node=this source=../kind}}{{/each}}
+        </div>
+        {{else}}
+        <div class="equip-gold">
+          <i class="fa-solid fa-coins" aria-hidden="true"></i>
+          {{#if hasGold}}<strong>{{gold}} GP</strong>{{else}}<span class="genesis-muted">{{localize "GENESIS.Equipment.GoldPending" formula=wealth}}</span>{{/if}}
+          {{#unless flatWealth}}{{#unless hasGold}}
+          <button type="button" class="genesis-secondary" data-action="rollGold" data-source="{{kind}}"><i class="fa-solid fa-dice"></i> {{localize "GENESIS.Equipment.RollGold"}}</button>
+          {{/unless}}{{/unless}}
+        </div>
+        {{/if}}
+      </section>
+      {{/each}}
+    </div>
+
+    <aside class="equip-preview">
+      <h3>{{localize "GENESIS.Equipment.Preview"}}</h3>
+      {{#if preview.length}}
+      <ul>
+        {{#each preview}}<li><img src="{{img}}" alt=""><span>{{name}}</span>{{#if multi}}<em>×{{count}}</em>{{/if}}</li>{{/each}}
+      </ul>
+      {{else}}
+      <p class="genesis-muted">{{localize "GENESIS.Equipment.Nothing"}}</p>
+      {{/if}}
+      {{#if currency}}<p class="equip-currency"><i class="fa-solid fa-coins"></i> {{currency}}</p>{{/if}}
+    </aside>
+  </div>
+
+  <div class="genesis-actions">
+    <button type="button" class="genesis-cta" data-action="next">{{localize "GENESIS.Equipment.Confirm"}} <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>

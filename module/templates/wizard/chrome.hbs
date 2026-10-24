@@ -1,0 +1,31 @@
+<header class="genesis-chrome">
+  <div class="genesis-brand">
+    <i class="fa-solid fa-dice-d20" aria-hidden="true"></i>
+    <h1>{{title}}</h1>
+  </div>
+
+  <nav class="genesis-trail" aria-label="{{localize "GENESIS.Wizard.Steps"}}">
+    <ol>
+      {{#each steps}}
+      <li class="{{#if current}}current{{/if}} {{#if complete}}complete{{/if}}">
+        <button type="button" data-action="goto" data-step="{{id}}" {{#unless reachable}}disabled{{/unless}}
+                {{#if current}}aria-current="step"{{/if}}>
+          <span class="num">{{#if complete}}<i class="fa-solid fa-check"></i>{{else}}{{number}}{{/if}}</span>
+          <span class="label">{{label}}</span>
+        </button>
+      </li>
+      {{/each}}
+    </ol>
+  </nav>
+
+  <div class="genesis-chrome-actions">
+    {{#if canBack}}
+    <button type="button" class="genesis-chip-button" data-action="back">
+      <i class="fa-solid fa-arrow-left"></i> {{localize "GENESIS.Wizard.Back"}}
+    </button>
+    {{/if}}
+    <button type="button" class="genesis-chip-button" data-action="exit">
+      <i class="fa-solid fa-xmark"></i> {{localize "GENESIS.Wizard.Exit"}}
+    </button>
+  </div>
+</header>

@@ -1,0 +1,50 @@
+<div class="genesis-review genesis-scroll">
+  <div class="review-hero">
+    <img class="review-portrait" src="{{portrait}}" alt="">
+    <div>
+      <p class="genesis-eyebrow">{{localize "GENESIS.Review.Eyebrow"}}</p>
+      <h2 class="genesis-title small">{{name}}</h2>
+      {{#if summary}}
+      <p class="genesis-tagline">
+        {{#if summary.race}}{{summary.race}} • {{/if}}{{summary.classLine}}{{#if summary.background}} • {{summary.background}}{{/if}}{{#if alignment}} • {{alignment}}{{/if}}
+      </p>
+      {{/if}}
+    </div>
+  </div>
+
+  {{#if problems.length}}
+  <div class="genesis-warning">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <span>{{localize "GENESIS.Review.Unfinished"}}</span>
+    {{#each problems}}<button type="button" class="genesis-chip-button" data-action="goto" data-step="{{id}}">{{label}}</button>{{/each}}
+  </div>
+  {{/if}}
+
+  {{#if summary}}
+  <div class="review-columns">
+    <section>{{> "modules/character-genesis/templates/steps/summary.hbs" summary}}</section>
+    <section>
+      {{#if chosenSpells.length}}
+      <h3>{{localize "GENESIS.Review.Spells"}}</h3>
+      <ul class="genesis-chips">
+        {{#each chosenSpells}}<li class="{{#if prepared}}prepared{{/if}}"><img src="{{img}}" alt="">{{name}}</li>{{/each}}
+      </ul>
+      {{/if}}
+      <h3>{{localize "GENESIS.Review.Equipment"}}</h3>
+      {{#if equipment.length}}
+      <ul class="genesis-chips">
+        {{#each equipment}}<li><img src="{{img}}" alt="">{{name}}{{#if multi}} ×{{count}}{{/if}}</li>{{/each}}
+      </ul>
+      {{else}}<p class="genesis-muted">{{localize "GENESIS.Equipment.Nothing"}}</p>{{/if}}
+      {{#if currency}}<p class="equip-currency"><i class="fa-solid fa-coins"></i> {{currency}}</p>{{/if}}
+    </section>
+  </div>
+  {{/if}}
+
+  <div class="genesis-actions">
+    <button type="button" class="genesis-cta grand" data-action="create" {{#unless ready}}disabled{{/unless}}>
+      {{#if creating}}<i class="fa-solid fa-spinner fa-spin"></i>{{else}}<i class="fa-solid fa-feather-pointed"></i>{{/if}}
+      {{localize "GENESIS.Review.Create"}}
+    </button>
+  </div>
+</div>

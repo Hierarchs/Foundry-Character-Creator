@@ -1,0 +1,99 @@
+<div class="genesis-spells">
+  {{#if blocked}}
+  <div class="genesis-empty">
+    <i class="fa-solid fa-hat-wizard" aria-hidden="true"></i>
+    <h2 class="genesis-display">{{localize "GENESIS.Steps.spells"}}</h2>
+    <p>{{message}}</p>
+  </div>
+  {{else}}
+
+  <header class="spell-head">
+    <div class="spell-title">
+      <h2 class="genesis-display">{{localize "GENESIS.Steps.spells"}}</h2>
+      <p class="genesis-sub">
+        {{caster.label}} {{caster.level}} • {{caster.casting}}{{#if caster.ability}} • {{caster.ability}}{{/if}}
+        • {{localize "GENESIS.Spells.UpTo" level=caster.maxSpellLevel}}
+      </p>
+    </div>
+    <div class="spell-counters">
+      {{#each counters}}
+      <div class="spell-counter {{#if full}}full{{/if}}" data-counter="{{key}}">
+        <span class="spell-counter-value"><span class="used">{{used}}</span><span class="max">/ {{max}}</span></span>
+        <span class="spell-counter-label">{{label}}</span>
+      </div>
+      {{/each}}
+    </div>
+  </header>
+
+  {{#if multiple}}
+  <div class="genesis-tabs">
+    {{#each casters}}<button type="button" class="{{#if active}}active{{/if}}" data-action="caster" data-caster="{{id}}">{{label}}</button>{{/each}}
+  </div>
+  {{/if}}
+
+  <div class="spell-filters">
+    <label class="spell-search">
+      <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      <input type="search" name="spellSearch" value="{{filter.text}}" placeholder="{{localize "GENESIS.Spells.Search"}}" autocomplete="off">
+    </label>
+    <div class="spell-levels">
+      <button type="button" class="spell-level-pill" data-action="spellLevel" data-level="all">{{localize "GENESIS.Spells.AllLevels"}}</button>
+      {{#each levels}}<button type="button" class="spell-level-pill" data-action="spellLevel" data-level="{{level}}">{{label}}</button>{{/each}}
+    </div>
+    <select name="spellSchool" aria-label="{{localize "GENESIS.Spells.School"}}">
+      <option value="">{{localize "GENESIS.Spells.AllSchools"}}</option>
+      {{#each schools}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+    </select>
+  </div>
+
+  {{#unless fromList}}
+  <p class="genesis-note"><i class="fa-solid fa-circle-info"></i> {{localize "GENESIS.Spells.NoList"}}</p>
+  {{/unless}}
+
+  {{#if granted.length}}
+  <p class="spell-granted">
+    <span>{{localize "GENESIS.Spells.Granted"}}</span>
+    {{#each granted}}<span class="genesis-chip"><img src="{{img}}" alt="">{{name}}{{#if always}} <i class="fa-solid fa-lock" data-tooltip="{{localize "GENESIS.Spells.Always"}}"></i>{{/if}}</span>{{/each}}
+  </p>
+  {{/if}}
+
+  <div class="spell-layout">
+    <div class="spell-grid">
+      {{#if empty}}<p class="genesis-muted">{{localize "GENESIS.Spells.Empty"}}</p>{{/if}}
+      {{#each groups}}
+      <section class="spell-group" data-level="{{level}}">
+        <h3>{{label}}</h3>
+        <div class="spell-cards">
+          {{#each cards}}
+          <div class="spell-card {{#if selected}}selected{{/if}} {{#if prepared}}prepared{{/if}} {{#if owned}}owned{{/if}}"
+               role="button" tabindex="0" aria-pressed="{{#if selected}}true{{else}}false{{/if}}"
+               data-action="toggleSpell" data-uuid="{{uuid}}" data-level="{{level}}" data-school="{{school}}" data-search="{{search}}">
+            <img src="{{img}}" alt="" loading="lazy">
+            <div class="spell-card-body">
+              <strong>{{name}}</strong>
+              <span>{{subtitle}}</span>
+              {{#if tags.length}}<div class="spell-tags">{{#each tags}}<span data-tooltip="{{label}}">{{key}}</span>{{/each}}</div>{{/if}}
+            </div>
+            {{#if ../../isSpellbook}}{{#if level}}
+            <button type="button" class="spell-prepare" data-action="prepareSpell" data-uuid="{{uuid}}" data-tooltip="{{localize "GENESIS.Spells.TogglePrepared"}}">
+              <i class="fa-solid fa-star"></i>
+            </button>
+            {{/if}}{{/if}}
+            {{#if owned}}<span class="spell-owned">{{localize "GENESIS.Spells.Owned"}}</span>{{/if}}
+            <i class="fa-solid fa-circle-check spell-check" aria-hidden="true"></i>
+          </div>
+          {{/each}}
+        </div>
+      </section>
+      {{/each}}
+    </div>
+    <aside class="spell-inspector" aria-live="polite">
+      <p class="genesis-muted">{{localize "GENESIS.Spells.InspectHint"}}</p>
+    </aside>
+  </div>
+
+  <div class="genesis-actions">
+    <button type="button" class="genesis-cta" data-action="next">{{localize "GENESIS.Spells.Confirm"}} <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+  {{/if}}
+</div>

@@ -1,0 +1,90 @@
+<div class="genesis-gallery kind-{{kind}} {{#if drawer}}drawer-open{{/if}}">
+  {{#if empty}}
+  <div class="genesis-empty">
+    <i class="fa-solid fa-book-open-reader" aria-hidden="true"></i>
+    <h2 class="genesis-display">{{heading}}</h2>
+    <p>{{emptyHint}}</p>
+  </div>
+  {{else}}
+
+  <aside class="genesis-drawer">
+    <button type="button" class="genesis-drawer-tab" data-action="drawer" aria-expanded="{{#if drawer}}true{{else}}false{{/if}}">
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+      <span>{{localize "GENESIS.Gallery.Details"}}</span>
+      <i class="fa-solid fa-chevron-{{#if drawer}}left{{else}}right{{/if}}" aria-hidden="true"></i>
+    </button>
+    <div class="genesis-drawer-body">
+      <header class="genesis-drawer-head">
+        <img src="{{focus.img}}" alt="">
+        <div>
+          <h2>{{focus.name}}</h2>
+          {{#if focus.book}}<span class="genesis-book">{{focus.book}}{{#if focus.rules}} • {{focus.rules}}{{/if}}</span>{{/if}}
+        </div>
+      </header>
+      {{#if focus.facts.length}}
+      <dl class="genesis-facts">
+        {{#each focus.facts}}<dt>{{label}}</dt><dd>{{value}}</dd>{{/each}}
+      </dl>
+      {{/if}}
+      {{#if focus.timeline.length}}
+      <h3>{{localize "GENESIS.Gallery.Features"}}</h3>
+      <ol class="genesis-timeline">
+        {{#each focus.timeline}}
+        <li><span class="lvl">{{level}}</span><span>{{names}}</span></li>
+        {{/each}}
+      </ol>
+      {{/if}}
+      {{#if focus.equipment}}
+      <h3>{{localize "GENESIS.Gallery.Equipment"}}</h3>
+      <div class="genesis-rich">{{{focus.equipment}}}</div>
+      {{/if}}
+      {{#if focus.hasDescription}}
+      <h3>{{localize "GENESIS.Gallery.Description"}}</h3>
+      <div class="genesis-rich">{{{focus.description}}}</div>
+      {{/if}}
+    </div>
+  </aside>
+
+  <section class="genesis-hero">
+    {{#if focus.figure}}<img class="genesis-figure" src="{{focus.figure}}" alt="">{{/if}}
+    <p class="genesis-eyebrow">{{heading}}</p>
+    <h2 class="genesis-title">{{focus.name}}</h2>
+    {{#if focus.tagline}}<p class="genesis-tagline">{{focus.tagline}}</p>{{/if}}
+
+    {{#if extras.levelPicker}}
+    <label class="genesis-level-picker">
+      <span>{{localize "GENESIS.Gallery.StartingLevel"}}</span>
+      <select name="level">
+        {{#each extras.levels}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{value}}</option>{{/each}}
+      </select>
+    </label>
+    {{/if}}
+
+    <button type="button" class="genesis-cta" data-action="confirm">
+      {{#if focus.isSelected}}{{localize "GENESIS.Gallery.Continue"}}{{else}}{{localize "GENESIS.Gallery.Confirm"}}{{/if}}
+      <i class="fa-solid fa-check" aria-hidden="true"></i>
+    </button>
+  </section>
+
+  <nav class="genesis-carousel" aria-label="{{heading}}">
+    <button type="button" class="genesis-arrow" data-action="cycle" data-dir="-1" aria-label="{{localize "GENESIS.Gallery.Previous"}}">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <div class="genesis-carousel-track" role="listbox">
+      {{#each entries}}
+      <button type="button" role="option" class="genesis-thumb {{#if focused}}focused{{/if}} {{#if selected}}selected{{/if}}"
+              data-action="focus" data-uuid="{{uuid}}" aria-selected="{{#if focused}}true{{else}}false{{/if}}"
+              data-tooltip="{{name}}{{#if book}} — {{book}}{{/if}}">
+        <img src="{{img}}" alt="" loading="lazy">
+        <span class="genesis-thumb-name">{{name}}</span>
+        {{#if selected}}<i class="fa-solid fa-check genesis-thumb-check" aria-hidden="true"></i>{{/if}}
+      </button>
+      {{/each}}
+    </div>
+    <button type="button" class="genesis-arrow" data-action="cycle" data-dir="1" aria-label="{{localize "GENESIS.Gallery.Next"}}">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+    <span class="genesis-count">{{position}}</span>
+  </nav>
+  {{/if}}
+</div>

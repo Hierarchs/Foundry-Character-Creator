@@ -1,0 +1,88 @@
+<div class="genesis-abilities genesis-scroll">
+  <div class="genesis-panel-head">
+    <h2 class="genesis-display">{{heading}}</h2>
+    <p class="genesis-sub">{{subtitle}}</p>
+  </div>
+
+  {{#if multipleMethods}}
+  <div class="genesis-tabs" role="tablist">
+    {{#each methods}}
+    <button type="button" role="tab" class="{{#if active}}active{{/if}}" aria-selected="{{#if active}}true{{else}}false{{/if}}"
+            data-action="method" data-method="{{id}}">{{label}}</button>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{#if pointBuy}}
+  <div class="genesis-points {{#if pointBuy.overspent}}over{{/if}}">
+    <span>{{localize "GENESIS.Abilities.PointsRemaining"}}</span>
+    <strong>{{pointBuy.remaining}}</strong>
+    <span class="of">/ {{pointBuy.budget}}</span>
+  </div>
+  {{/if}}
+
+  {{#if roll}}
+  <div class="genesis-rolls">
+    {{#if roll.rolled}}
+    <ol class="genesis-roll-sets">
+      {{#each roll.sets}}
+      <li>
+        <span class="dice">{{#each dice}}<span class="die {{#if dropped}}dropped{{/if}}">{{value}}</span>{{/each}}</span>
+        <strong>{{total}}</strong>
+      </li>
+      {{/each}}
+    </ol>
+    {{/if}}
+    {{#if roll.canRoll}}
+    <button type="button" class="genesis-secondary" data-action="rollAbilities">
+      <i class="fa-solid fa-dice"></i> {{#if roll.rolled}}{{localize "GENESIS.Abilities.Reroll"}}{{else}}{{localize "GENESIS.Abilities.Roll"}}{{/if}}
+    </button>
+    {{/if}}
+  </div>
+  {{/if}}
+
+  {{#if bgName}}
+  <p class="genesis-note"><i class="fa-solid fa-circle-info"></i> {{localize "GENESIS.Abilities.BackgroundNote" name=bgName}}</p>
+  {{/if}}
+
+  <div class="genesis-ability-grid">
+    {{#each cards}}
+    <article class="genesis-ability">
+      <i class="{{icon}} genesis-ability-icon" aria-hidden="true"></i>
+      <h3>{{label}}</h3>
+      <span class="genesis-abbr">{{abbr}}</span>
+
+      <div class="genesis-score-row">
+        {{#if ../isPointBuy}}
+        <button type="button" class="genesis-round" data-action="decrease" data-ability="{{key}}" {{#unless canDecrease}}disabled{{/unless}}
+                aria-label="{{localize "GENESIS.Abilities.Decrease" ability=label}}"><i class="fa-solid fa-minus"></i></button>
+        <span class="genesis-score">{{score}}</span>
+        <button type="button" class="genesis-round" data-action="increase" data-ability="{{key}}" {{#unless canIncrease}}disabled{{/unless}}
+                aria-label="{{localize "GENESIS.Abilities.Increase" ability=label}}"><i class="fa-solid fa-plus"></i></button>
+        {{else if ../showAssign}}
+        <select class="genesis-assign" data-assign="{{key}}" aria-label="{{label}}">
+          <option value="">—</option>
+          {{#each options}}<option value="{{index}}" {{#if selected}}selected{{/if}}>{{value}}{{#if taken}} ⇄{{/if}}</option>{{/each}}
+        </select>
+        {{else if ../isManual}}
+        <input class="genesis-manual" type="number" min="3" max="18" step="1" data-manual="{{key}}" value="{{manual}}" aria-label="{{label}}">
+        {{else}}
+        <span class="genesis-score muted">{{score}}</span>
+        {{/if}}
+      </div>
+
+      <span class="genesis-mod {{#if negative}}negative{{/if}} {{#unless hasScore}}empty{{/unless}}">{{#if hasScore}}{{mod}}{{else}}&nbsp;{{/if}}</span>
+      {{#if hints.length}}
+      <div class="genesis-hints">{{#each hints}}<span class="genesis-hint {{kind}}">{{text}}</span>{{/each}}</div>
+      {{/if}}
+    </article>
+    {{/each}}
+  </div>
+
+  <div class="genesis-actions">
+    <button type="button" class="genesis-secondary" data-action="resetAbilities"><i class="fa-solid fa-rotate-left"></i> {{localize "GENESIS.Abilities.Reset"}}</button>
+    <button type="button" class="genesis-cta" data-action="next" {{#unless valid}}disabled{{/unless}}>
+      {{localize "GENESIS.Abilities.Confirm"}} <i class="fa-solid fa-arrow-right"></i>
+    </button>
+  </div>
+</div>

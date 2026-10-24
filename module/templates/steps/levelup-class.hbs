@@ -1,0 +1,43 @@
+<div class="genesis-levelup genesis-scroll">
+  <div class="genesis-panel-head">
+    <h2 class="genesis-display">{{localize "GENESIS.LevelUp.Title"}}</h2>
+    <p class="genesis-sub">{{localize "GENESIS.LevelUp.Hint" name=name from=level to=nextLevel}}</p>
+  </div>
+
+  {{#if maxed}}
+  <p class="genesis-warning"><i class="fa-solid fa-crown"></i> {{localize "GENESIS.LevelUp.Max"}}</p>
+  {{else}}
+
+  <h3 class="levelup-heading">{{localize "GENESIS.LevelUp.Continue"}}</h3>
+  <div class="levelup-grid">
+    {{#each existing}}
+    <button type="button" class="levelup-card {{#if selected}}selected{{/if}}" data-action="levelTarget" data-target="{{target}}" {{#if ../applied}}disabled{{/if}}>
+      <img src="{{img}}" alt="">
+      <strong>{{name}}</strong>
+      {{#if subclass}}<small>{{subclass}}</small>{{/if}}
+      <span class="levelup-levels">{{level}} <i class="fa-solid fa-arrow-right"></i> {{next}}</span>
+    </button>
+    {{/each}}
+  </div>
+
+  {{#if others.length}}
+  <h3 class="levelup-heading">{{localize "GENESIS.LevelUp.Multiclass"}}</h3>
+  {{#if policyWarn}}<p class="genesis-note"><i class="fa-solid fa-circle-info"></i> {{localize "GENESIS.LevelUp.PolicyWarn"}}</p>{{/if}}
+  <div class="levelup-grid compact">
+    {{#each others}}
+    <button type="button" class="levelup-card {{#if selected}}selected{{/if}} {{#unless ok}}unmet{{/unless}} {{#if blocked}}blocked{{/if}}"
+            data-action="levelTarget" data-target="{{target}}" data-blocked="{{blocked}}" {{#if ../applied}}disabled{{/if}}
+            {{#if reasons.length}}data-tooltip="{{#each reasons}}{{this}} {{/each}}"{{/if}}>
+      <img src="{{img}}" alt="">
+      <strong>{{name}}</strong>
+      {{#unless ok}}<small class="levelup-req"><i class="fa-solid fa-lock"></i> {{#each reasons}}{{this}} {{/each}}</small>{{/unless}}
+    </button>
+    {{/each}}
+  </div>
+  {{/if}}
+  {{/if}}
+
+  <div class="genesis-actions">
+    <button type="button" class="genesis-cta" data-action="next">{{localize "GENESIS.Wizard.Continue"}} <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>

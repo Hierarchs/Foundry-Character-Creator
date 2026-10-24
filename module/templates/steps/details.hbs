@@ -1,0 +1,82 @@
+<div class="genesis-details genesis-scroll">
+  <div class="genesis-panel-head">
+    <h2 class="genesis-display">{{localize "GENESIS.Details.Title"}}</h2>
+    <p class="genesis-sub">{{#if subtitle}}{{subtitle}}{{else}}{{localize "GENESIS.Details.Hint"}}{{/if}}</p>
+  </div>
+
+  <div class="details-layout">
+    <section class="details-art">
+      <figure class="details-portrait">
+        <img src="{{portrait}}" alt="{{localize "GENESIS.Details.Portrait"}}">
+        {{#if canBrowse}}
+        <button type="button" class="genesis-secondary" data-action="pickImage" data-field="img"><i class="fa-solid fa-image-portrait"></i> {{localize "GENESIS.Details.ChoosePortrait"}}</button>
+        {{/if}}
+      </figure>
+      {{#unless canBrowse}}
+      <label class="genesis-field"><span>{{localize "GENESIS.Details.PortraitUrl"}}</span>
+        <input type="text" name="img" value="{{d.img}}" placeholder="https://…"></label>
+      {{/unless}}
+
+      <label class="genesis-toggle">
+        <input type="checkbox" name="sameToken" {{#if d.sameToken}}checked{{/if}}>
+        <span>{{localize "GENESIS.Details.SameToken"}}</span>
+      </label>
+      {{#unless d.sameToken}}
+      <figure class="details-token">
+        <img src="{{token}}" alt="{{localize "GENESIS.Details.Token"}}">
+        {{#if canBrowse}}
+        <button type="button" class="genesis-secondary" data-action="pickImage" data-field="tokenImg"><i class="fa-solid fa-chess-pawn"></i> {{localize "GENESIS.Details.ChooseToken"}}</button>
+        {{else}}
+        <input type="text" name="tokenImg" value="{{d.tokenImg}}" placeholder="https://…">
+        {{/if}}
+      </figure>
+      {{/unless}}
+    </section>
+
+    <section class="details-form">
+      <label class="genesis-field large"><span>{{localize "GENESIS.Details.Name"}}</span>
+        <input type="text" name="name" value="{{d.name}}" placeholder="{{localize "GENESIS.Details.NamePlaceholder"}}" autocomplete="off" required></label>
+
+      <div class="genesis-field-row">
+        <label class="genesis-field"><span>{{localize "GENESIS.Details.Alignment"}}</span>
+          <select name="alignment">
+            <option value=""></option>
+            {{#each alignments}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+          </select></label>
+        <label class="genesis-field"><span>{{localize "DND5E.Faith"}}</span><input type="text" name="faith" value="{{d.faith}}"></label>
+        {{#if isGM}}
+        <label class="genesis-field"><span>{{localize "GENESIS.Details.Owner"}}</span>
+          <select name="ownerId">
+            <option value="">{{localize "GENESIS.Details.OwnerSelf"}}</option>
+            {{#each owners}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}
+          </select></label>
+        {{/if}}
+      </div>
+
+      <div class="genesis-field-row six">
+        <label class="genesis-field"><span>{{localize "DND5E.Gender"}}</span><input type="text" name="gender" value="{{d.gender}}"></label>
+        <label class="genesis-field"><span>{{localize "DND5E.Age"}}</span><input type="text" name="age" value="{{d.age}}"></label>
+        <label class="genesis-field"><span>{{localize "DND5E.Height"}}</span><input type="text" name="height" value="{{d.height}}"></label>
+        <label class="genesis-field"><span>{{localize "DND5E.Weight"}}</span><input type="text" name="weight" value="{{d.weight}}"></label>
+        <label class="genesis-field"><span>{{localize "DND5E.Eyes"}}</span><input type="text" name="eyes" value="{{d.eyes}}"></label>
+        <label class="genesis-field"><span>{{localize "DND5E.Hair"}}</span><input type="text" name="hair" value="{{d.hair}}"></label>
+      </div>
+      <label class="genesis-field"><span>{{localize "DND5E.Skin"}}</span><input type="text" name="skin" value="{{d.skin}}"></label>
+      <label class="genesis-field"><span>{{localize "DND5E.Appearance"}}</span><textarea name="appearance" rows="2">{{d.appearance}}</textarea></label>
+
+      <div class="genesis-field-row">
+        <label class="genesis-field"><span>{{localize "DND5E.PersonalityTraits"}}</span><textarea name="trait" rows="2">{{d.trait}}</textarea></label>
+        <label class="genesis-field"><span>{{localize "DND5E.Ideals"}}</span><textarea name="ideal" rows="2">{{d.ideal}}</textarea></label>
+      </div>
+      <div class="genesis-field-row">
+        <label class="genesis-field"><span>{{localize "DND5E.Bonds"}}</span><textarea name="bond" rows="2">{{d.bond}}</textarea></label>
+        <label class="genesis-field"><span>{{localize "DND5E.Flaws"}}</span><textarea name="flaw" rows="2">{{d.flaw}}</textarea></label>
+      </div>
+      <label class="genesis-field"><span>{{localize "GENESIS.Details.Backstory"}}</span><textarea name="backstory" rows="5">{{d.backstory}}</textarea></label>
+    </section>
+  </div>
+
+  <div class="genesis-actions">
+    <button type="button" class="genesis-cta" data-action="next">{{localize "GENESIS.Details.Confirm"}} <i class="fa-solid fa-arrow-right"></i></button>
+  </div>
+</div>

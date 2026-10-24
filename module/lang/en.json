@@ -1,0 +1,207 @@
+{
+  "GENESIS": {
+    "Settings": {
+      "sourcesMenu": { "Name": "Content Sources", "Label": "Choose Compendium Packs", "Hint": "Point the wizard at the compendium packs to use. With none checked it uses the dnd5e Compendium Browser sources." },
+      "spellRulesMenu": { "Name": "Spell Rules", "Label": "Configure Spell Rules", "Hint": "Per-class spell counts, casting type, spell list, and replacements used by the spell step." },
+      "artworkMenu": { "Name": "Artwork", "Label": "Configure Artwork", "Hint": "Assign splash images or background videos to classes, subclasses, species, and backgrounds." },
+      "contentRules": {
+        "Name": "Rules Edition", "Hint": "Which edition's content to offer. \"Follow system\" uses the dnd5e Rules Version setting.",
+        "Auto": "Follow system setting", "Modern": "2024 only", "Legacy": "2014 only", "All": "Both editions"
+      },
+      "hideSrdDuplicates": { "Name": "Prefer Premium Content", "Hint": "Hide the system's SRD copy of an option when a book module or import provides the same one." },
+      "startingLevel": { "Name": "Starting Level", "Hint": "Level new characters start at." },
+      "allowLevelChoice": { "Name": "Players Choose Starting Level", "Hint": "Show a level picker on the class screen." },
+      "maxStartingLevel": { "Name": "Highest Selectable Starting Level", "Hint": "Upper limit for the level picker." },
+      "abilityPointBuy": { "Name": "Allow Point Buy", "Hint": "" },
+      "abilityStandardArray": { "Name": "Allow Standard Array", "Hint": "" },
+      "abilityRoll": { "Name": "Allow Rolling (4d6 drop lowest)", "Hint": "" },
+      "abilityManual": { "Name": "Allow Manual Entry", "Hint": "Lets players type any score from 3 to 18." },
+      "pointBuyBudget": { "Name": "Point Buy Budget", "Hint": "The Player's Handbook uses 27 points." },
+      "rollsToChat": { "Name": "Post Rolls to Chat", "Hint": "Ability and starting-gold rolls are posted publicly (and shown by Dice So Nice)." },
+      "allowReroll": { "Name": "Allow Rerolls", "Hint": "Let players reroll ability scores and starting gold." },
+      "hpMode": {
+        "Name": "Hit Points After Level 1", "Hint": "How hit points are gained for levels after the first.",
+        "Average": "Take the average", "Max": "Take the maximum", "Prompt": "Let the player choose or roll"
+      },
+      "multiclassPrereqs": {
+        "Name": "Multiclass Prerequisites", "Hint": "Ability score requirements for taking a level in a new class.",
+        "Enforce": "Enforce", "Warn": "Warn only", "Off": "Ignore"
+      },
+      "allowGold": { "Name": "Offer Starting Gold", "Hint": "Let players take starting wealth instead of the equipment package." },
+      "defaultBackdrop": { "Name": "Default Backdrop", "Hint": "Image or video shown behind the wizard when an option has no art of its own." },
+      "playerCreation": { "Name": "Create Through GM", "Hint": "Players without the core Create Actor permission can still finish the wizard; an online GM's client creates the character for them." },
+      "actorFolder": { "Name": "Character Folder", "Hint": "Name of an existing Actors folder to put new characters in (blank for none)." },
+      "assignCharacter": { "Name": "Assign as Player Character", "Hint": "Set the new actor as the player's assigned character if they don't have one." },
+      "promptNewPlayers": { "Name": "Prompt New Players", "Hint": "Offer the wizard to players who log in without a character." },
+      "sidebarButton": { "Name": "Sidebar Button", "Hint": "Show a Create Character button in the Actors sidebar." }
+    },
+
+    "Steps": {
+      "class": "Class", "subclass": "Subclass", "background": "Background", "species": "Species", "race": "Race",
+      "abilities": "Abilities", "features": "Features", "spells": "Spells", "equipment": "Equipment",
+      "details": "Details", "review": "Review", "levelupClass": "Class", "levelupApply": "Advance", "levelupDone": "Finish"
+    },
+
+    "Wizard": {
+      "TitleCreate": "Character Creation", "TitleLevelUp": "Level Up — {name}", "Steps": "Steps",
+      "Back": "Back", "Exit": "Exit", "Continue": "Continue", "Incomplete": "Finish this step first.",
+      "ExitTitle": "Leave the wizard?", "ExitContent": "Your choices are saved as a draft so you can pick up where you left off."
+    },
+
+    "Draft": {
+      "Title": "Unfinished Character", "Content": "You have a character in progress. Continue where you left off?",
+      "Resume": "Continue", "Fresh": "Start Over"
+    },
+
+    "Gallery": {
+      "Details": "Details", "Features": "Features by Level", "Equipment": "Starting Equipment", "Description": "Description",
+      "StartingLevel": "Starting Level", "Continue": "Continue", "Confirm": "Confirm Selection",
+      "Previous": "Previous", "Next": "Next",
+      "class": { "Heading": "Choose Your Class", "Empty": "No classes were found in your compendiums. Check the dnd5e Compendium Browser sources and the Rules Edition setting.", "Incomplete": "Choose a class to continue." },
+      "subclass": { "Heading": "Choose Your Subclass", "Empty": "No subclasses were found for this class.", "Incomplete": "Choose a subclass to continue." },
+      "background": { "Heading": "Choose Your Background", "Empty": "No backgrounds were found in your compendiums.", "Incomplete": "Choose a background to continue." },
+      "species": { "Heading": "Choose Your Species", "Empty": "No species were found in your compendiums.", "Incomplete": "Choose a species to continue." }
+    },
+
+    "Facts": {
+      "HitDie": "Hit Die", "PrimaryAbility": "Primary Ability", "Saves": "Saving Throws", "Spellcasting": "Spellcasting",
+      "CreatureType": "Creature Type", "Size": "Size", "Speed": "Speed", "Darkvision": "Darkvision",
+      "AbilityScores": "Ability Scores", "Feat": "Feat", "Proficiencies": "Proficiencies"
+    },
+
+    "Abilities": {
+      "Title": "Ability Scores",
+      "Method": { "pointBuy": "Point Buy", "standardArray": "Standard Array", "roll": "Roll", "manual": "Manual" },
+      "Subtitle": {
+        "pointBuy": "Spend points to increase your ability scores",
+        "standardArray": "Assign 15, 14, 13, 12, 10, and 8 to your abilities",
+        "roll": "Roll 4d6 six times, drop the lowest die, and assign the totals",
+        "manual": "Enter the scores your table agreed on"
+      },
+      "PointsRemaining": "Points Remaining:", "Roll": "Roll Abilities", "Reroll": "Reroll",
+      "BackgroundNote": "{name} will let you raise some of these during Features & Choices.",
+      "BackgroundHint": "Background +",
+      "Decrease": "Decrease {ability}", "Increase": "Increase {ability}",
+      "Reset": "Reset", "Confirm": "Confirm Abilities", "Incomplete": "Give every ability a score first.",
+      "PointsLeft": "You still have {points} points to spend. Continue anyway?",
+      "NoReroll": "Your GM has disabled rerolling ability scores.",
+      "RollFlavor": "Ability Scores (4d6, drop lowest)", "RollResult": "Totals: {totals}"
+    },
+
+    "Features": {
+      "Title": "Features & Choices",
+      "Hint": "Your background, species, and class now grant their features. You'll be asked for any choices they need, such as skills, languages, and feats.",
+      "ClassDetail": "Level {level}", "None": "Not chosen",
+      "Stale": "You changed earlier choices since these features were applied. Rebuild to update them.",
+      "Cancel": "Cancel", "Rebuild": "Rebuild", "Begin": "Begin",
+      "Incomplete": "Apply your features first.", "Missing": "Choose a class and ability scores first.",
+      "Failed": "Something went wrong applying features: {error}", "Done": "Features applied.",
+      "Cancelled": "Feature selection was cancelled."
+    },
+
+    "Summary": {
+      "HP": "Hit Points", "AC": "Armor Class", "Prof": "Proficiency", "Init": "Initiative", "Speed": "Speed", "Level": "Level",
+      "Saves": "Saving Throws", "Skills": "Skills", "Armor": "Armor", "Weapons": "Weapons", "Tools": "Tools",
+      "Languages": "Languages", "Features": "Features & Traits", "GrantedSpells": "Granted Spells"
+    },
+
+    "Spells": {
+      "NeedFeatures": "Apply your features first; your spellcasting depends on them.",
+      "NoCasting": "This character doesn't cast spells yet.",
+      "UpTo": "up to level {level}", "Search": "Search spells…", "AllLevels": "All", "School": "School", "AllSchools": "All schools",
+      "NoList": "No spell list is registered for this class, so every spell is shown. Set the spell list in Spell Rules.",
+      "Granted": "Already granted:", "Always": "Always prepared", "Empty": "No spells are available at this level.",
+      "TogglePrepared": "Prepared", "Owned": "Known", "InspectHint": "Hover or select a spell to read it.",
+      "Confirm": "Confirm Spells",
+      "Casting": { "known": "Known", "prepared": "Prepared", "pact": "Pact Magic", "spellbook": "Spellbook" },
+      "CountSource": { "override": "GM rules", "item": "class data", "table": "built-in table", "none": "no limits" },
+      "Counter": { "cantrips": "Cantrips", "known": "Spells Known", "prepared": "Prepared", "spellbook": "Spellbook" },
+      "Remaining": "{name}: {cantrips} cantrip(s) and {spells} spell(s) left to choose.",
+      "ContinueAnyway": "Continue anyway? You can add spells later from your sheet.",
+      "CantripLimit": "You can only choose {max} cantrip(s).", "SpellLimit": "You can only choose {max} spell(s).",
+      "PreparedLimit": "You can only prepare {max} spell(s).",
+      "Inspector": { "Casting": "Casting Time", "Range": "Range", "Duration": "Duration", "Components": "Components" }
+    },
+
+    "Equipment": {
+      "Hint": "Take your class and background equipment packages, or their starting gold instead.",
+      "Items": "Equipment", "Gold": "Gold ({formula})", "GoldPending": "Roll {formula} for your starting gold.",
+      "RollGold": "Roll Gold", "Preview": "You'll Start With", "Nothing": "Nothing yet.", "Confirm": "Confirm Equipment",
+      "Choose": "— choose —", "Incomplete": "Make every equipment choice (or take gold) first.",
+      "GoldFlavor": "Starting gold ({name})"
+    },
+
+    "Details": {
+      "Title": "Character Details", "Hint": "Who is your character?", "Portrait": "Portrait",
+      "ChoosePortrait": "Choose Portrait", "PortraitUrl": "Portrait URL", "SameToken": "Use portrait for token",
+      "Token": "Token", "ChooseToken": "Choose Token", "Name": "Name", "NamePlaceholder": "Your hero's name",
+      "Alignment": "Alignment", "Owner": "Player", "OwnerSelf": "Me (GM)", "Backstory": "Backstory",
+      "Confirm": "Confirm Details", "Incomplete": "Give your character a name."
+    },
+
+    "Review": {
+      "Eyebrow": "Your Adventurer", "Unfinished": "Still to do:", "Spells": "Chosen Spells", "Equipment": "Equipment",
+      "Create": "Create Character", "Creating": "Forging your hero…", "Created": "{name} is ready for adventure!",
+      "Failed": "Couldn't create the character: {error}", "Problems": "Finish these steps first: {steps}"
+    },
+
+    "LevelUp": {
+      "Title": "Level Up", "Hint": "{name} is advancing from level {from} to {to}.", "Max": "This character is already level 20.",
+      "Continue": "Advance a Class", "Multiclass": "Take a New Class", "PolicyWarn": "Multiclass requirements are shown but not enforced.",
+      "And": "and", "Or": "or", "Requires": "{name} needs 13+ {abilities}", "PickClass": "Choose which class gains the level.",
+      "Blocked": "You don't meet the requirements for that class.", "ApplyFirst": "Apply the new level first.",
+      "ApplyTitle": "New Level", "ApplyHint": "The class's new features and choices are applied to your character now.",
+      "Apply": "Apply Level", "FromTo": "Level {from} → {to}", "Eyebrow": "Level Up Complete",
+      "Summary": "{className} {classLevel} • Character level {level}", "NewSpells": "New Spells", "Finish": "Finish",
+      "Done": "{name} reached level {level}!", "NoActor": "Select a character to level up.",
+      "NotOwner": "You don't own that character."
+    },
+
+    "SpellRules": {
+      "Title": "Spell Rules", "Hint": "Configure spell selection rules per class (showing {edition} defaults). Saved rules override class data and the built-in tables.",
+      "Add": "Add Class", "Custom": "Custom", "CastingType": "Casting Type", "ProgressionLabel": "Progression",
+      "SpellList": "Spell List", "Replace": "Replace / Level", "Save": "Save", "Reset": "Reset",
+      "Saved": "Saved spell rules for {name}.", "AddTitle": "Add Spell Rules", "Identifier": "Class identifier",
+      "Formula": "Spells = ability modifier + class level ÷ {divisor}. Leave the row blank to keep this formula.",
+      "Progression": { "full": "Full", "half": "Half", "third": "Third", "artificer": "Artificer", "pact": "Pact" }
+    },
+
+    "Sources": {
+      "Title": "Content Sources",
+      "Hint": "Check the compendium packs the wizard should use. Checked packs are the only source for every category they contain; categories they don't contain (for example weapons for equipment picks) fall back to all packs. Checked packs are shown regardless of the Rules Edition setting.",
+      "StatusNone": "No packs selected: using every pack enabled in the dnd5e Compendium Browser sources.",
+      "StatusSome": "Using {count} selected pack(s).",
+      "AutoDetect": "Auto-detect", "SelectAll": "Select all", "Clear": "Clear", "Save": "Save",
+      "Types": { "class": "Classes", "subclass": "Subclasses", "race": "Species", "background": "Backgrounds", "spell": "Spells", "feat": "Feats", "gear": "Equipment" }
+    },
+
+    "Artwork": {
+      "Title": "Artwork", "Hint": "Splash art shown behind each option. Images and videos (webm/mp4) both work. Without an override, art embedded in the item's description is used.",
+      "Placeholder": "Backdrop: path or URL to an image or video",
+      "FigurePlaceholder": "Character figure: transparent image (default: bundled class art)",
+      "Browse": "Browse", "Clear": "Clear",
+      "Source": { "override": "custom art", "flag": "item flag", "hook": "module", "description": "from description", "default": "default backdrop", "none": "no art" },
+      "Position": { "center": "Center", "top": "Top", "bottom": "Bottom", "left": "Left", "right": "Right" }
+    },
+
+    "Errors": {
+      "RelayDisabled": "The GM has turned off character creation for players.",
+      "NoGM": "A GM needs to be online to create your character.",
+      "RelayTimeout": "The GM's client didn't respond. Is a GM logged in?",
+      "NotBuilt": "Apply your features before creating the character.",
+      "NoPermission": "You don't have permission to create characters.",
+      "CreateFailed": "The character could not be created.",
+      "Wasm": "Character Genesis couldn't load its rules engine (wasm/genesis_rules.wasm).",
+      "System": "Character Genesis requires the dnd5e system."
+    },
+
+    "Notifications": { "RelayCreated": "Created {name} for {user}." },
+    "Defaults": { "Name": "New Adventurer" },
+    "Prompt": {
+      "Title": "Create Your Character", "Content": "You don't have a character yet. Would you like to create one now?",
+      "Yes": "Create Character", "No": "Not now"
+    },
+    "Sidebar": { "Create": "Create Character" },
+    "Sheet": { "LevelUp": "Level Up (Genesis)" }
+  }
+}

@@ -1,0 +1,52 @@
+<section class="genesis-config-body">
+  <header class="genesis-config-head">
+    <div>
+      <h2><i class="fa-solid fa-hat-wizard"></i> {{localize "GENESIS.SpellRules.Title"}}</h2>
+      <p>{{localize "GENESIS.SpellRules.Hint" edition=edition}}</p>
+    </div>
+    <button type="button" class="genesis-config-add" data-action="addRule"><i class="fa-solid fa-plus"></i> {{localize "GENESIS.SpellRules.Add"}}</button>
+  </header>
+
+  <div class="rule-list">
+    {{#each rows}}
+    <details class="rule-row {{#if custom}}custom{{/if}}" data-id="{{identifier}}" {{#if open}}open{{/if}}>
+      <summary>
+        <i class="fa-solid fa-chevron-right rule-caret" aria-hidden="true"></i>
+        <strong>{{label}}</strong>
+        <span class="rule-badge casting">{{castingLabel}}</span>
+        <span class="rule-badge progression">{{progressionLabel}}</span>
+        {{#if custom}}<span class="rule-badge custom">{{localize "GENESIS.SpellRules.Custom"}}</span>{{/if}}
+        <span class="rule-meta"><i class="fa-solid fa-book"></i> {{spellList}} <i class="fa-solid fa-right-left"></i> {{replacePerLevel}}</span>
+      </summary>
+      <div class="rule-body">
+        <div class="rule-fields">
+          <label><span>{{localize "GENESIS.SpellRules.CastingType"}}</span>
+            <select name="casting">{{#each casting}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+          <label><span>{{localize "GENESIS.SpellRules.ProgressionLabel"}}</span>
+            <select name="progression">{{#each progression}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+          <label><span>{{localize "GENESIS.SpellRules.SpellList"}}</span>
+            <input type="text" name="spellList" value="{{spellList}}"></label>
+          <label class="narrow"><span>{{localize "GENESIS.SpellRules.Replace"}}</span>
+            <input type="number" name="replacePerLevel" min="0" max="10" value="{{replacePerLevel}}"></label>
+        </div>
+        <div class="rule-table-wrap">
+          <table class="rule-table">
+            <thead><tr><th></th>{{#each ../levels}}<th>{{this}}</th>{{/each}}</tr></thead>
+            <tbody>
+              <tr><th>{{localize "GENESIS.Spells.Counter.cantrips"}}</th>
+                {{#each cantrips}}<td><input type="number" min="0" max="99" name="cantrips.{{level}}" value="{{value}}"></td>{{/each}}</tr>
+              <tr><th>{{spellsLabel}}</th>
+                {{#each spells}}<td><input type="number" min="0" max="99" name="spells.{{level}}" value="{{value}}" placeholder="—"></td>{{/each}}</tr>
+            </tbody>
+          </table>
+        </div>
+        {{#if formula}}<p class="rule-formula"><i class="fa-solid fa-calculator"></i> {{formula}}</p>{{/if}}
+        <footer>
+          <button type="button" data-action="saveRule"><i class="fa-solid fa-floppy-disk"></i> {{localize "GENESIS.SpellRules.Save"}}</button>
+          <button type="button" data-action="resetRule"><i class="fa-solid fa-rotate-left"></i> {{localize "GENESIS.SpellRules.Reset"}}</button>
+        </footer>
+      </div>
+    </details>
+    {{/each}}
+  </div>
+</section>

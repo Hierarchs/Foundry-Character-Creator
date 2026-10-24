@@ -1,0 +1,39 @@
+<section class="genesis-config-body">
+  <header class="genesis-config-head">
+    <div>
+      <h2><i class="fa-solid fa-image"></i> {{localize "GENESIS.Artwork.Title"}}</h2>
+      <p>{{localize "GENESIS.Artwork.Hint"}}</p>
+    </div>
+  </header>
+
+  <nav class="genesis-config-tabs">
+    {{#each tabs}}<button type="button" class="{{#if active}}active{{/if}}" data-action="artTab" data-tab="{{id}}">{{label}}</button>{{/each}}
+  </nav>
+
+  <div class="art-list">
+    {{#each rows}}
+    <div class="art-row" data-art-key="{{key}}">
+      <div class="art-preview">
+        {{#if preview}}
+          {{#if video}}<video src="{{preview}}" muted loop autoplay playsinline></video>{{else}}<img src="{{preview}}" alt="">{{/if}}
+        {{else}}<img class="icon" src="{{img}}" alt="">{{/if}}
+      </div>
+      <div class="art-info">
+        <strong>{{name}}</strong>
+        <small>{{book}} • {{source}}</small>
+        <div class="art-inputs">
+          <input type="text" name="src" value="{{src}}" placeholder="{{localize "GENESIS.Artwork.Placeholder"}}">
+          <button type="button" data-action="browseArt" data-tooltip="{{localize "GENESIS.Artwork.Browse"}}"><i class="fa-solid fa-folder-open"></i></button>
+          <select name="position">{{#each positions}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+          {{#if src}}<button type="button" data-action="clearArt" data-tooltip="{{localize "GENESIS.Artwork.Clear"}}"><i class="fa-solid fa-xmark"></i></button>{{else if figure}}<button type="button" data-action="clearArt" data-tooltip="{{localize "GENESIS.Artwork.Clear"}}"><i class="fa-solid fa-xmark"></i></button>{{/if}}
+        </div>
+        <div class="art-inputs">
+          {{#if figurePreview}}<img class="art-figure" src="{{figurePreview}}" alt="">{{/if}}
+          <input type="text" name="figure" value="{{figure}}" placeholder="{{localize "GENESIS.Artwork.FigurePlaceholder"}}">
+          <button type="button" data-action="browseArt" data-field="figure" data-tooltip="{{localize "GENESIS.Artwork.Browse"}}"><i class="fa-solid fa-person"></i></button>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</section>

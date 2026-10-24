@@ -1,0 +1,3 @@
+[alias]
+# `cargo xtask build`, `cargo xtask package`, `cargo xtask install <foundry data dir>`
+xtask = "run --quiet --package xtask --"

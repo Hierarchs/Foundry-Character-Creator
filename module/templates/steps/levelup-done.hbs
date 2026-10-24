@@ -1,0 +1,26 @@
+<div class="genesis-levelup-done genesis-scroll">
+  <div class="review-hero">
+    <img class="review-portrait" src="{{img}}" alt="">
+    <div>
+      <p class="genesis-eyebrow">{{localize "GENESIS.LevelUp.Eyebrow"}}</p>
+      <h2 class="genesis-title small">{{name}}</h2>
+      <p class="genesis-tagline">{{localize "GENESIS.LevelUp.Summary" className=className classLevel=classLevel level=level}}</p>
+    </div>
+  </div>
+
+  <div class="genesis-stats">
+    <div class="genesis-stat"><span>{{localize "GENESIS.Summary.Level"}}</span><strong>{{level}}</strong></div>
+    <div class="genesis-stat"><span>{{localize "GENESIS.Summary.HP"}}</span><strong>{{hp}}</strong></div>
+  </div>
+
+  {{#if spells.length}}
+  <h3>{{localize "GENESIS.LevelUp.NewSpells"}}</h3>
+  <ul class="genesis-chips">{{#each spells}}<li>{{this}}</li>{{/each}}</ul>
+  {{/if}}
+
+  <div class="genesis-actions">
+    <button type="button" class="genesis-cta grand" data-action="finishLevelUp" {{#unless applied}}disabled{{/unless}}>
+      <i class="fa-solid fa-flag-checkered"></i> {{localize "GENESIS.LevelUp.Finish"}}
+    </button>
+  </div>
+</div>

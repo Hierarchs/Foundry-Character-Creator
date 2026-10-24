@@ -1,0 +1,37 @@
+{{!-- Recursive renderer for one starting-equipment entry. Expects `node` and `source` in context. --}}
+<div class="equip-node type-{{node.type}} {{#if node.active}}active{{/if}}">
+  {{#if node.isChoice}}
+  <div class="equip-choice" role="radiogroup">
+    {{#each node.options}}
+    <div class="equip-option {{#if selected}}selected{{/if}}">
+      <button type="button" class="equip-option-pick" role="radio" aria-checked="{{#if selected}}true{{else}}false{{/if}}"
+              data-action="equipChoose" data-source="{{../source}}" data-entry="{{../node.id}}" data-option="{{id}}">
+        <span class="equip-letter">{{letter}}</span>
+        <span class="equip-label">{{{label}}}</span>
+      </button>
+      {{#if selected}}{{#unless isItem}}{{#unless isCurrency}}
+      <div class="equip-sub">{{> "modules/character-genesis/templates/steps/equipment-entry.hbs" node=this source=../source}}</div>
+      {{/unless}}{{/unless}}{{/if}}
+    </div>
+    {{/each}}
+  </div>
+
+  {{else if node.isGroup}}
+  {{#each node.children}}{{> "modules/character-genesis/templates/steps/equipment-entry.hbs" node=this source=../source}}{{/each}}
+
+  {{else if node.isPick}}
+  <label class="equip-pick">
+    <span class="equip-label">{{{node.label}}}</span>
+    <select data-pick="{{node.id}}" data-source="{{source}}">
+      <option value="">{{localize "GENESIS.Equipment.Choose"}}</option>
+      {{#each node.options}}<option value="{{uuid}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}
+    </select>
+  </label>
+
+  {{else if node.isItem}}
+  <div class="equip-item"><img src="{{node.img}}" alt=""><span class="equip-label">{{{node.label}}}</span></div>
+
+  {{else if node.isCurrency}}
+  <div class="equip-item"><i class="fa-solid fa-coins" aria-hidden="true"></i><span class="equip-label">{{node.label}}</span></div>
+  {{/if}}
+</div>

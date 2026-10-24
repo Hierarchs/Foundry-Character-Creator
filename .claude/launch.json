@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "genesis-harness",
+      "runtimeExecutable": "cargo",
+      "runtimeArgs": ["xtask", "serve", "30777"],
+      "port": 30777,
+      "url": "http://localhost:30777"
+    }
+  ]
+}

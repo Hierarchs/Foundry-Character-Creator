@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Character Genesis Harness</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/module/styles/genesis.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
+  <style>
+    /* A rough imitation of the Foundry tabletop behind the wizard. */
+    html, body { margin: 0; height: 100%; background: #1b1d22; color: #ddd; font-family: Signika, system-ui, sans-serif; }
+    #board { position: fixed; inset: 0; background: repeating-linear-gradient(0deg, #23262d 0 49px, #2b2f37 49px 50px), repeating-linear-gradient(90deg, transparent 0 49px, #2b2f37 49px 50px); }
+    #interface { position: fixed; inset: 0; z-index: 30; pointer-events: none; }
+    #ui-top { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 560px; }
+    #notifications { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+    .notification { pointer-events: auto; padding: 8px 14px; border-radius: 6px; background: #2a2f3a; border: 1px solid #556; color: #eee; font-size: 14px; box-shadow: 0 6px 18px rgba(0,0,0,.4); }
+    .notification.warning { border-color: #c9a227; }
+    .notification.error { border-color: #d0453b; }
+    #sidebar { pointer-events: auto; position: absolute; right: 0; top: 0; bottom: 0; width: 300px; background: #111318; border-left: 1px solid #333; padding: 10px; }
+    #actors .header-actions { display: flex; flex-direction: column; gap: 6px; }
+    #actors button { height: 32px; border-radius: 4px; border: 1px solid #444; background: #22252c; color: #ddd; }
+    .harness-manager { position: fixed; z-index: 150; left: 50%; top: 30%; transform: translateX(-50%); width: 460px; background: #1c1a17; color: #eee; border-radius: 8px; padding: 0; }
+    .harness-manager .window-header { padding: 8px 12px; border-bottom: 1px solid #444; }
+    .harness-manager .window-content { padding: 12px; }
+    .harness-manager footer { display: flex; gap: 8px; justify-content: flex-end; }
+    .window-app-v2 { position: fixed; background: #15130f; color: #eee; border: 1px solid #555; border-radius: 6px; display: flex; flex-direction: column; max-height: 90vh; }
+    .window-app-v2 .window-header { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-bottom: 1px solid #333; }
+    .window-app-v2 .window-header h1 { font-size: 15px; margin: 0; }
+    .window-app-v2 .window-content { overflow: auto; flex: 1; }
+  </style>
+</head>
+<body>
+  <div id="board"></div>
+  <div id="interface">
+    <div id="ui-top"><ol id="notifications"></ol></div>
+    <aside id="sidebar">
+      <section id="actors"><header class="directory-header"><div class="header-actions"><button type="button">Create Actor</button></div></header></section>
+    </aside>
+  </div>
+
+  <script type="module">
+    await import("./foundry-shim.mjs");
+    await import("../module/scripts/main.mjs");
+    const { rulesReady } = await import("../module/scripts/rules.mjs");
+
+    Hooks.callAll("init");
+    Hooks.callAll("ready");
+    for ( let i = 0; i < 100 && !rulesReady(); i++ ) await new Promise(r => setTimeout(r, 50));
+
+    // Procedural stand-in art so the backdrop cross-fades are visible without any real assets.
+    const hue = s => Math.round(([...s].reduce((h, c) => Math.imul(h ^ c.charCodeAt(0), 2654435761) >>> 0, 7) % 1000) * 0.36);
+    const scene = id => {
+      const h = hue(id);
+      const ridge = Array.from({ length: 9 }, (_, i) => `${i * 200},${560 + ((h * (i + 3)) % 160)}`).join(" L");
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice'>
+        <defs><radialGradient id='g' cx='50%' cy='38%' r='75%'><stop offset='0' stop-color='hsl(${h} 45% 42%)'/><stop offset='.55' stop-color='hsl(${(h + 30) % 360} 40% 14%)'/><stop offset='1' stop-color='#050505'/></radialGradient>
+        <radialGradient id='s' cx='50%' cy='35%' r='18%'><stop offset='0' stop-color='hsl(${h} 90% 80%)' stop-opacity='.55'/><stop offset='1' stop-color='hsl(${h} 90% 80%)' stop-opacity='0'/></radialGradient></defs>
+        <rect width='1600' height='900' fill='url(#g)'/><rect width='1600' height='900' fill='url(#s)'/>
+        <path d='M0 900 L0 ${ridge} L1600 640 L1600 900Z' fill='#000' opacity='.55'/>
+        <path d='M0 900 L0 760 L300 700 L620 780 L900 690 L1250 770 L1600 720 L1600 900Z' fill='#000' opacity='.8'/></svg>`;
+      return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+    };
+    const { fixtures } = await import("./foundry-shim.mjs");
+    const typeKey = { class: "class", subclass: "subclass", race: "race", background: "background" };
+    const artwork = {};
+    for ( const item of fixtures.items ) {
+      if ( !typeKey[item.type] ) continue;
+      const id = item.system.identifier || item.name.slugify();
+      artwork[`${item.type}:${id}`] = { src: scene(id), position: "center" };
+    }
+    await game.settings.set("character-genesis", "artwork", artwork);
+    Hooks.callAll("renderActorDirectory", {}, document.getElementById("actors"));
+
+    window.harness = { fixtures };
+    if ( !new URLSearchParams(location.search).has("closed") ) await CharacterGenesis.create();
+  </script>
+</body>
+</html>

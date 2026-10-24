@@ -1,0 +1,43 @@
+<div class="genesis-features genesis-scroll">
+  <div class="genesis-panel-head">
+    <h2 class="genesis-display">{{#if levelup}}{{localize "GENESIS.LevelUp.ApplyTitle"}}{{else}}{{localize "GENESIS.Features.Title"}}{{/if}}</h2>
+    <p class="genesis-sub">{{#if levelup}}{{localize "GENESIS.LevelUp.ApplyHint"}}{{else}}{{localize "GENESIS.Features.Hint"}}{{/if}}</p>
+  </div>
+
+  <ol class="genesis-sources">
+    {{#each sources}}
+    <li class="{{#if running}}running{{/if}} {{#if done}}done{{/if}} {{#if missing}}missing{{/if}}">
+      {{#if img}}<img src="{{img}}" alt="">{{else}}<span class="genesis-placeholder"><i class="fa-solid fa-question"></i></span>{{/if}}
+      <div class="genesis-source-text">
+        <span class="genesis-eyebrow">{{label}}</span>
+        <strong>{{name}}</strong>
+        {{#if detail}}<small>{{detail}}</small>{{/if}}
+      </div>
+      <span class="genesis-source-status">
+        {{#if done}}<i class="fa-solid fa-circle-check"></i>{{else if running}}<i class="fa-solid fa-spinner fa-spin"></i>{{else}}<i class="fa-regular fa-circle"></i>{{/if}}
+      </span>
+    </li>
+    {{/each}}
+  </ol>
+
+  {{#if stale}}
+  <p class="genesis-warning"><i class="fa-solid fa-triangle-exclamation"></i> {{localize "GENESIS.Features.Stale"}}</p>
+  {{/if}}
+
+  <div class="genesis-actions">
+    {{#if running}}
+      <button type="button" class="genesis-secondary" data-action="cancelBuild"><i class="fa-solid fa-ban"></i> {{localize "GENESIS.Features.Cancel"}}</button>
+    {{else if built}}
+      {{#unless levelup}}<button type="button" class="genesis-secondary" data-action="build"><i class="fa-solid fa-rotate"></i> {{localize "GENESIS.Features.Rebuild"}}</button>{{/unless}}
+      <button type="button" class="genesis-cta" data-action="next">{{localize "GENESIS.Wizard.Continue"}} <i class="fa-solid fa-arrow-right"></i></button>
+    {{else}}
+      <button type="button" class="genesis-cta" data-action="build" {{#unless canBuild}}disabled{{/unless}}>
+        {{#if levelup}}{{localize "GENESIS.LevelUp.Apply"}}{{else}}{{localize "GENESIS.Features.Begin"}}{{/if}} <i class="fa-solid fa-wand-sparkles"></i>
+      </button>
+    {{/if}}
+  </div>
+
+  {{#if summary}}
+  {{> "modules/character-genesis/templates/steps/summary.hbs" summary}}
+  {{/if}}
+</div>

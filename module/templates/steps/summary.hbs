@@ -1,0 +1,35 @@
+<div class="genesis-summary">
+  <div class="genesis-stats">
+    <div class="genesis-stat"><span>{{localize "GENESIS.Summary.HP"}}</span><strong>{{hp}}</strong></div>
+    <div class="genesis-stat"><span>{{localize "GENESIS.Summary.AC"}}</span><strong>{{ac}}</strong></div>
+    <div class="genesis-stat"><span>{{localize "GENESIS.Summary.Prof"}}</span><strong>{{prof}}</strong></div>
+    <div class="genesis-stat"><span>{{localize "GENESIS.Summary.Init"}}</span><strong>{{initiative}}</strong></div>
+    {{#if speed}}<div class="genesis-stat"><span>{{localize "GENESIS.Summary.Speed"}}</span><strong>{{speed}}</strong></div>{{/if}}
+  </div>
+
+  <div class="genesis-ability-strip">
+    {{#each abilities}}
+    <div><span>{{abbr}}</span><strong>{{value}}</strong><em>{{mod}}</em></div>
+    {{/each}}
+  </div>
+
+  {{#if proficiencies.length}}
+  <dl class="genesis-facts wide">
+    {{#each proficiencies}}<dt>{{localize label}}</dt><dd>{{value}}</dd>{{/each}}
+  </dl>
+  {{/if}}
+
+  {{#if features.length}}
+  <h3>{{localize "GENESIS.Summary.Features"}}</h3>
+  <ul class="genesis-chips">
+    {{#each features}}<li><img src="{{img}}" alt="">{{name}}</li>{{/each}}
+  </ul>
+  {{/if}}
+
+  {{#if spells.length}}
+  <h3>{{localize "GENESIS.Summary.GrantedSpells"}}</h3>
+  <ul class="genesis-chips">
+    {{#each spells}}<li><img src="{{img}}" alt="">{{name}}</li>{{/each}}
+  </ul>
+  {{/if}}
+</div>

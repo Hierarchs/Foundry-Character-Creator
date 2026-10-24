@@ -1,0 +1,16 @@
+[workspace]
+resolver = "3"
+members = ["rules", "xtask"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+# The rules engine ships as WebAssembly, so keep it small.
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

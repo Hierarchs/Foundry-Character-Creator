@@ -1,0 +1,36 @@
+<section class="genesis-config-body">
+  <header class="genesis-config-head">
+    <div>
+      <h2><i class="fa-solid fa-books"></i> {{localize "GENESIS.Sources.Title"}}</h2>
+      <p>{{localize "GENESIS.Sources.Hint"}}</p>
+      <p class="source-status"><i class="fa-solid fa-circle-info"></i> {{status}}</p>
+    </div>
+  </header>
+
+  <nav class="source-actions">
+    <button type="button" data-action="autoDetect"><i class="fa-solid fa-wand-magic-sparkles"></i> {{localize "GENESIS.Sources.AutoDetect"}}</button>
+    <button type="button" data-action="selectAll"><i class="fa-solid fa-check-double"></i> {{localize "GENESIS.Sources.SelectAll"}}</button>
+    <button type="button" data-action="clearAll"><i class="fa-solid fa-xmark"></i> {{localize "GENESIS.Sources.Clear"}}</button>
+  </nav>
+
+  <div class="source-list">
+    {{#each groups}}
+    <section class="source-group">
+      <h3>{{title}}</h3>
+      {{#each packs}}
+      <label class="source-pack {{#if character}}character{{/if}}">
+        <input type="checkbox" name="pack" value="{{id}}" data-character="{{character}}" {{#if checked}}checked{{/if}}>
+        <span class="source-label">{{label}}</span>
+        <span class="source-chips">
+          {{#each chips}}<span class="source-chip {{key}}">{{label}} <strong>{{count}}</strong></span>{{/each}}
+        </span>
+      </label>
+      {{/each}}
+    </section>
+    {{/each}}
+  </div>
+
+  <footer class="source-footer">
+    <button type="button" data-action="saveSources"><i class="fa-solid fa-floppy-disk"></i> {{localize "GENESIS.Sources.Save"}}</button>
+  </footer>
+</section>
