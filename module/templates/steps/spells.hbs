@@ -53,8 +53,18 @@
   {{#if granted.length}}
   <p class="spell-granted">
     <span>{{localize "GENESIS.Spells.Granted"}}</span>
-    {{#each granted}}<span class="genesis-chip"><img src="{{img}}" alt="">{{name}}{{#if always}} <i class="fa-solid fa-lock" data-tooltip="{{localize "GENESIS.Spells.Always"}}"></i>{{/if}}</span>{{/each}}
+    {{#each granted}}
+    {{#if replaceable}}
+    <button type="button" class="genesis-chip spell-replace {{#if marked}}marked{{/if}}" data-action="replaceSpell" data-id="{{id}}"
+            aria-pressed="{{#if marked}}true{{else}}false{{/if}}" data-tooltip="{{localize "GENESIS.Spells.ReplaceToggle"}}">
+      <img src="{{img}}" alt="">{{name}} <i class="fa-solid fa-right-left"></i>
+    </button>
+    {{else}}
+    <span class="genesis-chip"><img src="{{img}}" alt="">{{name}}{{#if always}} <i class="fa-solid fa-lock" data-tooltip="{{localize "GENESIS.Spells.Always"}}"></i>{{/if}}</span>
+    {{/if}}
+    {{/each}}
   </p>
+  {{#if replaceMax}}<p class="genesis-note"><i class="fa-solid fa-right-left"></i> {{localize "GENESIS.Spells.ReplaceHint" max=replaceMax}}</p>{{/if}}
   {{/if}}
 
   <div class="spell-layout">

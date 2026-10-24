@@ -146,8 +146,10 @@ node dev/tools/build-fixtures.mjs <dnd5e-checkout> <folder-with-js-yaml>
 - Built against the dnd5e 6.0.6 source and exercised end to end in the harness. It has **not yet run
   on a live V14 server**, so expect small API mismatches on first load. Check the browser console
   (F12) for `Character Genesis |` messages.
-- Level-up adds new spells but doesn't yet offer the "replace one known spell" choice.
-- Starting-equipment items that require a proficiency are granted without checking it.
+- On level-up, classes that may swap spells (bard, sorcerer, warlock, ...; set per class in Spell
+  Rules → Replace / Level) can mark known spells to forget and pick replacements.
+- Starting gear marked "if proficient" is only granted when the character has that weapon, armor, or
+  tool proficiency; otherwise it's shown struck through.
 
 ## License
 

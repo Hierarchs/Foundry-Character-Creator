@@ -17,6 +17,10 @@
   <h3>{{localize "GENESIS.LevelUp.NewSpells"}}</h3>
   <ul class="genesis-chips">{{#each spells}}<li>{{this}}</li>{{/each}}</ul>
   {{/if}}
+  {{#if replaced.length}}
+  <h3>{{localize "GENESIS.LevelUp.Replaced"}}</h3>
+  <ul class="genesis-chips">{{#each replaced}}<li class="marked">{{this}}</li>{{/each}}</ul>
+  {{/if}}
 
   <div class="genesis-actions">
     <button type="button" class="genesis-cta grand" data-action="finishLevelUp" {{#unless applied}}disabled{{/unless}}>

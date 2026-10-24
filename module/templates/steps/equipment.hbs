@@ -47,7 +47,7 @@
       <h3>{{localize "GENESIS.Equipment.Preview"}}</h3>
       {{#if preview.length}}
       <ul>
-        {{#each preview}}<li><img src="{{img}}" alt=""><span>{{name}}</span>{{#if multi}}<em>×{{count}}</em>{{/if}}</li>{{/each}}
+        {{#each preview}}<li class="{{#if unproficient}}unproficient{{/if}}"><img src="{{img}}" alt=""><span>{{name}}</span>{{#if unproficient}}<em>{{localize "GENESIS.Equipment.NotProficient"}}</em>{{else if multi}}<em>×{{count}}</em>{{/if}}</li>{{/each}}
       </ul>
       {{else}}
       <p class="genesis-muted">{{localize "GENESIS.Equipment.Nothing"}}</p>

@@ -20,6 +20,42 @@ export async function itemInfo(uuid) {
   return { name: info?.name ?? uuid, img: info?.img ?? "icons/svg/item-bag.svg" };
 }
 
+function hasTrait(trait, key) {
+  if ( !key ) return false;
+  const value = trait?.value;
+  return value instanceof Set ? value.has(key) : Array.from(value ?? []).includes(key);
+}
+
+/**
+ * Whether a character is proficient with a weapon, armor, or tool, for starting-equipment entries
+ * marked "if proficient". Items that need no proficiency (gear, packs) always pass.
+ * @param {Actor|null} actor  Prepared character (the wizard's working actor).
+ * @param {Item|object} item  Item document or index entry.
+ */
+export function proficientWith(actor, item) {
+  if ( !actor ) return true;
+  const sys = item.system ?? {};
+  const traits = actor.system.traits ?? {};
+  const base = sys.type?.baseItem;
+  switch ( item.type ) {
+    case "weapon": {
+      const category = CONFIG.DND5E.weaponProficienciesMap?.[sys.type?.value];
+      if ( !base && !category ) return true;
+      return hasTrait(traits.weaponProf, base) || hasTrait(traits.weaponProf, category);
+    }
+    case "equipment": {
+      const category = CONFIG.DND5E.armorProficienciesMap?.[sys.type?.value];
+      if ( !category ) return true;
+      return hasTrait(traits.armorProf, base) || hasTrait(traits.armorProf, category);
+    }
+    case "tool":
+      if ( !base ) return true;
+      return (Number(actor.system.tools?.[base]?.value) || 0) >= 1;
+    default:
+      return true;
+  }
+}
+
 export function hasStartingEquipment(doc) {
   return plainEntries(doc).length > 0;
 }
@@ -115,15 +151,19 @@ function applyCount(data, count) {
 
 /**
  * Item data for resolved grants, including container contents (packs come with their gear).
- * @param {{ uuid: string, count: number }[]} grants
+ * Grants marked "if proficient" are skipped when `actor` lacks the proficiency.
+ * @param {{ uuid: string, count: number, requiresProficiency?: boolean }[]} grants
  * @param {Function} itemDataFrom
+ * @param {object} [options]
+ * @param {Actor} [options.actor]
  */
-export async function equipmentItemData(grants, itemDataFrom) {
+export async function equipmentItemData(grants, itemDataFrom, { actor=null }={}) {
   const out = [];
   const Item5e = CONFIG.Item.documentClass;
   for ( const grant of grants ) {
     const doc = await fromUuid(grant.uuid);
     if ( !doc ) continue;
+    if ( grant.requiresProficiency && !proficientWith(actor, doc) ) continue;
     if ( (doc.type === "container") && Item5e.createWithContents ) {
       const created = await Item5e.createWithContents([doc]);
       if ( created?.length ) {

@@ -4,7 +4,9 @@
  */
 import Step from "./base.mjs";
 import { TEMPLATES } from "../../constants.mjs";
-import { equipmentView, hasStartingEquipment, itemInfo, resolveSelection, rollWealth } from "../../engine/equipment.mjs";
+import {
+  equipmentView, hasStartingEquipment, itemInfo, proficientWith, resolveSelection, rollWealth
+} from "../../engine/equipment.mjs";
 import { setting, t } from "../../utils.mjs";
 
 const emptySelection = () => ({ mode: "items", choices: {}, picks: {}, gold: null });
@@ -97,6 +99,11 @@ export default class EquipmentStep extends Step {
         panel.complete = view.resolved.complete;
         for ( const grant of view.resolved.grants ) {
           const row = preview.get(grant.uuid) ?? { ...(await itemInfo(grant.uuid)), count: 0 };
+          // "If proficient" items the character can't use are shown struck through and not granted.
+          if ( grant.requiresProficiency ) {
+            const doc = await fromUuid(grant.uuid).catch(() => null);
+            row.unproficient = !!doc && !proficientWith(this.app.workingActor, doc);
+          }
           row.count += grant.count;
           preview.set(grant.uuid, row);
         }

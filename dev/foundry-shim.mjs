@@ -436,6 +436,11 @@ class Actor {
   clone() { return new this.constructor(deepClone(this._source)); }
   toObject() { return deepClone(this._source); }
   updateSource(changes) { mergeObject(this._source, changes); this.prepare(); }
+  async deleteEmbeddedDocuments(_type, ids) {
+    this._source.items = (this._source.items ?? []).filter(i => !ids.includes(i._id));
+    this.prepare();
+    return ids;
+  }
   async createEmbeddedDocuments(_type, items) {
     for ( const i of items ) (this._source.items ??= []).push({ ...deepClone(i), _id: randomID() });
     this.prepare();
@@ -703,6 +708,8 @@ globalThis.CONFIG = {
     creatureTypes: { humanoid: { label: "Humanoid" } },
     itemProperties: { concentration: { label: "Concentration" }, ritual: { label: "Ritual" }, vocal: { abbreviation: "V" }, somatic: { abbreviation: "S" }, material: { abbreviation: "M" } },
     focusTypes: {},
+    weaponProficienciesMap: { simpleM: "sim", simpleR: "sim", martialM: "mar", martialR: "mar" },
+    armorProficienciesMap: { light: "lgt", medium: "med", heavy: "hvy", shield: "shl" },
     currencies: { gp: { abbreviation: "gp" } },
     defaultCurrency: "gp"
   }

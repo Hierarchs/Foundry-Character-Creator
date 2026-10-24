@@ -125,6 +125,9 @@
       "ContinueAnyway": "Continue anyway? You can add spells later from your sheet.",
       "CantripLimit": "You can only choose {max} cantrip(s).", "SpellLimit": "You can only choose {max} spell(s).",
       "PreparedLimit": "You can only prepare {max} spell(s).",
+      "ReplaceHint": "On gaining a level you may swap up to {max} known spell(s): click a spell above to forget it, then pick its replacement below.",
+      "ReplaceToggle": "Forget this spell and choose a replacement",
+      "ReplaceLimit": "You can only replace {max} spell(s) this level.",
       "Inspector": { "Casting": "Casting Time", "Range": "Range", "Duration": "Duration", "Components": "Components" }
     },
 
@@ -132,7 +135,7 @@
       "Hint": "Take your class and background equipment packages, or their starting gold instead.",
       "Items": "Equipment", "Gold": "Gold ({formula})", "GoldPending": "Roll {formula} for your starting gold.",
       "RollGold": "Roll Gold", "Preview": "You'll Start With", "Nothing": "Nothing yet.", "Confirm": "Confirm Equipment",
-      "Choose": "— choose —", "Incomplete": "Make every equipment choice (or take gold) first.",
+      "Choose": "— choose —", "NotProficient": "not proficient", "Incomplete": "Make every equipment choice (or take gold) first.",
       "GoldFlavor": "Starting gold ({name})"
     },
 
@@ -157,7 +160,7 @@
       "Blocked": "You don't meet the requirements for that class.", "ApplyFirst": "Apply the new level first.",
       "ApplyTitle": "New Level", "ApplyHint": "The class's new features and choices are applied to your character now.",
       "Apply": "Apply Level", "FromTo": "Level {from} → {to}", "Eyebrow": "Level Up Complete",
-      "Summary": "{className} {classLevel} • Character level {level}", "NewSpells": "New Spells", "Finish": "Finish",
+      "Summary": "{className} {classLevel} • Character level {level}", "NewSpells": "New Spells", "Replaced": "Forgotten Spells", "Finish": "Finish",
       "Done": "{name} reached level {level}!", "NoActor": "Select a character to level up.",
       "NotOwner": "You don't own that character."
     },

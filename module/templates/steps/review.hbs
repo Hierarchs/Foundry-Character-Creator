@@ -33,7 +33,7 @@
       <h3>{{localize "GENESIS.Review.Equipment"}}</h3>
       {{#if equipment.length}}
       <ul class="genesis-chips">
-        {{#each equipment}}<li><img src="{{img}}" alt="">{{name}}{{#if multi}} ×{{count}}{{/if}}</li>{{/each}}
+        {{#each equipment}}<li class="{{#if unproficient}}marked{{/if}}"><img src="{{img}}" alt="">{{name}}{{#if multi}} ×{{count}}{{/if}}</li>{{/each}}
       </ul>
       {{else}}<p class="genesis-muted">{{localize "GENESIS.Equipment.Nothing"}}</p>{{/if}}
       {{#if currency}}<p class="equip-currency"><i class="fa-solid fa-coins"></i> {{currency}}</p>{{/if}}

@@ -47,7 +47,8 @@ export default class SpellsStep extends Step {
   }
 
   picks(identifier) {
-    this.state.spells[identifier] ??= { cantrips: [], spells: [], prepared: [] };
+    this.state.spells[identifier] ??= { cantrips: [], spells: [], prepared: [], replace: [] };
+    this.state.spells[identifier].replace ??= [];
     return this.state.spells[identifier];
   }
 
@@ -80,9 +81,18 @@ export default class SpellsStep extends Step {
     const picks = this.picks(caster.identifier);
     const existing = this.existing(actor, caster);
     const isSpellbook = caster.casting === "spellbook";
+
+    // Level-up: classes that may swap spells on gaining a level (e.g. bard, sorcerer, warlock) can mark
+    // known spells to forget; each one frees a slot for a new pick.
+    const replaceMax = this.app.mode === "levelup" ? (caster.replacePerLevel ?? 0) : 0;
+    const replaceable = new Set(existing.items.filter(i => (i.system.level > 0) && (i.system.prepared !== 2)).map(i => i.id));
+    picks.replace = picks.replace.filter(id => replaceable.has(id)).slice(0, replaceMax);
+    this.replaceMax = replaceMax;
+
     const limits = {
       cantrips: Math.max(0, caster.cantrips - existing.cantrips),
-      spells: Math.max(0, (isSpellbook ? (caster.spellbook ?? caster.spells) : caster.spells) - existing.spells),
+      spells: Math.max(0, (isSpellbook ? (caster.spellbook ?? caster.spells) : caster.spells) - existing.spells)
+        + picks.replace.length,
       prepared: caster.spells
     };
     this.#limits = { ...limits, isSpellbook };
@@ -142,7 +152,15 @@ export default class SpellsStep extends Step {
       filter: this.filter,
       fromList: candidates.fromList,
       empty: !sortedGroups.length,
-      granted: existing.items.map(i => ({ name: i.name, img: i.img, always: i.system.prepared === 2 }))
+      granted: existing.items.map(i => ({
+        id: i.id,
+        name: i.name,
+        img: i.img,
+        always: i.system.prepared === 2,
+        replaceable: (replaceMax > 0) && replaceable.has(i.id),
+        marked: picks.replace.includes(i.id)
+      })),
+      replaceMax: replaceable.size ? replaceMax : 0
     };
   }
 
@@ -193,6 +211,16 @@ export default class SpellsStep extends Step {
       case "spellLevel":
         this.filter.level = target.dataset.level;
         return this.#applyFilter();
+      case "replaceSpell": {
+        const picks = this.picks(this.casterId);
+        const index = picks.replace.indexOf(target.dataset.id);
+        if ( index >= 0 ) picks.replace.splice(index, 1);
+        else if ( picks.replace.length >= (this.replaceMax ?? 0) ) {
+          ui.notifications.warn(t("Spells.ReplaceLimit", { max: this.replaceMax ?? 0 }));
+          return;
+        } else picks.replace.push(target.dataset.id);
+        return this.app.refresh();
+      }
     }
   }
 

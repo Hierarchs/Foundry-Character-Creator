@@ -224,6 +224,7 @@ export class LevelUpDoneStep extends Step {
       classLevel: lu.newLevel,
       hp: actor.system.attributes.hp.max,
       spells: names,
+      replaced: (picks?.replace ?? []).map(id => actor.items.get(id)?.name).filter(Boolean),
       applied: this.state.levelup.applied
     };
   }
@@ -236,6 +237,8 @@ export class LevelUpDoneStep extends Step {
       const identifier = this.state.levelup.identifier;
       const caster = castingClasses(actor).find(c => c.identifier === identifier);
       const picks = this.state.spells?.[identifier];
+      const forget = (picks?.replace ?? []).filter(id => actor.items.has(id));
+      if ( forget.length ) await actor.deleteEmbeddedDocuments("Item", forget);
       if ( caster && picks ) {
         const items = await spellItemData(caster, picks, itemDataFrom);
         if ( items.length ) await actor.createEmbeddedDocuments("Item", items);

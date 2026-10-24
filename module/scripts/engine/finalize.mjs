@@ -72,7 +72,7 @@ export async function assembleActor(app) {
       continue;
     }
     const resolved = resolveSelection(doc, sel);
-    data.items.push(...await equipmentItemData(resolved.grants, itemDataFrom));
+    data.items.push(...await equipmentItemData(resolved.grants, itemDataFrom, { actor: preview }));
     for ( const [key, amount] of Object.entries(resolved.currency) ) currency[key] = (currency[key] ?? 0) + amount;
   }
   foundry.utils.setProperty(data, "system.currency", currency);
