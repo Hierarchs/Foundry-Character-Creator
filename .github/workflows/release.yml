@@ -1,0 +1,38 @@
+# Push a tag like v0.2.0 to build the module (Rust rules engine included) and publish a GitHub release.
+# Foundry installs/updates from: https://github.com/Hierarchs/Foundry-Character-Creator/releases/latest/download/module.json
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Test rules engine
+        run: cargo test -p genesis-rules
+
+      - name: Stamp version from tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          jq --arg v "$VERSION" '.version = $v' module/module.json > module/module.json.tmp
+          mv module/module.json.tmp module/module.json
+
+      - name: Package module
+        run: cargo xtask package
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/module.json
+            dist/character-genesis.zip
