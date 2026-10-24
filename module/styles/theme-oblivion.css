@@ -1,0 +1,225 @@
+/* ==========================================================================
+   Character Genesis — "Oblivion" theme
+   Parchment pages, dark-brown ink, and bronze double-line frames in the spirit of
+   The Elder Scrolls IV: Oblivion's menus. Enabled by the Theme setting, which adds
+   .genesis-theme-oblivion to the wizard (and to <body> for dnd5e's advancement windows).
+   ========================================================================== */
+
+.genesis-theme-oblivion {
+  --o-parch-light: #efe0b8;
+  --o-parch: #dcc493;
+  --o-parch-dark: #c19e62;
+  --o-ink: #2c1a0a;
+  --o-ink-soft: #5c3e1e;
+  --o-bronze: #6e4a22;
+  --o-highlight: #8c2f12;
+  --o-parchment:
+    radial-gradient(ellipse at 18% 12%, rgba(255, 249, 228, 0.55), transparent 55%),
+    radial-gradient(ellipse at 88% 92%, rgba(122, 82, 34, 0.28), transparent 60%),
+    repeating-radial-gradient(circle at 30% 30%, rgba(110, 74, 34, 0.035) 0 2px, transparent 2px 6px),
+    radial-gradient(120% 95% at 50% 45%, var(--o-parch-light) 0%, var(--o-parch) 58%, var(--o-parch-dark) 100%);
+  --o-frame:
+    inset 0 0 0 3px rgba(239, 224, 184, 0.55),
+    inset 0 0 0 4px rgba(110, 74, 34, 0.55),
+    inset 0 0 26px rgba(110, 70, 25, 0.45),
+    0 8px 22px rgba(0, 0, 0, 0.55);
+}
+
+.character-genesis.genesis-theme-oblivion {
+  --g-ink: var(--o-ink);
+  --g-muted: var(--o-ink-soft);
+  --g-dim: #87693f;
+  --g-gold: var(--o-bronze);
+  --g-gold-bright: var(--o-ink);
+  --g-gold-deep: var(--o-bronze);
+  --g-line: rgba(110, 74, 34, 0.35);
+  --g-line-strong: rgba(110, 74, 34, 0.75);
+  --g-panel: var(--o-parchment);
+  --g-card: var(--o-parchment);
+  --g-card-hover: var(--o-parchment);
+  --g-field: rgba(255, 250, 232, 0.6);
+  --g-danger: #8b1a1a;
+  --g-success: #2f5a1e;
+  --g-font-display: "IM Fell English SC", "IM Fell English", Georgia, serif;
+  --g-font-serif: "IM Fell English", Georgia, serif;
+  --g-font-ui: "IM Fell English", Georgia, "Times New Roman", serif;
+  --g-radius: 3px;
+  font-size: 15px;
+}
+
+/* Every card-like surface becomes a framed parchment page. */
+.genesis-theme-oblivion :is(.genesis-ability, .genesis-sources li, .genesis-stat, .genesis-ability-strip > div,
+  .genesis-facts.wide, .spell-card, .spell-inspector, .spell-counter, .equip-panel, .equip-preview,
+  .levelup-card, .genesis-roll-sets li, .genesis-drawer-body, .genesis-points, .genesis-note, .genesis-warning) {
+  background: var(--o-parchment);
+  border: 1px solid var(--o-bronze);
+  box-shadow: var(--o-frame);
+  color: var(--o-ink);
+}
+.genesis-theme-oblivion .genesis-warning { border-color: #7a2a1a; }
+
+/* Headings and text that sit over the scene get parchment banners so ink stays readable. */
+.genesis-theme-oblivion :is(.genesis-panel-head, .genesis-hero-text, .review-hero, .spell-head) {
+  padding: 14px 30px 16px;
+  background: var(--o-parchment);
+  border: 1px solid var(--o-bronze);
+  box-shadow: var(--o-frame);
+}
+.genesis-theme-oblivion .genesis-hero-text { padding: 16px 44px 20px; }
+.genesis-theme-oblivion .spell-head { padding: 10px 18px; }
+
+.genesis-theme-oblivion :is(.genesis-display, .genesis-title) {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: var(--o-ink);
+  filter: none;
+  font-variant: normal;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 0 rgba(255, 248, 225, 0.6);
+}
+.genesis-theme-oblivion .genesis-title { font-size: clamp(44px, 5.4vw, 78px); }
+.genesis-theme-oblivion :is(.genesis-tagline, .genesis-sub) {
+  color: var(--o-ink-soft);
+  text-shadow: none;
+  font-family: var(--g-font-serif);
+  font-style: italic;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  font-size: 16px;
+}
+.genesis-theme-oblivion .genesis-eyebrow { color: var(--o-highlight); letter-spacing: 0.22em; }
+.genesis-theme-oblivion .genesis-figure { filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.8)); }
+
+/* Top bar: a strip of parchment. */
+.genesis-theme-oblivion .genesis-chrome {
+  background: var(--o-parchment);
+  border-bottom: 2px solid var(--o-bronze);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+.genesis-theme-oblivion .genesis-brand i { color: var(--o-highlight); }
+.genesis-theme-oblivion .genesis-trail button:not(:disabled):hover { background: rgba(110, 74, 34, 0.12); color: var(--o-highlight); }
+.genesis-theme-oblivion .genesis-trail li.current .num { background: var(--o-bronze); border-color: var(--o-bronze); color: var(--o-parch-light); }
+.genesis-theme-oblivion .genesis-trail li.current button { color: var(--o-highlight); }
+
+/* Buttons: inked labels on parchment; Oblivion's red-brown highlight on hover. */
+.genesis-theme-oblivion :is(.genesis-cta, .genesis-secondary, .genesis-chip-button, .genesis-arrow, .genesis-round,
+  .spell-level-pill, .genesis-tabs button) {
+  font-family: var(--g-font-display) !important;
+  text-transform: none;
+}
+.genesis-theme-oblivion .genesis-cta {
+  background: linear-gradient(180deg, var(--o-parch-light), var(--o-parch-dark));
+  border: 1px solid var(--o-bronze);
+  color: var(--o-ink);
+  letter-spacing: 0.08em;
+  font-size: 18px;
+  box-shadow: inset 0 0 0 2px rgba(239, 224, 184, 0.6), inset 0 0 0 3px rgba(110, 74, 34, 0.5), 0 6px 16px rgba(0, 0, 0, 0.55);
+}
+.genesis-theme-oblivion .genesis-cta:not(:disabled):hover {
+  color: var(--o-highlight);
+  border-color: var(--o-highlight);
+  box-shadow: inset 0 0 0 2px rgba(239, 224, 184, 0.6), inset 0 0 0 3px rgba(140, 47, 18, 0.6), 0 0 18px rgba(255, 214, 150, 0.35);
+}
+.genesis-theme-oblivion :is(.genesis-secondary, .genesis-chip-button) {
+  background: var(--o-parch);
+  border: 1px solid var(--o-bronze);
+  color: var(--o-ink);
+}
+.genesis-theme-oblivion :is(.genesis-secondary, .genesis-chip-button):hover { color: var(--o-highlight); border-color: var(--o-highlight); }
+.genesis-theme-oblivion .genesis-round { background: var(--o-parch-light); border-color: var(--o-bronze); color: var(--o-ink); }
+.genesis-theme-oblivion .genesis-round:not(:disabled):hover { background: var(--o-bronze); color: var(--o-parch-light); }
+.genesis-theme-oblivion .genesis-tabs { background: var(--o-parch); border-color: var(--o-bronze); box-shadow: var(--o-frame); }
+.genesis-theme-oblivion .genesis-tabs button { color: var(--o-ink-soft); font-size: 14px; letter-spacing: 0.04em; }
+.genesis-theme-oblivion .genesis-tabs button.active { background: var(--o-bronze); color: var(--o-parch-light); }
+
+/* Gallery */
+.genesis-theme-oblivion .genesis-carousel { background: var(--o-parchment); border: 1px solid var(--o-bronze); border-radius: 4px; box-shadow: var(--o-frame); }
+.genesis-theme-oblivion .genesis-arrow { background: transparent; color: var(--o-ink-soft); }
+.genesis-theme-oblivion .genesis-arrow:hover { color: var(--o-highlight); background: rgba(110, 74, 34, 0.12); }
+.genesis-theme-oblivion .genesis-thumb { color: var(--o-ink-soft); }
+.genesis-theme-oblivion .genesis-thumb img { border-color: var(--o-bronze); border-radius: 3px; filter: sepia(0.35) brightness(0.9); }
+.genesis-theme-oblivion .genesis-thumb.focused { color: var(--o-highlight); }
+.genesis-theme-oblivion .genesis-thumb.focused img { border-color: var(--o-highlight); box-shadow: 0 0 0 2px rgba(140, 47, 18, 0.35); filter: none; }
+.genesis-theme-oblivion .genesis-thumb-check { background: var(--o-highlight); color: var(--o-parch-light); }
+.genesis-theme-oblivion .genesis-count { color: var(--o-ink-soft); }
+.genesis-theme-oblivion .genesis-drawer-tab { background: var(--o-parch); border-color: var(--o-bronze); color: var(--o-highlight); }
+.genesis-theme-oblivion .genesis-drawer-tab span { color: var(--o-ink-soft); }
+.genesis-theme-oblivion .genesis-drawer-head h2 { color: var(--o-ink); }
+.genesis-theme-oblivion .genesis-rich { color: var(--o-ink); }
+.genesis-theme-oblivion .genesis-rich a.content-link { background: rgba(110, 74, 34, 0.12); color: var(--o-highlight); border-color: var(--o-bronze); }
+.genesis-theme-oblivion .genesis-timeline .lvl { border-color: var(--o-bronze); color: var(--o-ink); }
+.genesis-theme-oblivion .genesis-level-picker { background: var(--o-parch); border-color: var(--o-bronze); color: var(--o-ink-soft); }
+.genesis-theme-oblivion .genesis-level-picker select { background: var(--o-parch-light); color: var(--o-ink); }
+
+/* Ability scores */
+.genesis-theme-oblivion :is(.genesis-score, .genesis-assign, .genesis-manual) {
+  background: var(--o-parch-light) !important;
+  border: 1px solid var(--o-bronze) !important;
+  color: var(--o-ink) !important;
+  box-shadow: inset 0 1px 4px rgba(110, 74, 34, 0.35);
+}
+.genesis-theme-oblivion .genesis-mod { background: transparent; border: 1px solid var(--g-line); font-family: var(--g-font-display); }
+.genesis-theme-oblivion .genesis-ability-icon { color: var(--o-bronze); }
+.genesis-theme-oblivion .genesis-points strong,
+.genesis-theme-oblivion :is(.genesis-stat strong, .spell-counter .used, .equip-gold strong) { color: var(--o-highlight); }
+.genesis-theme-oblivion .genesis-roll-sets .die { background: rgba(110, 74, 34, 0.15); }
+.genesis-theme-oblivion .genesis-hint { background: rgba(110, 74, 34, 0.12); border-color: var(--o-bronze); color: var(--o-ink-soft); }
+
+/* Chips, lists, fields */
+.genesis-theme-oblivion :is(.genesis-chips li, .genesis-chip) { background: var(--o-parch-light); border-color: var(--o-bronze); color: var(--o-ink); }
+.genesis-theme-oblivion :is(.genesis-field input, .genesis-field select, .genesis-field textarea, .spell-search input,
+  .spell-filters select, .equip-pick select) {
+  background: rgba(255, 250, 232, 0.75) !important;
+  border: 1px solid var(--o-bronze) !important;
+  color: var(--o-ink) !important;
+  font-family: var(--g-font-ui) !important;
+}
+.genesis-theme-oblivion .genesis-field > span,
+.genesis-theme-oblivion .genesis-toggle { color: var(--o-ink-soft); text-shadow: 0 0 6px rgba(239, 224, 184, 0.9); }
+.genesis-theme-oblivion .details-form { padding: 18px 22px; background: var(--o-parchment); border: 1px solid var(--o-bronze); box-shadow: var(--o-frame); }
+.genesis-theme-oblivion .details-portrait img,
+.genesis-theme-oblivion .review-portrait { border-color: var(--o-bronze); }
+
+/* Spells: one big spellbook page. */
+.genesis-theme-oblivion .genesis-spells {
+  inset: 12px 16px;
+  background: var(--o-parchment);
+  border: 1px solid var(--o-bronze);
+  box-shadow: var(--o-frame);
+}
+.genesis-theme-oblivion .genesis-spells :is(.spell-head, .spell-card, .spell-inspector, .spell-counter) { box-shadow: inset 0 0 14px rgba(110, 70, 25, 0.3); }
+.genesis-theme-oblivion .spell-group h3 { background: linear-gradient(to bottom, var(--o-parch) 70%, transparent); color: var(--o-highlight); }
+.genesis-theme-oblivion .spell-level-pill { background: var(--o-parch-light); border-color: var(--o-bronze); color: var(--o-ink-soft); }
+.genesis-theme-oblivion .spell-level-pill.active { background: var(--o-bronze); color: var(--o-parch-light); }
+.genesis-theme-oblivion .spell-card.selected { border-color: var(--o-highlight); box-shadow: inset 0 0 0 2px rgba(140, 47, 18, 0.45), inset 0 0 18px rgba(140, 47, 18, 0.25); }
+.genesis-theme-oblivion .spell-check,
+.genesis-theme-oblivion .spell-card.prepared .spell-prepare { color: var(--o-highlight); }
+.genesis-theme-oblivion .spell-tags span { background: rgba(110, 74, 34, 0.14); color: var(--o-ink-soft); }
+.genesis-theme-oblivion .spell-inspector h3 { color: var(--o-ink); }
+
+/* Equipment & level-up */
+.genesis-theme-oblivion .equip-option-pick { background: var(--o-parch-light); border-color: var(--o-bronze); color: var(--o-ink); }
+.genesis-theme-oblivion .equip-option.selected > .equip-option-pick { border-color: var(--o-highlight); background: rgba(140, 47, 18, 0.1); }
+.genesis-theme-oblivion .equip-letter { border-color: var(--o-bronze); color: var(--o-ink); }
+.genesis-theme-oblivion .equip-option.selected .equip-letter { background: var(--o-highlight); color: var(--o-parch-light); }
+.genesis-theme-oblivion .equip-label a.content-link { color: var(--o-highlight); }
+.genesis-theme-oblivion .levelup-card.selected { border-color: var(--o-highlight); box-shadow: inset 0 0 0 2px rgba(140, 47, 18, 0.45), var(--o-frame); }
+.genesis-theme-oblivion :is(.levelup-heading, .genesis-summary h3, .review-columns h3, .equip-preview h3) {
+  color: var(--o-parch-light);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+.genesis-theme-oblivion .equip-preview h3 { color: var(--o-highlight); text-shadow: none; }
+
+/* Busy overlay */
+.genesis-theme-oblivion .genesis-busy-inner { padding: 22px 40px; background: var(--o-parchment); border: 1px solid var(--o-bronze); box-shadow: var(--o-frame); }
+.genesis-theme-oblivion .genesis-busy-inner i { color: var(--o-highlight); }
+
+/* dnd5e advancement windows opened by the wizard */
+body.genesis-theme-oblivion .application.genesis-advancement {
+  border-color: #6e4a22;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 24px 80px rgba(0, 0, 0, 0.85), 0 0 30px rgba(220, 196, 147, 0.25);
+}
+body.genesis-theme-oblivion .application.genesis-advancement .window-header .window-title {
+  font-family: "IM Fell English SC", Georgia, serif;
+}

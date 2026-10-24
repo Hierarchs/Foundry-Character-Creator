@@ -11,7 +11,8 @@ import { advancementInProgress, cancelActiveAdvancement } from "../engine/advanc
 import { clearDraft, defaultState, hasProgress, loadDraft, saveDraft } from "./state.mjs";
 import { createSteps } from "./steps/index.mjs";
 import { resolveLevelupTarget } from "./steps/levelup.mjs";
-import { centerInScroller, debounce, isVideo, setting, t } from "../utils.mjs";
+import { stepBackdrop } from "../data/backdrops.mjs";
+import { applyTheme, centerInScroller, debounce, isVideo, setting, t } from "../utils.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 
@@ -274,6 +275,7 @@ export default class GenesisWizard extends HandlebarsApplicationMixin(Applicatio
   /** @override */
   async _onFirstRender(context, options) {
     await super._onFirstRender(context, options);
+    applyTheme(this.element);
     this.element.insertAdjacentHTML("afterbegin", '<div class="genesis-backdrop" aria-hidden="true"></div>');
     this.element.insertAdjacentHTML("beforeend", `<div class="genesis-busy" aria-live="polite">
       <div class="genesis-busy-inner"><i class="fa-solid fa-dice-d20 fa-spin"></i><span></span></div></div>`);
@@ -326,6 +328,9 @@ export default class GenesisWizard extends HandlebarsApplicationMixin(Applicatio
     } catch(err) {
       console.warn("Character Genesis | backdrop failed", err);
     }
+    // Art chosen for a specific option (GM override, item flag, module hook) wins; otherwise the
+    // step's own scene beats guessed description images and the generic default.
+    if ( !["override", "flag", "hook"].includes(art?.source) ) art = stepBackdrop(step.id) ?? art;
     if ( !art?.src ) {
       const fallback = setting("defaultBackdrop");
       art = { src: fallback || null, video: isVideo(fallback), position: "center" };

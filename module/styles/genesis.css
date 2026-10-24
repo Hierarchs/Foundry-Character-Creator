@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap");
 
 /* ==========================================================================
    Character Genesis — cinematic character creator
@@ -106,9 +106,12 @@
 /* Panel steps read better over a quieter backdrop. */
 .character-genesis:is([data-step="abilities"], [data-step="features"], [data-step="spells"], [data-step="equipment"],
   [data-step="details"], [data-step="review"], [data-step="levelupClass"], [data-step="levelupDone"]) .genesis-backdrop {
-  filter: blur(10px) brightness(0.32) saturate(0.8);
-  transform: scale(1.05);
+  /* Soft enough that each step's scene stays recognisable behind the panels. */
+  filter: blur(2px) brightness(0.48) saturate(0.9);
+  transform: scale(1.02);
 }
+
+.genesis-hero-text { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 
 /* Chrome ------------------------------------------------------------------ */
 

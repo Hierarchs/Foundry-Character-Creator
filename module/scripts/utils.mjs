@@ -135,6 +135,19 @@ export function centerInScroller(scroller, item) {
   scroller.scrollLeft += (i.left + (i.width / 2)) - (s.left + (s.width / 2));
 }
 
+/**
+ * Apply the theme setting as a `genesis-theme-<name>` class on the given elements (default: every open
+ * wizard) and on the body, so dnd5e's advancement windows can follow the theme too.
+ */
+export function applyTheme(...elements) {
+  const theme = setting("theme") || "cinematic";
+  const targets = elements.length ? elements : Array.from(document.querySelectorAll(".character-genesis"));
+  for ( const el of [...targets, document.body].filter(Boolean) ) {
+    for ( const cls of Array.from(el.classList) ) if ( cls.startsWith("genesis-theme-") ) el.classList.remove(cls);
+    el.classList.add(`genesis-theme-${theme}`);
+  }
+}
+
 export function log(...args) {
   console.log("Character Genesis |", ...args);
 }

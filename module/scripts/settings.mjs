@@ -3,6 +3,7 @@ import SpellRulesConfig from "./apps/spell-rules.mjs";
 import ArtworkConfig from "./apps/artwork.mjs";
 import SourcesConfig from "./apps/sources.mjs";
 import { clearCompendiumCache } from "./data/compendium.mjs";
+import { applyTheme } from "./utils.mjs";
 
 /**
  * Register world settings and the two GM configuration menus.
@@ -42,6 +43,17 @@ export function registerSettings() {
     type: ArtworkConfig,
     restricted: true
   });
+
+  world("theme", {
+    type: String,
+    default: "cinematic",
+    choices: {
+      cinematic: "GENESIS.Settings.theme.Cinematic",
+      oblivion: "GENESIS.Settings.theme.Oblivion"
+    },
+    onChange: () => applyTheme()
+  });
+  world("stepBackdrops", { type: Boolean, default: true });
 
   world("contentRules", {
     type: String,

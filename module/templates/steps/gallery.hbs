@@ -47,6 +47,7 @@
 
   <section class="genesis-hero">
     {{#if focus.figure}}<img class="genesis-figure" src="{{focus.figure}}" alt="">{{/if}}
+    <div class="genesis-hero-text">
     <p class="genesis-eyebrow">{{heading}}</p>
     <h2 class="genesis-title">{{focus.name}}</h2>
     {{#if focus.tagline}}<p class="genesis-tagline">{{focus.tagline}}</p>{{/if}}
@@ -64,6 +65,7 @@
       {{#if focus.isSelected}}{{localize "GENESIS.Gallery.Continue"}}{{else}}{{localize "GENESIS.Gallery.Confirm"}}{{/if}}
       <i class="fa-solid fa-check" aria-hidden="true"></i>
     </button>
+    </div>
   </section>
 
   <nav class="genesis-carousel" aria-label="{{heading}}">

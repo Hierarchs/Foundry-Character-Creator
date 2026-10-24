@@ -14,6 +14,12 @@ A cinematic, full-screen character creator and level-up wizard for **Foundry VTT
   on the class screen. Matching identifiers (bard, monk, rogue, spellsword, nightblade…) are picked up
   automatically, and core classes use aliases (wizard → mage, fighter → warrior, cleric → healer,
   paladin → crusader, ranger → scout, druid → pilgrim, warlock → nightblade, artificer → battlemage).
+- **Two themes.** *Cinematic* (dark and gold) or *Oblivion*: parchment pages, inked IM Fell type, and
+  bronze double-line frames inspired by The Elder Scrolls IV: Oblivion's menus. Pick it with the
+  **Theme** setting; it switches live.
+- **Scene backdrops.** Each step has its own landscape (sewers → Ayleid ruins → Shivering Isles →
+  Cloud Ruler → Kvatch → the Imperial City for the review). Art assigned to a specific option still
+  wins. Reassign scenes in `module/scripts/data/backdrops.mjs`, or turn off *Scene Backdrops*.
 - **Native Advancement.** Background, species, and class are applied by dnd5e's own
   `AdvancementManager`, so skills, languages, feats, fighting styles, and expertise work for any content
   that uses standard Advancements. The wizard pre-answers what it already knows (subclass, hit points),

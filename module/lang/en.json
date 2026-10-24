@@ -4,6 +4,11 @@
       "sourcesMenu": { "Name": "Content Sources", "Label": "Choose Compendium Packs", "Hint": "Point the wizard at the compendium packs to use. With none checked it uses the dnd5e Compendium Browser sources." },
       "spellRulesMenu": { "Name": "Spell Rules", "Label": "Configure Spell Rules", "Hint": "Per-class spell counts, casting type, spell list, and replacements used by the spell step." },
       "artworkMenu": { "Name": "Artwork", "Label": "Configure Artwork", "Hint": "Assign splash images or background videos to classes, subclasses, species, and backgrounds." },
+      "theme": {
+        "Name": "Theme", "Hint": "Look of the wizard. Oblivion uses parchment pages, inked text, and bronze frames inspired by The Elder Scrolls IV: Oblivion's menus.",
+        "Cinematic": "Cinematic (dark & gold)", "Oblivion": "Oblivion (parchment)"
+      },
+      "stepBackdrops": { "Name": "Scene Backdrops", "Hint": "Show a bundled landscape behind each step (class, species, abilities, ...). Art you assign to a specific option still takes priority." },
       "contentRules": {
         "Name": "Rules Edition", "Hint": "Which edition's content to offer. \"Follow system\" uses the dnd5e Rules Version setting.",
         "Auto": "Follow system setting", "Modern": "2024 only", "Legacy": "2014 only", "All": "Both editions"

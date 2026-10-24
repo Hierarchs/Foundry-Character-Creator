@@ -32,7 +32,8 @@
     "scripts/main.mjs"
   ],
   "styles": [
-    "styles/genesis.css"
+    "styles/genesis.css",
+    "styles/theme-oblivion.css"
   ],
   "languages": [
     {
