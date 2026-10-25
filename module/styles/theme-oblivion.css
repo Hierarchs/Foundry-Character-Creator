@@ -264,7 +264,8 @@ body.genesis-theme-oblivion.genesis-open .application.dialog {
 }
 
 /* dnd5e's cards, lists and native dropdowns: parchment and bronze instead of its dark navy/maroon. */
-body.genesis-theme-oblivion .application.genesis-advancement.dnd5e2 {
+body.genesis-theme-oblivion .application.genesis-advancement.dnd5e2,
+body.genesis-theme-oblivion .application.genesis-advancement .dnd5e2 {
   color-scheme: light;
   --dnd5e-background-card: rgba(255, 250, 232, 0.55);
   --dnd5e-background-5: rgba(110, 74, 34, 0.08);
