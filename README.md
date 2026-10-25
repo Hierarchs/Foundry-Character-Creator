@@ -14,9 +14,14 @@ A cinematic, full-screen character creator and level-up wizard for **Foundry VTT
   on the class screen. Matching identifiers (bard, monk, rogue, spellsword, nightblade…) are picked up
   automatically, and core classes use aliases (wizard → mage, fighter → warrior, cleric → healer,
   paladin → crusader, ranger → scout, druid → pilgrim, warlock → nightblade, artificer → battlemage).
-- **Two themes.** *Cinematic* (dark and gold) or *Oblivion*: parchment pages, inked IM Fell type, and
-  bronze double-line frames inspired by The Elder Scrolls IV: Oblivion's menus. Pick it with the
-  **Theme** setting; it switches live.
+- **Two themes, Witchwind style.** Both share the leather, gold and parchment look of the Witchwind UI
+  and Inventory modules (Cinzel / Alegreya type, inner-rule frames, gold buttons). *Witchwind* is
+  leather and gold; *Witchwind Parchment* adds parchment pages and bronze frames inspired by The Elder
+  Scrolls IV: Oblivion's menus. Pick one with the **Theme** setting; it switches live.
+- **Fast and animated.** Compendium indexes load in parallel and are warmed (with the step backdrops)
+  as the wizard opens; descriptions are enriched once and cached until a compendium changes. Steps
+  slide in from the direction you travel, the preview follows the carousel, and cards and scores
+  animate, all switched off under the OS "reduce motion" setting.
 - **Scene backdrops.** Each step has its own landscape (sewers → Ayleid ruins → Shivering Isles →
   Cloud Ruler → Kvatch → the Imperial City for the review). Art assigned to a specific option still
   wins. Reassign scenes in `module/scripts/data/backdrops.mjs`, or turn off *Scene Backdrops*.
@@ -161,4 +166,5 @@ node dev/tools/build-fixtures.mjs <dnd5e-checkout> <folder-with-js-yaml>
 ## License
 
 Code is MIT (see `LICENSE`). The dev fixtures contain SRD 5.2 material (CC-BY-4.0) and are not
-part of the packaged module.
+part of the packaged module. The bundled Cinzel, Alegreya and Alegreya Sans fonts are under the
+SIL Open Font License (see `module/fonts/OFL-*.txt`).

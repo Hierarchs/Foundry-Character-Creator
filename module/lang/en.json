@@ -5,8 +5,8 @@
       "spellRulesMenu": { "Name": "Spell Rules", "Label": "Configure Spell Rules", "Hint": "Per-class spell counts, casting type, spell list, and replacements used by the spell step." },
       "artworkMenu": { "Name": "Artwork", "Label": "Configure Artwork", "Hint": "Assign splash images or background videos to classes, subclasses, species, and backgrounds." },
       "theme": {
-        "Name": "Theme", "Hint": "Look of the wizard. Oblivion uses parchment pages, inked text, and bronze frames inspired by The Elder Scrolls IV: Oblivion's menus.",
-        "Cinematic": "Cinematic (dark & gold)", "Oblivion": "Oblivion (parchment)"
+        "Name": "Theme", "Hint": "Look of the wizard. Both use the Witchwind palette and fonts shared with Witchwind Inventory and Witchwind UI; Parchment is styled after The Elder Scrolls IV: Oblivion's menus.",
+        "Cinematic": "Witchwind (leather & gold)", "Oblivion": "Witchwind Parchment (Oblivion)"
       },
       "birthsignStep": {
         "Name": "Birthsign Step", "Hint": "Show the Birthsign screen (after Species). Signs come from any compendium feat of type Birthsign, including the bundled Birthsigns of Tamriel.",

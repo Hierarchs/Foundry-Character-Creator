@@ -23,6 +23,16 @@ const STEP_BACKDROPS = {
   levelupDone: "imperial-city"
 };
 
+/** Start downloading every step's backdrop so step changes cross-fade without waiting on the network. */
+export function preloadStepBackdrops() {
+  if ( !setting("stepBackdrops") ) return;
+  for ( const name of new Set(Object.values(STEP_BACKDROPS)) ) {
+    const img = new Image();
+    img.decoding = "async";
+    img.src = `${MODULE_PATH}/assets/backdrops/${name}.jpg`;
+  }
+}
+
 /** Bundled backdrop for a step, or null when the step has none or the setting is off. */
 export function stepBackdrop(stepId) {
   if ( !setting("stepBackdrops") ) return null;

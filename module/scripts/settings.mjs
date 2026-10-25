@@ -73,9 +73,10 @@ export function registerSettings() {
       2024: "GENESIS.Settings.contentRules.Modern",
       2014: "GENESIS.Settings.contentRules.Legacy",
       all: "GENESIS.Settings.contentRules.All"
-    }
+    },
+    onChange: () => clearCompendiumCache()
   });
-  world("hideSrdDuplicates", { type: Boolean, default: true });
+  world("hideSrdDuplicates", { type: Boolean, default: true, onChange: () => clearCompendiumCache() });
   world("startingLevel", { type: Number, default: 1, range: { min: 1, max: 20, step: 1 } });
   world("allowLevelChoice", { type: Boolean, default: false });
   world("maxStartingLevel", { type: Number, default: 20, range: { min: 1, max: 20, step: 1 } });

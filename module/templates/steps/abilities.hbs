@@ -47,7 +47,7 @@
 
   <div class="genesis-ability-grid">
     {{#each cards}}
-    <article class="genesis-ability">
+    <article class="genesis-ability {{#if bumped}}bumped{{/if}}">
       <i class="{{icon}} genesis-ability-icon" aria-hidden="true"></i>
       <h3>{{label}}</h3>
       <span class="genesis-abbr">{{abbr}}</span>

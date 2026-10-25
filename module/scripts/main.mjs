@@ -25,7 +25,6 @@ const api = {
   /** Open the character creator. */
   create() {
     if ( !ensureReady() ) return null;
-    clearCompendiumCache();
     return GenesisWizard.open({ mode: "create" });
   },
 
@@ -36,7 +35,6 @@ const api = {
     if ( !actor.isOwner ) return ui.notifications.warn(t("LevelUp.NotOwner"));
     if ( (actor.system.details.level ?? 0) >= 20 ) return ui.notifications.info(t("LevelUp.Max"));
     if ( !actor.system.details.level ) return api.create();
-    clearCompendiumCache();
     return GenesisWizard.open({ mode: "levelup", actor });
   },
 
@@ -74,6 +72,14 @@ Hooks.once("ready", async () => {
   registerSocket();
   promptNewPlayer();
 });
+
+// Indexes stay cached between openings; drop them only when compendium content actually changes.
+for ( const hook of ["createItem", "updateItem", "deleteItem"] ) {
+  Hooks.on(hook, item => {
+    if ( item.pack ) clearCompendiumCache();
+  });
+}
+Hooks.on("updateCompendium", () => clearCompendiumCache());
 
 /** Offer the wizard to players who log in without a character. */
 async function promptNewPlayer() {

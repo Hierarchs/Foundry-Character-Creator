@@ -45,7 +45,7 @@
     </div>
   </aside>
 
-  <section class="genesis-hero">
+  <section class="genesis-hero" {{#if motion}}data-motion="{{motion}}"{{/if}}>
     {{#if focus.figure}}<img class="genesis-figure" src="{{focus.figure}}" alt="">{{/if}}
     <div class="genesis-hero-text">
     <p class="genesis-eyebrow">{{heading}}</p>

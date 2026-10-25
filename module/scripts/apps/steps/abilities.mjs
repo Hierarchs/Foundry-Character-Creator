@@ -95,9 +95,14 @@ export default class AbilitiesStep extends Step {
     return true;
   }
 
+  /** The ability changed last, so its card can play a short "pop" once. */
+  bumped = null;
+
   async prepare() {
     const result = this.evaluate();
     const method = this.method;
+    const bumped = this.bumped;
+    this.bumped = null;
     const bgAbilities = new Set(backgroundAbilities(this.app.docs.background));
     const fixed = fixedBonuses(this.app.docs.species);
     const values = method === "standardArray" ? result.assign.values
@@ -114,6 +119,7 @@ export default class AbilitiesStep extends Step {
       if ( bgAbilities.size && (bgAbilities.size < 6) && bgAbilities.has(key) ) hints.push({ text: t("Abilities.BackgroundHint"), kind: "background" });
       return {
         key,
+        bumped: key === bumped,
         label: loc(config.label ?? key),
         abbr: loc(config.abbreviation ?? key).toUpperCase(),
         icon: ABILITY_ICONS[key],
@@ -183,6 +189,7 @@ export default class AbilitiesStep extends Step {
         const info = result.pointBuy?.abilities?.[key];
         if ( !info || ((delta > 0) && !info.canIncrease) || ((delta < 0) && !info.canDecrease) ) return;
         this.data.pointBuy[key] = info.score + delta;
+        this.bumped = key;
         return this.#changed();
       }
       case "rollAbilities":
@@ -230,6 +237,7 @@ export default class AbilitiesStep extends Step {
       const holder = Object.keys(assignment).find(k => (k !== key) && (value !== null) && (assignment[k] === value));
       if ( holder ) assignment[holder] = assignment[key];
       assignment[key] = value;
+      this.bumped = key;
       return this.#changed();
     }
     if ( el.dataset.manual && (event.type === "change") ) {

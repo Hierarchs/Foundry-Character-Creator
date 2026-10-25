@@ -6,12 +6,12 @@
  * cross-fade without restarting every time the stage re-renders.
  */
 import { TEMPLATES } from "../constants.mjs";
-import { getDocument, getSubclasses, subclassLevel } from "../data/compendium.mjs";
+import { getDocument, getSubclasses, subclassLevel, warmCompendiumCache } from "../data/compendium.mjs";
 import { advancementInProgress, cancelActiveAdvancement } from "../engine/advancement.mjs";
 import { clearDraft, defaultState, hasProgress, loadDraft, saveDraft } from "./state.mjs";
 import { createSteps } from "./steps/index.mjs";
 import { resolveLevelupTarget } from "./steps/levelup.mjs";
-import { stepBackdrop } from "../data/backdrops.mjs";
+import { preloadStepBackdrops, stepBackdrop } from "../data/backdrops.mjs";
 import { applyTheme, centerInScroller, debounce, isVideo, setting, t } from "../utils.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
@@ -100,7 +100,13 @@ export default class GenesisWizard extends HandlebarsApplicationMixin(Applicatio
     const app = new this({ mode, actor, state, id });
     if ( mode === "levelup" ) await app.syncLevelup();
     else await app.syncDocs();
-    return app.render({ force: true });
+    const rendered = await app.render({ force: true });
+    // Fill caches in the background so later steps open without waiting.
+    setTimeout(() => {
+      preloadStepBackdrops();
+      warmCompendiumCache();
+    }, 50);
+    return rendered;
   }
 
   /* -------------------------------------------- */
@@ -128,8 +134,10 @@ export default class GenesisWizard extends HandlebarsApplicationMixin(Applicatio
   }
 
   async goTo(id) {
-    const target = this.visibleSteps.find(s => s.id === id);
+    const visible = this.visibleSteps;
+    const target = visible.find(s => s.id === id);
     if ( !target || !this.canReach(target) ) return;
+    this.#direction = visible.indexOf(target) >= visible.indexOf(this.currentStep) ? "forward" : "back";
     this.draft.step = id;
     if ( !this.draft.visited.includes(id) ) this.draft.visited.push(id);
     await target.onEnter?.();
@@ -305,7 +313,10 @@ export default class GenesisWizard extends HandlebarsApplicationMixin(Applicatio
     const step = this.currentStep;
     this.element.dataset.step = step.id;
     const stage = this.element.querySelector('[data-application-part="stage"]');
-    if ( stage && (this.#renderedStep !== step.id) ) stage.classList.add("is-entering");
+    // Slide the new step in from the side the player is travelling towards.
+    if ( stage && (this.#renderedStep !== step.id) ) {
+      stage.classList.add("is-entering", this.#direction === "back" ? "from-left" : "from-right");
+    }
     this.#renderedStep = step.id;
     if ( stage ) step.activate?.(stage);
     centerInScroller(this.element.querySelector(".genesis-trail"), this.element.querySelector(".genesis-trail li.current"));
@@ -324,6 +335,7 @@ export default class GenesisWizard extends HandlebarsApplicationMixin(Applicatio
 
   #backdropSrc;
   #renderedStep = null;
+  #direction = "forward";
 
   async #syncBackdrop(step) {
     let art = null;

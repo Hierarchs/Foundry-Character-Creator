@@ -7,6 +7,7 @@
  * dnd5e's CompendiumBrowser, so its "Compendium Browser Sources" configuration applies.
  */
 import { MODULE_ID } from "../constants.mjs";
+import { clearDescribeCache } from "./describe.mjs";
 import { contentRules, setting, worldRules } from "../utils.mjs";
 
 /** Extra index fields per dnd5e item type. */
@@ -35,6 +36,14 @@ const docCache = new Map();
 export function clearCompendiumCache() {
   indexCache.clear();
   docCache.clear();
+  clearDescribeCache();
+}
+
+/** Load the indexes the first screens need, so later steps open instantly. */
+export function warmCompendiumCache() {
+  return Promise.allSettled([
+    getEntries("class"), getEntries("subclass"), getEntries("background"), getEntries("race"), getBirthsigns()
+  ]);
 }
 
 /** The edition filter in effect: "2024", "2014", or "all". */
@@ -59,17 +68,25 @@ export function selectedPacks() {
   return (setting("packs") ?? []).map(id => game.packs.get(id)).filter(p => p && (p.metadata.type === "Item"));
 }
 
+/** A pack can hold `type` unless its dnd5e metadata says otherwise. */
+function packHolds(pack, type) {
+  const types = pack.metadata.flags?.dnd5e?.types;
+  return !types?.length || types.includes(type);
+}
+
 async function fetchFromPacks(packs, type, fields) {
-  const results = [];
-  for ( const pack of packs ) {
+  // Index every pack at once rather than one after another.
+  const indexes = await Promise.all(packs.filter(p => packHolds(p, type)).map(async pack => {
     const index = await pack.getIndex({ fields: Array.from(fields) });
+    const entries = [];
     for ( const entry of index ) {
       if ( entry.type !== type ) continue;
       entry.uuid ??= `Compendium.${pack.collection}.Item.${entry._id}`;
-      results.push(entry);
+      entries.push(entry);
     }
-  }
-  return results.sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang));
+    return entries;
+  }));
+  return indexes.flat().sort((a, b) => a.name.localeCompare(b.name, game.i18n.lang));
 }
 
 /** @returns {Promise<{ list: object[], explicit: boolean }>} */
@@ -160,7 +177,7 @@ export async function getEntries(type) {
  */
 export async function getBirthsigns() {
   if ( !indexCache.has("birthsign") ) {
-    const fields = new Set(["system.type.value", "system.identifier", "system.source", "system.description.value", `flags.${MODULE_ID}`]);
+    const fields = new Set(["system.type.value", "system.identifier", "system.source", `flags.${MODULE_ID}`]);
     const packs = game.packs.filter(p => (p.metadata.type === "Item") && p.visible);
     const promise = fetchFromPacks(packs, "feat", fields).then(list => ({
       entries: list.filter(e => e.system?.type?.value === "birthsign").map(normalize),

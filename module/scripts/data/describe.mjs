@@ -157,12 +157,37 @@ function backgroundFacts(doc) {
   return facts;
 }
 
+/** Described documents by UUID: enriching long book descriptions is the slowest part of a gallery render. */
+const cache = new Map();
+
+export function clearDescribeCache() {
+  cache.clear();
+}
+
 /**
  * @param {Item} doc
  * @returns {Promise<{ tagline: string, description: string, facts: object[], timeline: object[], equipment: string }>}
  */
-export async function describe(doc) {
-  if ( !doc ) return { tagline: "", description: "", facts: [], timeline: [], equipment: "" };
+export function describe(doc) {
+  if ( !doc ) return Promise.resolve({ tagline: "", description: "", facts: [], timeline: [], equipment: "" });
+  const key = doc.uuid ?? doc.id;
+  if ( !key ) return build(doc);
+  if ( !cache.has(key) ) {
+    const promise = build(doc);
+    promise.catch(() => cache.delete(key));
+    cache.set(key, promise);
+  }
+  return cache.get(key);
+}
+
+/** Cached rich-text enrichment for other screens (e.g. the spell inspector). */
+export function enrichCached(key, html, doc) {
+  const cacheKey = `enrich:${key}`;
+  if ( !cache.has(cacheKey) ) cache.set(cacheKey, enrich(html, doc));
+  return cache.get(cacheKey);
+}
+
+async function build(doc) {
   const raw = doc.system?.description?.value ?? "";
   let facts = [];
   let rows = [];

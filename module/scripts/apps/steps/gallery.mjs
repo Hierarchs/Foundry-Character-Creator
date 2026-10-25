@@ -103,6 +103,7 @@ export class GalleryStep extends Step {
       })),
       search: this.search,
       expanded: this.expanded,
+      motion: this.#takeMotion(),
       focus: entry ? {
         uuid: entry.uuid,
         name: entry.name,
@@ -119,12 +120,21 @@ export class GalleryStep extends Step {
     };
   }
 
+  /** Direction of the last browse ("next"/"prev"), used once so unrelated re-renders don't replay it. */
+  motion = null;
+
+  #takeMotion() {
+    const motion = this.motion;
+    this.motion = null;
+    return motion;
+  }
+
   /** Warm the cache for neighbours so arrowing through the gallery feels instant. */
   #prefetch(entries, entry) {
     const i = entries.indexOf(entry);
     for ( const offset of [-1, 1] ) {
       const neighbour = entries[(i + offset + entries.length) % entries.length];
-      if ( neighbour ) getDocument(neighbour.uuid).catch(() => {});
+      if ( neighbour ) getDocument(neighbour.uuid).then(doc => describe(doc)).catch(() => {});
     }
   }
 
@@ -160,6 +170,10 @@ export class GalleryStep extends Step {
 
   async setFocus(uuid) {
     if ( !uuid || (uuid === this.focus) ) return;
+    const entries = await this.entries();
+    const from = entries.findIndex(e => e.uuid === this.focus);
+    const to = entries.findIndex(e => e.uuid === uuid);
+    this.motion = (from < 0) ? null : (to > from ? "next" : "prev");
     this.focus = uuid;
     await this.app.refresh();
   }

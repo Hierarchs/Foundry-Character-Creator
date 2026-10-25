@@ -5,7 +5,7 @@
 import Step from "./base.mjs";
 import { TEMPLATES } from "../../constants.mjs";
 import { getDocument } from "../../data/compendium.mjs";
-import { enrich } from "../../data/describe.mjs";
+import { enrichCached } from "../../data/describe.mjs";
 import { candidateSpells, castingClasses, existingSpells, spellSubtitle, spellTags } from "../../engine/spells.mjs";
 import { escapeHTML, loc, t } from "../../utils.mjs";
 
@@ -18,11 +18,16 @@ export default class SpellsStep extends Step {
   #candidates = new Map();
   #limits = null;
   #stage = null;
+  /** Step visibility is checked on every render, so remember which built actor was a caster. */
+  #casting = { actor: null, value: false };
 
   get available() {
     if ( this.app.mode === "levelup" ) return !!this.app.levelup?.casting && this.state.levelup.applied;
     const actor = this.app.workingActor;
-    if ( actor ) return castingClasses(actor).length > 0;
+    if ( actor ) {
+      if ( this.#casting.actor !== actor ) this.#casting = { actor, value: castingClasses(actor).length > 0 };
+      return this.#casting.value;
+    }
     return this.app.meta.isCaster;
   }
 
@@ -273,7 +278,7 @@ export default class SpellsStep extends Step {
       [t("Spells.Inspector.Duration"), labels.duration],
       [t("Spells.Inspector.Components"), labels.components?.vsm ?? labels.components?.all?.map?.(c => c.abbr).join(", ")]
     ].filter(([, v]) => v);
-    const description = await enrich(doc.system.description?.value ?? "", doc);
+    const description = await enrichCached(uuid, doc.system.description?.value ?? "", doc);
     if ( panel.dataset.uuid !== uuid ) return;
     panel.innerHTML = `
       <header>
@@ -346,7 +351,14 @@ export default class SpellsStep extends Step {
     for ( const c of counters ) {
       const el = stage.querySelector(`[data-counter="${c.key}"]`);
       if ( !el ) continue;
-      el.querySelector(".used").textContent = c.used;
+      const used = el.querySelector(".used");
+      if ( used.textContent !== String(c.used) ) {
+        used.textContent = c.used;
+        // Restart the tick animation on each change.
+        el.classList.remove("tick");
+        void el.offsetWidth;
+        el.classList.add("tick");
+      }
       el.classList.toggle("full", c.full);
     }
   }
