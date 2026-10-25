@@ -2,7 +2,7 @@
   "id": "character-genesis",
   "title": "Character Genesis",
   "description": "A cinematic, full-screen character creator and level-up wizard for dnd5e. Reads classes, species, backgrounds, spells, and equipment straight from your compendiums (including premium books) and applies them with the system's own Advancement engine. Rules math runs in a Rust/WebAssembly engine.",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "authors": [
     {
       "name": "Hierarchs",

@@ -263,6 +263,31 @@ body.genesis-theme-oblivion.genesis-open .application.dialog {
   border-color: var(--o-ink);
 }
 
+/* dnd5e's cards, lists and native dropdowns: parchment and bronze instead of its dark navy/maroon. */
+body.genesis-theme-oblivion .application.genesis-advancement.dnd5e2 {
+  color-scheme: light;
+  --dnd5e-background-card: rgba(255, 250, 232, 0.55);
+  --dnd5e-background-5: rgba(110, 74, 34, 0.08);
+  --dnd5e-card-header-1: var(--o-bronze);
+  --dnd5e-card-header-2: #6e5732;
+  --dnd5e-border-gold: 1px solid var(--o-bronze);
+  --dnd5e-shadow-45: rgba(60, 40, 15, 0.25);
+  --separated-list-item-background-color: rgba(110, 74, 34, 0.06);
+  --separated-list-item-border-color: rgba(110, 74, 34, 0.35);
+  --item-control-color: var(--o-ink-soft);
+  --item-control-interactive-color: var(--o-ink);
+  --item-control-active-color: var(--o-highlight);
+  --dropdown-background: var(--o-parch-light);
+}
+body.genesis-theme-oblivion .application.genesis-advancement .items-section .item-name { --icon-fill: var(--o-bronze); }
+body.genesis-theme-oblivion .application.genesis-advancement .card .header :is(h3, h4) { color: var(--o-parch-light); text-shadow: none; }
+body.genesis-theme-oblivion :is(.application.genesis-advancement, .application.dialog) :is(option, optgroup) {
+  background: var(--o-parch-light);
+  color: var(--o-ink);
+}
+body.genesis-theme-oblivion :is(.application.genesis-advancement, .application.dialog) optgroup { color: var(--o-highlight); }
+body.genesis-theme-oblivion.genesis-open .application.dialog { color-scheme: light; }
+
 /* Notifications inside the wizard */
 .genesis-theme-oblivion #notifications .notification {
   background: var(--o-parchment) !important;

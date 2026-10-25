@@ -559,11 +559,19 @@ class MockAdvancementManager {
   async render() {
     await this.#apply();
     const el = this.element = document.createElement("div");
-    el.className = "application genesis-advancement harness-manager";
+    el.className = "application dnd5e2 advancement manager themed theme-dark genesis-advancement harness-manager";
+    MockAdvancementManager.injectSystemStyles();
     el.innerHTML = `<header class="window-header"><h1 class="window-title">Advancement</h1><span class="window-subtitle">${this.item.name} • Step 1 of 2</span><button type="button" class="header-control" data-action="close">✕</button></header>
-      <section class="window-content"><p>(harness) dnd5e would ask for this item's choices here.</p>
-      <p>Granted: ${this.clone.items.filter(i => i.type === "feat").map(i => i.name).join(", ") || "—"}</p>
-      <fieldset><legend>Languages</legend><label>Choose any 2 languages</label><select><option>Select 2 more Languages</option></select></fieldset><footer><button type="button" data-x="cancel" data-action="previous">Previous</button> <button type="button" data-x="complete" data-action="next">Next</button></footer></section>`;
+      <section class="window-content"><div class="flexcol" data-application-part="manager">
+        <div class="step"><form class="trait-flow"><h3>Choose Languages</h3>
+          <p>Your character knows at least three languages: Common plus two languages you roll or choose. Granted: ${this.clone.items.filter(i => i.type === "feat").map(i => i.name).join(", ") || "—"}</p>
+          <div class="standard-form"><fieldset><legend>Select Trait</legend><select name="added"><option>Select 2 more Languages</option>
+            <optgroup label="Standard Languages"><option>Dwarvish</option><option>Elvish</option></optgroup></select></fieldset>
+          <div class="items-section card"><div class="items-header header"><h4 class="item-name">Traits</h4></div>
+            <ul class="item-list unlist"><li class="item flexrow"><div class="item-name flexrow"><i class="fa-solid fa-language gold-icon"></i><div class="name-stacked"><div class="title">Common</div></div></div></li></ul></div>
+          </div></form></div>
+        <nav class="flexrow"><button type="button" data-x="cancel" data-action="previous">Previous</button> <button type="button" data-x="complete" data-action="next">Next</button></nav>
+      </div></section>`;
     el.addEventListener("click", e => {
       const x = e.target.closest("[data-x]")?.dataset.x;
       if ( x === "complete" ) this.#complete();
@@ -592,6 +600,18 @@ class MockAdvancementManager {
     return this;
   }
 }
+/** A few of dnd5e's dark-theme rules, so the harness shows the colours the real manager brings. */
+MockAdvancementManager.injectSystemStyles = function() {
+  if ( document.getElementById("harness-dnd5e") ) return;
+  const style = Object.assign(document.createElement("style"), { id: "harness-dnd5e" });
+  style.textContent = `.dnd5e2.theme-dark { color-scheme: dark; --color-text-primary: #c9c7b8; --dnd5e-background-card: #1f2430; --dnd5e-card-header-1: #491d25; --dnd5e-card-header-2: #311b1f; --dnd5e-border-gold: 1px solid #9f9275; --dnd5e-shadow-45: rgb(0 0 0 / 45%); }
+    .dnd5e2 .card { border-radius: 4px; background: var(--dnd5e-background-card); box-shadow: 0 0 6px var(--dnd5e-shadow-45); border: var(--dnd5e-border-gold); }
+    .dnd5e2 .card .header { background: linear-gradient(to right, var(--dnd5e-card-header-1), var(--dnd5e-card-header-2)); color: white; border-bottom: var(--dnd5e-border-gold); }
+    .dnd5e2 .card .header h4 { color: inherit; margin: 0; padding: .5rem; }
+    .dnd5e2.advancement.manager.application [data-application-part="manager"] > .step h3 { color: var(--color-text-primary); font-family: sans-serif; font-size: 20px; text-align: left; }
+    .dnd5e2 .window-content { padding: 8px; }`;
+  document.head.append(style);
+};
 MockAdvancementManager.autoComplete = !new URLSearchParams(location.search).has("manual");
 
 const skillLabels = { acr: "Acrobatics", ani: "Animal Handling", arc: "Arcana", ath: "Athletics", dec: "Deception", his: "History", ins: "Insight", itm: "Intimidation", inv: "Investigation", med: "Medicine", nat: "Nature", prc: "Perception", prf: "Performance", per: "Persuasion", rel: "Religion", slt: "Sleight of Hand", ste: "Stealth", sur: "Survival" };
