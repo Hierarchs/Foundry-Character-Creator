@@ -8,6 +8,7 @@
   </header>
 
   <nav class="source-actions">
+    <button type="button" data-action="selectOfficial"><i class="fa-solid fa-dragon"></i> {{localize "GENESIS.Sources.SelectOfficial"}}</button>
     <button type="button" data-action="autoDetect"><i class="fa-solid fa-wand-magic-sparkles"></i> {{localize "GENESIS.Sources.AutoDetect"}}</button>
     <button type="button" data-action="selectAll"><i class="fa-solid fa-check-double"></i> {{localize "GENESIS.Sources.SelectAll"}}</button>
     <button type="button" data-action="clearAll"><i class="fa-solid fa-xmark"></i> {{localize "GENESIS.Sources.Clear"}}</button>
@@ -16,10 +17,10 @@
   <div class="source-list">
     {{#each groups}}
     <section class="source-group">
-      <h3>{{title}}</h3>
+      <h3>{{title}}{{#if official}} <span class="source-official">{{localize "GENESIS.Sources.Official"}}</span>{{/if}}</h3>
       {{#each packs}}
       <label class="source-pack {{#if character}}character{{/if}}">
-        <input type="checkbox" name="pack" value="{{id}}" data-character="{{character}}" {{#if checked}}checked{{/if}}>
+        <input type="checkbox" name="pack" value="{{id}}" data-character="{{character}}" data-official="{{official}}" {{#if checked}}checked{{/if}}>
         <span class="source-label">{{label}}</span>
         <span class="source-chips">
           {{#each chips}}<span class="source-chip {{key}}">{{label}} <strong>{{count}}</strong></span>{{/each}}

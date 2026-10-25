@@ -10,6 +10,10 @@ A cinematic, full-screen character creator and level-up wizard for **Foundry VTT
   *Auto-detect*) and the wizard handles the rest. Book modules, D&D Beyond imports, homebrew, and the
   SRD all work, and nothing is hard-coded. Any category your packs don't cover (e.g. weapons for
   equipment picks) falls back to all packs, and premium copies win over SRD reprints.
+- **Official content only** (on by default). Offers only the dnd5e SRD and official D&D books
+  (Player's Handbook, Tasha's, Eberron, Arcana Unleashed, …), matched by module title; other modules'
+  classes and options are left out, and an option printed in both editions shows once, in the world's
+  edition. *Content Sources* tags the official books and has an *Official books* button.
 - **Class art.** 21 transparent character figures ship with the module and stand in front of the scene
   on the class screen. Matching identifiers (bard, monk, rogue, spellsword, nightblade…) are picked up
   automatically, and core classes use aliases (wizard → mage, fighter → warrior, cleric → healer,

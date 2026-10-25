@@ -1697,6 +1697,7 @@ body .application.genesis-advancement .dnd5e2 {
 .source-chips { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
 .source-chip { padding: 0 7px; border-radius: 999px; background: rgba(255, 255, 255, 0.07); font-size: 11px; color: var(--g-muted); }
 .source-chip strong { color: var(--g-ink); }
+.source-official { margin-left: 8px; padding: 1px 7px; border: 1px solid var(--g-gold-deep); border-radius: var(--g-radius); font-family: var(--g-font-ui); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--g-gold); vertical-align: middle; }
 .source-chip:is(.class, .subclass, .race, .background) { background: rgb(201 164 92 / 0.16); color: var(--g-gold-bright); }
 .source-footer { display: flex; justify-content: flex-end; padding: 10px 22px 14px; border-top: 1px solid var(--g-line); }
 

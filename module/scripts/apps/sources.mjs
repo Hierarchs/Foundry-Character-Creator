@@ -4,6 +4,7 @@
  * don't cover (e.g. weapons for "any martial weapon" picks) falls back to all sources automatically.
  */
 import { MODULE_ID, TEMPLATES } from "../constants.mjs";
+import { isOfficialPack } from "../data/official.mjs";
 import { t } from "../utils.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -28,6 +29,7 @@ export default class SourcesConfig extends HandlebarsApplicationMixin(Applicatio
     position: { width: 760, height: 720 },
     actions: {
       autoDetect: SourcesConfig.#onAutoDetect,
+      selectOfficial: SourcesConfig.#onSelectOfficial,
       selectAll: SourcesConfig.#onSelectAll,
       clearAll: SourcesConfig.#onClearAll,
       saveSources: SourcesConfig.#onSave
@@ -54,6 +56,7 @@ export default class SourcesConfig extends HandlebarsApplicationMixin(Applicatio
         packageTitle: packageTitle(pack),
         packageType: pack.metadata.packageType,
         checked: selected.has(pack.collection),
+        official: isOfficialPack(pack),
         character: CHARACTER_TYPES.some(k => counts[k]),
         chips: CHIPS.filter(k => counts[k]).map(k => ({ key: k, label: t(`Sources.Types.${k}`), count: counts[k] }))
       };
@@ -64,7 +67,7 @@ export default class SourcesConfig extends HandlebarsApplicationMixin(Applicatio
     const groups = new Map();
     for ( const row of rows.sort((a, b) => (order[a.packageType] ?? 3) - (order[b.packageType] ?? 3)
       || a.packageTitle.localeCompare(b.packageTitle) || a.label.localeCompare(b.label)) ) {
-      if ( !groups.has(row.packageTitle) ) groups.set(row.packageTitle, { title: row.packageTitle, packs: [] });
+      if ( !groups.has(row.packageTitle) ) groups.set(row.packageTitle, { title: row.packageTitle, official: row.official, packs: [] });
       groups.get(row.packageTitle).packs.push(row);
     }
     return Object.assign(context, {
@@ -79,6 +82,11 @@ export default class SourcesConfig extends HandlebarsApplicationMixin(Applicatio
 
   static #onAutoDetect() {
     for ( const box of this.#checkboxes() ) box.checked = box.dataset.character === "true";
+  }
+
+  /** Tick the official books' packs that hold character options, and nothing else. */
+  static #onSelectOfficial() {
+    for ( const box of this.#checkboxes() ) box.checked = (box.dataset.official === "true") && (box.dataset.character === "true");
   }
 
   static #onSelectAll() {

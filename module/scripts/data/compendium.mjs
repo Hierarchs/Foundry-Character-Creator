@@ -8,6 +8,7 @@
  */
 import { MODULE_ID } from "../constants.mjs";
 import { clearDescribeCache } from "./describe.mjs";
+import { isOfficialPack } from "./official.mjs";
 import { contentRules, setting, worldRules } from "../utils.mjs";
 
 /** Extra index fields per dnd5e item type. */
@@ -140,10 +141,33 @@ function normalize(entry) {
   };
 }
 
+/**
+ * "Official content only": drop other modules' content. The world's own compendiums (homebrew, D&D Beyond
+ * imports) stay only when the GM picked them in Content Sources. If nothing official is left, keep everything
+ * rather than show an empty step.
+ */
+function officialOnly(entries, explicit) {
+  if ( !setting("officialOnly") ) return entries;
+  const kept = entries.filter(e => {
+    const pack = game.packs.get(e.packId);
+    return isOfficialPack(pack) || (explicit && (pack?.metadata.packageType === "world"));
+  });
+  return kept.length ? kept : entries;
+}
+
 function filterEntries({ entries, explicit }) {
   // Packs the GM picked by hand are shown whole; the edition filter only trims the fallback sources.
   const rules = explicit ? "all" : activeRules();
-  let list = entries.filter(e => (rules === "all") || !e.rules || (e.rules === rules));
+  let list = officialOnly(entries, explicit).filter(e => (rules === "all") || !e.rules || (e.rules === rules));
+
+  // The same option from both editions (Tasha's Artificer beside Forge of the Artificer's 2024 one): keep the
+  // copy for the edition in use, hand-picked packs included, so a book picked for its subclasses doesn't double a class.
+  const edition = activeRules();
+  if ( edition !== "all" ) {
+    const optionOf = e => `${e.type}:${e.identifier}:${e.index.system?.classIdentifier ?? ""}`;
+    const current = new Set(list.filter(e => e.rules === edition).map(optionOf));
+    list = list.filter(e => (e.rules === edition) || !current.has(optionOf(e)));
+  }
 
   // Premium books usually reprint the SRD; prefer the richer copy when both are present.
   if ( setting("hideSrdDuplicates") ) {

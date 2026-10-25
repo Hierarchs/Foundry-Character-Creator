@@ -77,6 +77,7 @@ export function registerSettings() {
     onChange: () => clearCompendiumCache()
   });
   world("hideSrdDuplicates", { type: Boolean, default: true, onChange: () => clearCompendiumCache() });
+  world("officialOnly", { type: Boolean, default: true, onChange: () => clearCompendiumCache() });
   world("startingLevel", { type: Number, default: 1, range: { min: 1, max: 20, step: 1 } });
   world("allowLevelChoice", { type: Boolean, default: false });
   world("maxStartingLevel", { type: Number, default: 20, range: { min: 1, max: 20, step: 1 } });

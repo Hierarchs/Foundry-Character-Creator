@@ -19,6 +19,7 @@
         "Auto": "Follow system setting", "Modern": "2024 only", "Legacy": "2014 only", "All": "Both editions"
       },
       "hideSrdDuplicates": { "Name": "Prefer Premium Content", "Hint": "Hide the system's SRD copy of an option when a book module or import provides the same one." },
+      "officialOnly": { "Name": "Official D&D Content Only", "Hint": "Offer only the dnd5e system's SRD and official D&D books (Player's Handbook, Tasha's, Eberron, Arcana Unleashed, …). Other modules' classes, species, backgrounds and items are left out. Your world's own compendiums (homebrew, D&D Beyond imports) are used only if you tick them in Content Sources." },
       "startingLevel": { "Name": "Starting Level", "Hint": "Level new characters start at." },
       "allowLevelChoice": { "Name": "Players Choose Starting Level", "Hint": "Show a level picker on the class screen." },
       "maxStartingLevel": { "Name": "Highest Selectable Starting Level", "Hint": "Upper limit for the level picker." },
@@ -204,7 +205,7 @@
       "Hint": "Check the compendium packs the wizard should use. Checked packs are the only source for every category they contain; categories they don't contain (for example weapons for equipment picks) fall back to all packs. Checked packs are shown regardless of the Rules Edition setting.",
       "StatusNone": "No packs selected: using every pack enabled in the dnd5e Compendium Browser sources.",
       "StatusSome": "Using {count} selected pack(s).",
-      "AutoDetect": "Auto-detect", "SelectAll": "Select all", "Clear": "Clear", "Save": "Save",
+      "SelectOfficial": "Official books", "Official": "Official", "AutoDetect": "Auto-detect", "SelectAll": "Select all", "Clear": "Clear", "Save": "Save",
       "Types": { "class": "Classes", "subclass": "Subclasses", "race": "Species", "background": "Backgrounds", "spell": "Spells", "feat": "Feats", "gear": "Equipment" }
     },
 
