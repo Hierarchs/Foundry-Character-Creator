@@ -24,8 +24,8 @@ const INDEX_FIELDS = {
     "system.range", "system.duration", "system.source"
   ],
   weapon: ["system.identifier", "system.type", "system.rarity", "system.price", "system.properties", "system.source"],
-  equipment: ["system.identifier", "system.type", "system.rarity", "system.price", "system.source"],
-  tool: ["system.identifier", "system.type", "system.rarity", "system.price", "system.source"]
+  equipment: ["system.identifier", "system.type", "system.rarity", "system.price", "system.properties", "system.source"],
+  tool: ["system.identifier", "system.type", "system.rarity", "system.price", "system.properties", "system.source"]
 };
 
 /** @type {Map<string, Promise<object[]>>} */
@@ -74,6 +74,10 @@ function packHolds(pack, type) {
   return !types?.length || types.includes(type);
 }
 
+function indexFields(type) {
+  return new Set(INDEX_FIELDS[type] ?? ["system.identifier", "system.source"]);
+}
+
 async function fetchFromPacks(packs, type, fields) {
   // Index every pack at once rather than one after another.
   const indexes = await Promise.all(packs.filter(p => packHolds(p, type)).map(async pack => {
@@ -91,7 +95,7 @@ async function fetchFromPacks(packs, type, fields) {
 
 /** @returns {Promise<{ list: object[], explicit: boolean }>} */
 async function fetchIndex(type) {
-  const fields = new Set(INDEX_FIELDS[type] ?? ["system.identifier", "system.source"]);
+  const fields = indexFields(type);
   // Use the GM's chosen packs; any category they don't cover falls back to every source.
   const chosen = selectedPacks();
   if ( chosen.length ) {
@@ -190,6 +194,21 @@ export async function getBirthsigns() {
   return filterEntries(await indexCache.get("birthsign")).sort((a, b) => (order(a) - order(b)) || a.name.localeCompare(b.name));
 }
 
+/**
+ * Entries of one type from every visible Item pack, ignoring the Content Sources selection and the
+ * Compendium Browser's source settings. A last resort for "any musical instrument" style choices.
+ */
+async function getEntriesEverywhere(type) {
+  const key = `everywhere:${type}`;
+  if ( !indexCache.has(key) ) {
+    const packs = game.packs.filter(p => (p.metadata.type === "Item") && p.visible);
+    const promise = fetchFromPacks(packs, type, indexFields(type)).then(list => ({ entries: list.map(normalize), explicit: true }));
+    promise.catch(() => indexCache.delete(key));
+    indexCache.set(key, promise);
+  }
+  return filterEntries(await indexCache.get(key));
+}
+
 export async function getSubclasses(classIdentifier) {
   return (await getEntries("subclass")).filter(e => e.index.system?.classIdentifier === classIdentifier);
 }
@@ -255,6 +274,13 @@ export async function getSpellsForList(identifier, type="class") {
 const CATEGORY_TYPES = { weapon: "weapon", armor: "equipment", tool: "tool" };
 const ARMOR_TYPES = ["light", "medium", "heavy", "shield"];
 
+/** Plain gear for "any X" picks: magic items (Instrument of the Bards, +1 weapons) are left out. */
+function isMundane(entry) {
+  const { rarity, properties } = entry.index.system ?? {};
+  const props = properties instanceof Set ? properties : new Set(properties ?? []);
+  return !props.has("mgc") && (!rarity || (rarity === "common"));
+}
+
 function matchesCategory(category, key, entry) {
   const type = entry.index.system?.type?.value ?? "";
   switch ( category ) {
@@ -287,7 +313,18 @@ export async function getCategoryOptions(category, key) {
   }
   const itemType = CATEGORY_TYPES[category];
   if ( !itemType ) return [];
-  return (await getEntries(itemType))
-    .filter(e => !e.index.system?.rarity && matchesCategory(category, key, e))
+  const pick = entries => entries
+    .filter(e => isMundane(e) && matchesCategory(category, key, e))
     .map(e => ({ uuid: e.uuid, name: e.name, img: e.img }));
+  let options = pick(await getEntries(itemType));
+  if ( !options.length ) {
+    // The chosen packs can hold some items of this type but none of this kind (a book with a few
+    // tools and no instruments), so look in every pack, preferring the world's edition.
+    const everywhere = await getEntriesEverywhere(itemType);
+    const rules = activeRules();
+    options = pick(everywhere.filter(e => (rules === "all") || !e.rules || (e.rules === rules)));
+    if ( !options.length ) options = pick(everywhere);
+  }
+  if ( !options.length ) console.warn(`${MODULE_ID} | No compendium items for starting-equipment choice "${category}:${key ?? "any"}".`);
+  return options;
 }

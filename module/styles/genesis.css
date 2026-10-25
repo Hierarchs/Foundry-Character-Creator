@@ -408,8 +408,8 @@ body.genesis-open .application.dialog {
 }
 .genesis-tabs button:hover { color: var(--g-ink); }
 .genesis-tabs button.active { background: var(--g-gold); color: #1a140d; font-weight: 600; }
-.genesis-tabs.compact { margin: 0 0 0 auto; }
-.genesis-tabs.compact button { padding: 4px 12px; text-transform: none; letter-spacing: 0.02em; }
+.genesis-tabs.compact { flex-wrap: nowrap; margin: 0 0 0 auto; }
+.genesis-tabs.compact button { padding: 4px 12px; white-space: nowrap; text-transform: none; letter-spacing: 0.02em; }
 
 /* --------------------------------------------------------------------------
    Gallery (class, subclass, background, species)
@@ -417,10 +417,13 @@ body.genesis-open .application.dialog {
 
 .genesis-gallery { position: absolute; inset: 0; --genesis-drawer: min(420px, 88vw); }
 
+/* Anchored at both ends so a tall figure shrinks instead of rising behind the quote on short screens. */
 .genesis-hero {
   position: absolute;
   left: 50%;
+  top: 8px;
   bottom: 128px;
+  justify-content: flex-end;
   width: min(960px, 92%);
   transform: translateX(-50%);
   display: flex;
@@ -428,6 +431,7 @@ body.genesis-open .application.dialog {
   align-items: center;
   gap: 10px;
   text-align: center;
+  pointer-events: none;
   transition: transform 0.5s var(--g-ease);
 }
 /* With the Details drawer open, centre the preview and carousel in the space beside it. */
@@ -435,8 +439,11 @@ body.genesis-open .application.dialog {
 .drawer-open .genesis-carousel { transform: translateX(calc(-50% + var(--genesis-drawer) / 2)); max-width: calc(94vw - var(--genesis-drawer)); }
 
 .genesis-figure {
+  flex: 0 1 auto;
+  min-height: 0;
   height: clamp(200px, 44vh, 470px);
   width: auto;
+  max-width: 100%;
   margin-bottom: -6px;
   object-fit: contain;
   filter: drop-shadow(0 0 28px rgb(201 164 92 / 0.28)) drop-shadow(0 18px 30px rgba(0, 0, 0, 0.85));
@@ -447,8 +454,8 @@ body.genesis-open .application.dialog {
 .genesis-title {
   font-family: var(--g-font-display);
   font-weight: 900;
-  font-size: clamp(46px, 6.2vw, 92px);
-  line-height: 1;
+  font-size: clamp(40px, min(6.2vw, 10vh), 92px);
+  line-height: 1.1;
   letter-spacing: 0.03em;
   font-variant: small-caps;
   background: linear-gradient(180deg, #efe3c8 0%, #c9a45c 50%, #8f7442 100%);
@@ -622,7 +629,10 @@ body.genesis-open .application.dialog {
 
 /* Expanded: every option in a scrollable grid, hero hidden until one is picked. */
 .genesis-hero { transition: transform 0.5s var(--g-ease), opacity 0.25s; }
-.genesis-gallery.expanded .genesis-hero { opacity: 0; pointer-events: none; }
+/* The hero spans the gallery's height; only its text block takes clicks. */
+.genesis-hero-text { pointer-events: auto; }
+.genesis-gallery.expanded .genesis-hero { opacity: 0; }
+.genesis-gallery.expanded :is(.genesis-hero, .genesis-hero-text) { pointer-events: none; }
 .genesis-gallery.expanded .genesis-carousel {
   flex-wrap: wrap;
   justify-content: center;
@@ -1179,7 +1189,7 @@ body.genesis-open .application.dialog {
 .equip-panel.complete { border-color: var(--g-line); }
 .equip-panel-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 14px; }
 .equip-panel-head img { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; }
-.equip-panel-head div { display: flex; flex-direction: column; }
+.equip-panel-title { display: flex; flex-direction: column; min-width: 0; }
 .equip-panel-head strong { font-family: var(--g-font-display); font-size: 18px; }
 
 .equip-tree { display: grid; gap: 8px; }
@@ -1219,6 +1229,10 @@ body.genesis-open .application.dialog {
 .equip-item img { width: 26px; height: 26px; border-radius: 5px; object-fit: cover; }
 .equip-item > i { width: 26px; text-align: center; color: var(--g-gold); }
 .equip-label a.content-link { background: none; border: none; color: var(--g-gold-bright); padding: 0; }
+/* The item image already sits beside the name, so the content link's own icon is noise. */
+.equip-label a.content-link > i { display: none; }
+.equip-missing { margin: 0; font-size: 12.5px; font-style: italic; color: var(--g-muted); }
+.equip-missing i { color: var(--g-gold); font-style: normal; }
 .equip-pick { display: grid; gap: 6px; font-size: 13px; }
 .character-genesis .equip-pick select {
   height: 32px;
@@ -1250,7 +1264,7 @@ body.genesis-open .application.dialog {
 .equip-preview ul { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .equip-preview li { display: grid; grid-template-columns: 26px 1fr auto; align-items: center; gap: 8px; font-size: 13px; }
 .equip-preview li img { width: 26px; height: 26px; border-radius: 5px; object-fit: cover; }
-.equip-preview em { font-style: normal; color: var(--g-gold); }
+.equip-preview em { font-style: normal; font-family: var(--g-font-display); font-size: 12px; font-weight: 700; color: var(--g-gold); }
 .equip-currency { display: flex; align-items: center; gap: 8px; margin: 12px 0 0; color: var(--g-gold-bright); font-weight: 600; }
 
 /* --------------------------------------------------------------------------
@@ -1312,6 +1326,8 @@ body.genesis-open .application.dialog {
   border: 2px solid var(--g-gold);
   box-shadow: 0 0 0 6px rgb(201 164 92 / 0.12), 0 18px 40px rgba(0, 0, 0, 0.6);
 }
+.review-hero > div { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.review-hero .genesis-title { line-height: 1.25; }
 .review-hero .genesis-tagline { font-size: 13px; text-align: left; }
 .review-columns { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 26px; width: min(1100px, 100%); }
 @media (max-width: 960px) { .review-columns { grid-template-columns: 1fr; } }

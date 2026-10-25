@@ -76,7 +76,8 @@
     await game.settings.set("character-genesis", "artwork", artwork);
     Hooks.callAll("renderActorDirectory", {}, document.getElementById("actors"));
 
-    window.harness = { fixtures };
+    const { audit } = await import("./layout-audit.mjs");
+    window.harness = { fixtures, audit };
     if ( !new URLSearchParams(location.search).has("closed") ) await CharacterGenesis.create();
   </script>
 </body>

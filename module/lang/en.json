@@ -160,7 +160,7 @@
       "Hint": "Take your class and background equipment packages, or their starting gold instead.",
       "Items": "Equipment", "Gold": "Gold ({formula})", "GoldPending": "Roll {formula} for your starting gold.",
       "RollGold": "Roll Gold", "Preview": "You'll Start With", "Nothing": "Nothing yet.", "Confirm": "Confirm Equipment",
-      "Choose": "— choose —", "NotProficient": "not proficient", "Incomplete": "Make every equipment choice (or take gold) first.",
+      "Choose": "— choose —", "MissingItem": "Missing item (its compendium isn't available)", "NoOptions": "None of your compendiums has one, so this is skipped. Add a pack that does under Content Sources to choose one.", "NotProficient": "not proficient", "Incomplete": "Make every equipment choice (or take gold) first.",
       "GoldFlavor": "Starting gold ({name})"
     },
 

@@ -20,6 +20,12 @@
   {{#each node.children}}{{> "modules/character-genesis/templates/steps/equipment-entry.hbs" node=this source=../source}}{{/each}}
 
   {{else if node.isPick}}
+  {{#if node.unavailable}}
+  <div class="equip-pick unavailable">
+    <span class="equip-label">{{{node.label}}}</span>
+    <p class="equip-missing"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> {{localize "GENESIS.Equipment.NoOptions"}}</p>
+  </div>
+  {{else}}
   <label class="equip-pick">
     <span class="equip-label">{{{node.label}}}</span>
     <select data-pick="{{node.id}}" data-source="{{source}}">
@@ -27,6 +33,7 @@
       {{#each node.options}}<option value="{{uuid}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}
     </select>
   </label>
+  {{/if}}
 
   {{else if node.isItem}}
   <div class="equip-item"><img src="{{node.img}}" alt=""><span class="equip-label">{{{node.label}}}</span></div>

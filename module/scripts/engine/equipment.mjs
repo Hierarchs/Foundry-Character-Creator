@@ -4,6 +4,7 @@
  */
 import { Rules } from "../rules.mjs";
 import { getCategoryOptions } from "../data/compendium.mjs";
+import { t } from "../utils.mjs";
 
 const CATEGORY_TYPES = new Set(["weapon", "armor", "tool", "focus"]);
 
@@ -17,7 +18,8 @@ export async function itemInfo(uuid) {
   try {
     info = fromUuidSync(uuid) ?? await fromUuid(uuid);
   } catch { /* Missing or inaccessible compendium. */ }
-  return { name: info?.name ?? uuid, img: info?.img ?? "icons/svg/item-bag.svg" };
+  if ( !info ) console.warn(`character-genesis | Starting equipment item not found: ${uuid}`);
+  return { name: info?.name ?? t("Equipment.MissingItem"), img: info?.img ?? "icons/svg/item-bag.svg" };
 }
 
 function hasTrait(trait, key) {
@@ -60,9 +62,15 @@ export function hasStartingEquipment(doc) {
   return plainEntries(doc).length > 0;
 }
 
-/** Resolve a selection without building a view (used for validation and final assembly). */
+/**
+ * Resolve a selection without building a view (used for validation and final assembly).
+ * Picks listed in `selection.unavailable` (no item of that kind in any pack) resolve to nothing, so they
+ * don't block the step.
+ */
 export function resolveSelection(doc, selection={}) {
-  return Rules.resolveEquipment(plainEntries(doc), {
+  const skip = new Set(selection.unavailable ?? []);
+  const entries = plainEntries(doc).map(e => (skip.has(e._id) ? { ...e, type: "AND", key: null } : e));
+  return Rules.resolveEquipment(entries, {
     choices: selection.choices ?? {},
     picks: selection.picks ?? {}
   });
@@ -87,8 +95,9 @@ function label(entry, depth) {
  */
 export async function equipmentView(doc, selection={}) {
   const entries = Array.from(doc?.system?.startingEquipment ?? []);
-  const resolved = resolveSelection(doc, selection);
+  let resolved = resolveSelection(doc, selection);
   const active = new Set(resolved.active);
+  const unavailable = new Set();
 
   const build = async (entry, depth) => {
     const node = {
@@ -116,6 +125,10 @@ export async function equipmentView(doc, selection={}) {
       node.picked = selection.picks?.[entry._id] ?? "";
       node.options = (await getCategoryOptions(entry.type, entry.key))
         .map(o => ({ ...o, selected: o.uuid === node.picked }));
+      if ( !node.options.length ) {
+        node.unavailable = true;
+        unavailable.add(entry._id);
+      }
     } else if ( entry.type === "linked" ) {
       node.isItem = true;
       Object.assign(node, await itemInfo(entry.key));
@@ -128,7 +141,13 @@ export async function equipmentView(doc, selection={}) {
   };
 
   const roots = entries.filter(e => !e.group).sort((a, b) => a.sort - b.sort);
-  return { nodes: await Promise.all(roots.map(r => build(r, 1))), resolved };
+  const nodes = await Promise.all(roots.map(r => build(r, 1)));
+  const known = selection.unavailable ?? [];
+  if ( (unavailable.size !== known.length) || known.some(id => !unavailable.has(id)) ) {
+    selection.unavailable = Array.from(unavailable);
+    resolved = resolveSelection(doc, selection);
+  }
+  return { nodes, resolved };
 }
 
 /** Evaluate a wealth formula ("55", "5d4 * 10") to a number of coins. */

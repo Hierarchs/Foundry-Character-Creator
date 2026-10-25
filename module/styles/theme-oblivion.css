@@ -81,7 +81,7 @@ body.genesis-theme-oblivion.genesis-open .application.dialog {
   letter-spacing: 0.02em;
   text-shadow: 0 1px 0 rgba(255, 248, 225, 0.6);
 }
-.genesis-theme-oblivion .genesis-title { font-size: clamp(44px, 5.4vw, 78px); }
+.genesis-theme-oblivion .genesis-title { font-size: clamp(38px, min(5.4vw, 9vh), 78px); }
 .genesis-theme-oblivion :is(.genesis-tagline, .genesis-sub) {
   color: var(--o-ink-soft);
   text-shadow: none;
