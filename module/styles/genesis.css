@@ -1724,10 +1724,15 @@ body .application.genesis-advancement .dnd5e2 {
 .art-inputs select { width: 110px; }
 .art-inputs button { width: 32px; flex: none; }
 
-/* The wizard covers the tabletop; hide the interface regions underneath so nothing pokes through
-   regardless of the core UI's stacking order. Windows (dialogs, advancement steps) live outside these. */
-body.genesis-open :is(#ui-left, #ui-right, #ui-bottom, #hotbar, #players, #sidebar, #navigation, #controls) {
-  visibility: hidden;
+/* The wizard covers the tabletop; hide the interface regions underneath (and Witchwind's tracker and
+   quest banners) so nothing pokes through regardless of stacking order. Windows (dialogs, advancement steps)
+   live outside these. Descendants are hidden with !important too: a child that sets its own visibility
+   (the scene controls' tool palettes can) beats an inherited "hidden" and would show over the wizard. */
+body.genesis-open :is(#ui-left, #ui-right, #ui-bottom, #hotbar, #players, #sidebar, #navigation, #controls,
+  #scene-controls, #scene-navigation, #camera-views, #witchwind-tracker, .wws-banner),
+body.genesis-open :is(#ui-left, #ui-right, #ui-bottom, #hotbar, #players, #sidebar, #navigation, #controls,
+  #scene-controls, #scene-navigation, #camera-views, #witchwind-tracker, .wws-banner) * {
+  visibility: hidden !important;
 }
 
 /* Notifications are moved into the wizard while it is open so they stay visible. */
