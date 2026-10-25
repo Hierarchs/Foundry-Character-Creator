@@ -6,6 +6,7 @@
  * to everything when the picked packs have none of that type). Otherwise indexes are fetched through
  * dnd5e's CompendiumBrowser, so its "Compendium Browser Sources" configuration applies.
  */
+import { MODULE_ID } from "../constants.mjs";
 import { contentRules, setting, worldRules } from "../utils.mjs";
 
 /** Extra index fields per dnd5e item type. */
@@ -151,6 +152,25 @@ export async function getEntries(type) {
     indexCache.set(type, promise);
   }
   return filterEntries(await indexCache.get(type));
+}
+
+/**
+ * Birthsigns: feats of type "birthsign" from every visible Item pack (they're rare and self-identifying,
+ * so the Content Sources selection doesn't hide the module's own pack). Sorted by calendar month.
+ */
+export async function getBirthsigns() {
+  if ( !indexCache.has("birthsign") ) {
+    const fields = new Set(["system.type.value", "system.identifier", "system.source", "system.description.value", `flags.${MODULE_ID}`]);
+    const packs = game.packs.filter(p => (p.metadata.type === "Item") && p.visible);
+    const promise = fetchFromPacks(packs, "feat", fields).then(list => ({
+      entries: list.filter(e => e.system?.type?.value === "birthsign").map(normalize),
+      explicit: true
+    }));
+    promise.catch(() => indexCache.delete("birthsign"));
+    indexCache.set("birthsign", promise);
+  }
+  const order = e => e.index.flags?.[MODULE_ID]?.order ?? 99;
+  return filterEntries(await indexCache.get("birthsign")).sort((a, b) => (order(a) - order(b)) || a.name.localeCompare(b.name));
 }
 
 export async function getSubclasses(classIdentifier) {

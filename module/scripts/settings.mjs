@@ -54,6 +54,16 @@ export function registerSettings() {
     onChange: () => applyTheme()
   });
   world("stepBackdrops", { type: Boolean, default: true });
+  world("birthsignStep", {
+    type: String,
+    default: "optional",
+    choices: {
+      off: "GENESIS.Settings.birthsignStep.Off",
+      optional: "GENESIS.Settings.birthsignStep.Optional",
+      required: "GENESIS.Settings.birthsignStep.Required"
+    }
+  });
+  world("birthsignDrawbacks", { type: Boolean, default: false });
 
   world("contentRules", {
     type: String,

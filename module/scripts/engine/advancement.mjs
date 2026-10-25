@@ -138,6 +138,15 @@ export function advancementInProgress() {
   return !!active;
 }
 
+/** Turn a birthsign's optional drawback effects on or off to match the GM setting. */
+function withDrawbacks(data) {
+  const enabled = setting("birthsignDrawbacks");
+  for ( const effect of data.effects ?? [] ) {
+    if ( effect.flags?.["character-genesis"]?.drawback ) effect.disabled = !enabled;
+  }
+  return data;
+}
+
 /** Plain item data from a compendium document, ready to embed. */
 export function itemDataFrom(doc) {
   if ( game.items?.fromCompendium ) return game.items.fromCompendium(doc, { keepId: false });
@@ -159,11 +168,12 @@ export function itemDataFrom(doc) {
  * @param {Function} [onStep]      Called with "background" | "species" | "class" before each run.
  * @returns {Promise<object|null>} Final actor data, or null if the player cancelled.
  */
-export async function buildCharacter(base, { background, species, cls, level, subclassUuid }, onStep) {
+export async function buildCharacter(base, { background, species, birthsign, cls, level, subclassUuid }, onStep) {
   const answers = makeAnswers({ subclassUuid });
   const sequence = [
     background && ["background", itemDataFrom(background)],
     species && ["species", itemDataFrom(species)],
+    birthsign && ["birthsign", withDrawbacks(itemDataFrom(birthsign))],
     cls && ["class", foundry.utils.mergeObject(itemDataFrom(cls), { "system.levels": level }, { inplace: false })]
   ].filter(Boolean);
 

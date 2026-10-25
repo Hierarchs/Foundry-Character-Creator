@@ -2,7 +2,7 @@
   "id": "character-genesis",
   "title": "Character Genesis",
   "description": "A cinematic, full-screen character creator and level-up wizard for dnd5e. Reads classes, species, backgrounds, spells, and equipment straight from your compendiums (including premium books) and applies them with the system's own Advancement engine. Rules math runs in a Rust/WebAssembly engine.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "authors": [
     {
       "name": "Hierarchs",
@@ -43,5 +43,25 @@
     }
   ],
   "socket": true,
-  "license": "MIT"
+  "license": "MIT",
+  "packs": [
+    {
+      "name": "birthsigns",
+      "label": "Birthsigns of Tamriel",
+      "path": "packs/birthsigns",
+      "type": "Item",
+      "system": "dnd5e",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {
+        "dnd5e": {
+          "types": [
+            "feat"
+          ]
+        }
+      }
+    }
+  ]
 }

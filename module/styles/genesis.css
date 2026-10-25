@@ -116,6 +116,29 @@
 
 .genesis-hero-text { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 
+/* Birthsign screen */
+.genesis-quote {
+  position: absolute;
+  top: 26px;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  width: min(900px, 90%);
+  margin: 0 auto;
+  padding: 0;
+  border: none;
+  text-align: center;
+  font-family: var(--g-font-serif);
+  font-style: italic;
+  font-size: clamp(18px, 1.7vw, 26px);
+  line-height: 1.4;
+  color: #f4ecff;
+  text-shadow: 0 0 18px rgba(150, 120, 255, 0.55), 0 2px 8px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  animation: genesis-rise 0.8s var(--g-ease);
+}
+.genesis-birthday { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
+
 /* Chrome ------------------------------------------------------------------ */
 
 .genesis-chrome {

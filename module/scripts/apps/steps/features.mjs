@@ -29,7 +29,7 @@ export default class FeaturesStep extends Step {
 
   async prepare() {
     const { docs, draft: state } = this.app;
-    const order = ["background", "species", "class"];
+    const order = ["background", "species", ...(docs.birthsign ? ["birthsign"] : []), "class"];
     const doneUpTo = this.running ? order.indexOf(this.running) : -1;
     const built = this.app.buildCurrent;
     const sources = order.map((kind, i) => {
@@ -87,6 +87,7 @@ export default class FeaturesStep extends Step {
       data = await buildCharacter(baseData, {
         background: docs.background,
         species: docs.species,
+        birthsign: docs.birthsign,
         cls: docs.class,
         level: state.level,
         subclassUuid: state.subclass

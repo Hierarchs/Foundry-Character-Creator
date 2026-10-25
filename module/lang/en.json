@@ -8,6 +8,11 @@
         "Name": "Theme", "Hint": "Look of the wizard. Oblivion uses parchment pages, inked text, and bronze frames inspired by The Elder Scrolls IV: Oblivion's menus.",
         "Cinematic": "Cinematic (dark & gold)", "Oblivion": "Oblivion (parchment)"
       },
+      "birthsignStep": {
+        "Name": "Birthsign Step", "Hint": "Show the Birthsign screen (after Species). Signs come from any compendium feat of type Birthsign, including the bundled Birthsigns of Tamriel.",
+        "Off": "Off", "Optional": "Optional", "Required": "Required"
+      },
+      "birthsignDrawbacks": { "Name": "Birthsign Drawbacks", "Hint": "Apply the optional Oblivion-style drawbacks of signs like the Lord and the Apprentice." },
       "stepBackdrops": { "Name": "Scene Backdrops", "Hint": "Show a bundled landscape behind each step (class, species, abilities, ...). Art you assign to a specific option still takes priority." },
       "contentRules": {
         "Name": "Rules Edition", "Hint": "Which edition's content to offer. \"Follow system\" uses the dnd5e Rules Version setting.",
@@ -42,7 +47,7 @@
     },
 
     "Steps": {
-      "class": "Class", "subclass": "Subclass", "background": "Background", "species": "Species", "race": "Race",
+      "class": "Class", "subclass": "Subclass", "background": "Background", "species": "Species", "race": "Race", "birthsign": "Birthsign",
       "abilities": "Abilities", "features": "Features", "spells": "Spells", "equipment": "Equipment",
       "details": "Details", "review": "Review", "levelupClass": "Class", "levelupApply": "Advance", "levelupDone": "Finish"
     },
@@ -65,7 +70,15 @@
       "class": { "Heading": "Choose Your Class", "Empty": "No classes were found in your compendiums. Check the dnd5e Compendium Browser sources and the Rules Edition setting.", "Incomplete": "Choose a class to continue." },
       "subclass": { "Heading": "Choose Your Subclass", "Empty": "No subclasses were found for this class.", "Incomplete": "Choose a subclass to continue." },
       "background": { "Heading": "Choose Your Background", "Empty": "No backgrounds were found in your compendiums.", "Incomplete": "Choose a background to continue." },
+      "birthsign": { "Heading": "Choose Your Birthsign", "Empty": "No birthsigns were found. Make sure the Birthsigns of Tamriel compendium is enabled, or create feats of type Birthsign.", "Incomplete": "Choose a birthsign to continue." },
       "species": { "Heading": "Choose Your Species", "Empty": "No species were found in your compendiums.", "Incomplete": "Choose a species to continue." }
+    },
+
+    "Birthsign": {
+      "Quote": "The skies are marked with numberless sparks, each a fire, and every one a sign.",
+      "BornIn": "Born in", "Roll": "Roll a birthday", "None": "No birthsign",
+      "BornOn": "the {day} of {month}", "Wandering": "under the wandering Serpent",
+      "Rolled": "Born {when}: {sign}.", "RollFlavor": "Birthday (1d13 sign, 1d30 day)"
     },
 
     "Facts": {

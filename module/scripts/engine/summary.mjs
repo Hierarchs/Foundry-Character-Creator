@@ -64,6 +64,7 @@ export function summarize(actor) {
     classLine: classes.map(c => `${c.name} ${c.level}${c.subclass ? ` (${c.subclass})` : ""}`).join(" / "),
     race: sys.details?.race?.name ?? actor.items.find(i => i.type === "race")?.name ?? "",
     background: sys.details?.background?.name ?? actor.items.find(i => i.type === "background")?.name ?? "",
+    birthsign: actor.items.find(i => (i.type === "feat") && (i.system.type?.value === "birthsign"))?.name ?? "",
     abilities: ABILITY_KEYS.map(k => ({
       key: k,
       abbr: loc(CONFIG.DND5E.abilities?.[k]?.abbreviation ?? k).toUpperCase(),

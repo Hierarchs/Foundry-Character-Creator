@@ -11,6 +11,7 @@ const STEP_BACKDROPS = {
   subclass: "ayleid-ruins",
   background: "lake-ruins",
   species: "shivering-isles",
+  birthsign: "planetarium",
   abilities: "cloud-ruler",
   features: "imperial-palace",
   spells: "oblivion-gate",

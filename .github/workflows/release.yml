@@ -28,6 +28,15 @@ jobs:
           jq --arg v "$VERSION" '.version = $v' module/module.json > module/module.json.tmp
           mv module/module.json.tmp module/module.json
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build compendium packs
+        run: |
+          npm install --no-save --no-audit --no-fund @foundryvtt/foundryvtt-cli
+          node tools/build-packs.mjs
+
       - name: Package module
         run: cargo xtask package
 

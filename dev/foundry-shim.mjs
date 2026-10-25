@@ -245,6 +245,11 @@ class FilePicker {
 /* -------------------------------------------- */
 
 const fixtures = await (await fetch("/dev/fixtures/srd.json")).json();
+// The module's own Birthsigns of Tamriel pack, straight from its source data.
+const { birthsignItems } = await import("/tools/birthsigns.mjs");
+for ( const item of birthsignItems() ) {
+  fixtures.items.push({ ...item, uuid: `Compendium.character-genesis.birthsigns.Item.${item._id}`, pack: "character-genesis.birthsigns" });
+}
 const palette = ["#7a4b2a", "#2d5c7a", "#5c2d7a", "#2d7a4f", "#7a2d39", "#6b6b2d", "#2d6b6b", "#4f3d7a"];
 function placeholderIcon(name) {
   let h = 0;
@@ -288,7 +293,7 @@ class Item {
     Object.assign(this, deepClone(data));
     this.parent = parent;
     this.system ??= {};
-    this.img = data.img && !data.img.startsWith("data:") ? placeholderIcon(data.name) : data.img;
+    this.img = data.img && !/^(data:|modules\/)/.test(data.img) ? placeholderIcon(data.name) : data.img;
     this.prepare();
   }
   get id() { return this._id; }
@@ -598,7 +603,7 @@ globalThis.dnd5e = {
     CompendiumBrowser: {
       async fetch(_cls, { types=new Set() }={}) {
         return fixtures.items.filter(i => !types.size || types.has(i.type))
-          .map(i => ({ uuid: i.uuid, name: i.name, img: placeholderIcon(i.name), type: i.type, system: deepClone(i.system) }))
+          .map(i => ({ uuid: i.uuid, name: i.name, img: i.img?.startsWith("modules/") ? i.img : placeholderIcon(i.name), type: i.type, system: deepClone(i.system), flags: deepClone(i.flags ?? {}) }))
           .sort((a, b) => a.name.localeCompare(b.name));
       }
     }
@@ -669,9 +674,9 @@ globalThis.game = {
     visible: true,
     async getIndex() {
       return fixtures.items.filter(i => i.pack === id)
-        .map(i => ({ _id: i._id, uuid: i.uuid, name: i.name, type: i.type, img: placeholderIcon(i.name), system: deepClone(i.system) }));
+        .map(i => ({ _id: i._id, uuid: i.uuid, name: i.name, type: i.type, img: i.img?.startsWith("modules/") ? i.img : placeholderIcon(i.name), system: deepClone(i.system), flags: deepClone(i.flags ?? {}) }));
     },
-    metadata: { id, label: `SRD 5.2 ${id.split(".")[1].replace("24", "")}`, packageName: "dnd5e", packageType: "system", type: "Item" }
+    metadata: id.startsWith("character-genesis") ? { id, label: "Birthsigns of Tamriel", packageName: "character-genesis", packageType: "module", type: "Item" } : { id, label: `SRD 5.2 ${id.split(".")[1].replace("24", "")}`, packageName: "dnd5e", packageType: "system", type: "Item" }
   }])),
   folders: [],
   actors: new Collection(),

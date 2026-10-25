@@ -1,4 +1,4 @@
-import { BackgroundStep, ClassStep, SpeciesStep, SubclassStep } from "./gallery.mjs";
+import { BackgroundStep, BirthsignStep, ClassStep, SpeciesStep, SubclassStep } from "./gallery.mjs";
 import AbilitiesStep from "./abilities.mjs";
 import FeaturesStep from "./features.mjs";
 import SpellsStep from "./spells.mjs";
@@ -14,7 +14,7 @@ import { LevelUpApplyStep, LevelUpClassStep, LevelUpDoneStep } from "./levelup.m
 export function createSteps(app) {
   const order = app.mode === "levelup"
     ? [LevelUpClassStep, SubclassStep, LevelUpApplyStep, SpellsStep, LevelUpDoneStep]
-    : [ClassStep, SubclassStep, BackgroundStep, SpeciesStep, AbilitiesStep, FeaturesStep, SpellsStep,
+    : [ClassStep, SubclassStep, BackgroundStep, SpeciesStep, BirthsignStep, AbilitiesStep, FeaturesStep, SpellsStep,
       EquipmentStep, DetailsStep, ReviewStep];
   return order.map(StepClass => new StepClass(app));
 }

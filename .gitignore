@@ -1,2 +1,5 @@
 /target
 /dist
+/build
+/module/packs
+node_modules/

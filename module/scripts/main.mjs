@@ -47,6 +47,10 @@ const api = {
 
 Hooks.once("init", () => {
   registerSettings();
+  // A feat type for birthsigns, so they show up as such on character sheets and in item filters.
+  if ( CONFIG.DND5E?.featureTypes && !CONFIG.DND5E.featureTypes.birthsign ) {
+    CONFIG.DND5E.featureTypes.birthsign = { label: "Birthsign" };
+  }
   const loadTemplates = foundry.applications?.handlebars?.loadTemplates ?? globalThis.loadTemplates;
   loadTemplates(Object.values(TEMPLATES));
   game.modules.get(MODULE_ID).api = api;

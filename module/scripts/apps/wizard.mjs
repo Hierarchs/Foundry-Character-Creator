@@ -170,8 +170,10 @@ export default class GenesisWizard extends HandlebarsApplicationMixin(Applicatio
     if ( this.mode === "levelup" ) return this.syncLevelup();
     const s = this.draft;
     const load = uuid => (uuid ? getDocument(uuid).catch(() => null) : Promise.resolve(null));
-    const [cls, subclass, background, species] = await Promise.all([s.class, s.subclass, s.background, s.species].map(load));
-    this.docs = { class: cls, subclass, background, species };
+    const [cls, subclass, background, species, birthsign] = await Promise.all(
+      [s.class, s.subclass, s.background, s.species, s.birthsign].map(load)
+    );
+    this.docs = { class: cls, subclass, background, species, birthsign };
 
     this.meta.subclassLevel = subclassLevel(cls);
     this.meta.subclassCount = cls ? (await getSubclasses(cls.identifier ?? cls.system.identifier)).length : 0;
@@ -202,7 +204,7 @@ export default class GenesisWizard extends HandlebarsApplicationMixin(Applicatio
 
   buildKey() {
     const s = this.draft;
-    return JSON.stringify([s.class, s.subclass, s.background, s.species, s.level, this.baseScores()]);
+    return JSON.stringify([s.class, s.subclass, s.background, s.species, s.birthsign ?? null, s.level, this.baseScores()]);
   }
 
   get buildCurrent() {

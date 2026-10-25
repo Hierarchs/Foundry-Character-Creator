@@ -20,6 +20,14 @@ A cinematic, full-screen character creator and level-up wizard for **Foundry VTT
 - **Scene backdrops.** Each step has its own landscape (sewers → Ayleid ruins → Shivering Isles →
   Cloud Ruler → Kvatch → the Imperial City for the review). Art assigned to a specific option still
   wins. Reassign scenes in `module/scripts/data/backdrops.mjs`, or turn off *Scene Backdrops*.
+- **Birthsigns.** An optional step after Species: the 13 signs of Tamriel, shown over a
+  planetarium under the line *"The skies are marked with numberless sparks, each a fire, and every one
+  a sign."* Pick a sign, choose a birth month (the sign follows from it), or roll a birthday (1 in 13
+  is the wandering Serpent). They ship as real dnd5e feats in the **Birthsigns of Tamriel** compendium,
+  with Advancements, once-per-long-rest powers, and effects, so you can edit them or add your own
+  (any feat of type *Birthsign* appears). Settings: *Birthsign Step* (off/optional/required) and
+  *Birthsign Drawbacks*. Sign data lives in `tools/birthsigns.mjs`, and the release workflow
+  compiles it with the Foundry CLI.
 - **Native Advancement.** Background, species, and class are applied by dnd5e's own
   `AdvancementManager`, so skills, languages, feats, fighting styles, and expertise work for any content
   that uses standard Advancements. The wizard pre-answers what it already knows (subclass, hit points),

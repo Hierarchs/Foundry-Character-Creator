@@ -29,6 +29,7 @@ export function defaultState(mode="create", actor=null) {
     subclass: null,
     background: null,
     species: null,
+    birthsign: null,
     abilities: {
       method: firstMethod(),
       confirmed: false,

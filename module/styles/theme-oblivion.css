@@ -89,6 +89,16 @@
   font-size: 16px;
 }
 .genesis-theme-oblivion .genesis-eyebrow { color: var(--o-highlight); letter-spacing: 0.22em; }
+.genesis-theme-oblivion .genesis-quote {
+  width: fit-content;
+  max-width: min(900px, 90%);
+  padding: 10px 28px;
+  background: var(--o-parchment);
+  border: 1px solid var(--o-bronze);
+  box-shadow: var(--o-frame);
+  color: var(--o-ink);
+  text-shadow: none;
+}
 .genesis-theme-oblivion .genesis-figure { filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.8)); }
 
 /* Top bar: a strip of parchment. */
