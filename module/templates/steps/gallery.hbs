@@ -45,8 +45,6 @@
     </div>
   </aside>
 
-  {{#if extras.quote}}<blockquote class="genesis-quote">{{extras.quote}}</blockquote>{{/if}}
-
   <section class="genesis-hero">
     {{#if focus.figure}}<img class="genesis-figure" src="{{focus.figure}}" alt="">{{/if}}
     <div class="genesis-hero-text">
@@ -64,19 +62,9 @@
     {{/if}}
 
     {{#if extras.birthsign}}
-    <div class="genesis-birthday">
-      <label class="genesis-level-picker">
-        <span>{{localize "GENESIS.Birthsign.BornIn"}}</span>
-        <select name="birthMonth">
-          <option value=""></option>
-          {{#each extras.months}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
-        </select>
-      </label>
-      <button type="button" class="genesis-secondary" data-action="rollBirthday"><i class="fa-solid fa-dice-d20"></i> {{localize "GENESIS.Birthsign.Roll"}}</button>
-      {{#if extras.optional}}
-      <button type="button" class="genesis-secondary" data-action="noBirthsign">{{localize "GENESIS.Birthsign.None"}}</button>
-      {{/if}}
-    </div>
+    {{#if extras.optional}}
+    <button type="button" class="genesis-secondary" data-action="noBirthsign">{{localize "GENESIS.Birthsign.None"}}</button>
+    {{/if}}
     {{/if}}
 
     <button type="button" class="genesis-cta" data-action="confirm">

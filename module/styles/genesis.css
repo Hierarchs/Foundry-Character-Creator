@@ -6,7 +6,8 @@
 
 .character-genesis,
 .genesis-config,
-.application.genesis-advancement {
+.application.genesis-advancement,
+body.genesis-open .application.dialog {
   --g-bg: #0b0a09;
   --g-ink: #ece5d6;
   --g-muted: #a39a89;
@@ -116,16 +117,15 @@
 
 .genesis-hero-text { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 
-/* Birthsign screen */
+/* Quote line at the top of every step */
 .genesis-quote {
-  position: absolute;
-  top: 26px;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  width: min(900px, 90%);
-  margin: 0 auto;
-  padding: 0;
+  flex: none;
+  position: relative;
+  z-index: 2;
+  width: fit-content;
+  max-width: min(960px, 90%);
+  margin: 16px auto 4px;
+  padding: 0 12px;
   border: none;
   text-align: center;
   font-family: var(--g-font-serif);
@@ -137,7 +137,6 @@
   pointer-events: none;
   animation: genesis-rise 0.8s var(--g-ease);
 }
-.genesis-birthday { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
 
 /* Chrome ------------------------------------------------------------------ */
 
@@ -217,7 +216,8 @@
 
 /* Stage ------------------------------------------------------------------- */
 
-.genesis-stage { position: relative; z-index: 1; min-height: 0; overflow: hidden; }
+.genesis-stage { position: relative; z-index: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+.genesis-stage-body { position: relative; flex: 1; min-height: 0; }
 .genesis-stage.is-entering > * { animation: genesis-rise 0.45s var(--g-ease); }
 
 .genesis-scroll {
@@ -394,7 +394,7 @@
    Gallery (class, subclass, background, species)
    -------------------------------------------------------------------------- */
 
-.genesis-gallery { position: absolute; inset: 0; }
+.genesis-gallery { position: absolute; inset: 0; --genesis-drawer: min(420px, 88vw); }
 
 .genesis-hero {
   position: absolute;
@@ -409,7 +409,9 @@
   text-align: center;
   transition: transform 0.5s var(--g-ease);
 }
-.drawer-open .genesis-hero { transform: translateX(calc(-50% + 190px)); }
+/* With the Details drawer open, centre the preview and carousel in the space beside it. */
+.drawer-open .genesis-hero { transform: translateX(calc(-50% + var(--genesis-drawer) / 2)); width: min(960px, calc(92% - var(--genesis-drawer))); }
+.drawer-open .genesis-carousel { transform: translateX(calc(-50% + var(--genesis-drawer) / 2)); max-width: calc(94vw - var(--genesis-drawer)); }
 
 .genesis-figure {
   height: clamp(200px, 44vh, 470px);
@@ -632,7 +634,7 @@
   bottom: 0;
   left: 0;
   z-index: 2;
-  width: 420px;
+  width: var(--genesis-drawer);
   max-width: 88vw;
   transform: translateX(-100%);
   transition: transform 0.5s var(--g-ease);
@@ -717,7 +719,7 @@
   margin: 14px 0 6px;
   font-size: 15px;
 }
-.genesis-rich { overflow-wrap: anywhere; }
+.genesis-rich { overflow-wrap: break-word; }
 .genesis-rich table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; font-size: 12px; margin: 8px 0; }
 .genesis-rich th, .genesis-rich td { border: 1px solid rgba(255, 255, 255, 0.08); padding: 4px 6px; }
 .genesis-rich a.content-link { background: rgba(212, 174, 95, 0.12); border-color: var(--g-line); color: var(--g-gold-bright); }
@@ -1354,17 +1356,129 @@
 .genesis-busy-inner span { font-family: var(--g-font-display); letter-spacing: 0.2em; text-transform: uppercase; color: var(--g-ink); }
 
 /* --------------------------------------------------------------------------
-   dnd5e advancement steps shown over the wizard
+   Foundry windows inside the wizard: dnd5e's advancement steps (embedded in
+   the Features panel) and confirmation dialogs, restyled to match the theme.
    -------------------------------------------------------------------------- */
 
-.application.genesis-advancement {
+:is(.application.genesis-advancement, body.genesis-open .application.dialog) {
+  --color-text-primary: var(--g-ink);
+  --color-text-secondary: var(--g-muted);
+  --color-text-subtle: var(--g-dim);
+  --color-text-emphatic: var(--g-gold-bright);
+  --color-border: var(--g-line);
+  --color-fieldset-border: var(--g-line);
+  --color-form-label: var(--g-muted);
+  --color-form-hint: var(--g-dim);
+  --input-background-color: var(--g-field);
+  --input-border-color: var(--g-line);
+  --input-text-color: var(--g-ink);
+  --button-background-color: transparent;
+  --button-border-color: var(--g-line-strong);
+  --button-text-color: var(--g-ink);
+  --button-hover-background-color: rgba(212, 174, 95, 0.15);
+  --button-hover-text-color: var(--g-gold-bright);
+  --background: var(--g-panel);
+  color: var(--g-ink);
+  font-family: var(--g-font-ui);
+  background: var(--g-panel);
   border: 1px solid var(--g-line-strong);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 24px 80px rgba(0, 0, 0, 0.85), 0 0 50px rgba(212, 174, 95, 0.18);
+  border-radius: var(--g-radius);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5), 0 24px 70px rgba(0, 0, 0, 0.8);
 }
-.application.genesis-advancement .window-header .window-title {
+:is(.application.genesis-advancement, body.genesis-open .application.dialog) :is(.window-header, .window-content) {
+  background: transparent;
+  color: var(--g-ink);
+  border-color: var(--g-line);
+}
+:is(.application.genesis-advancement, body.genesis-open .application.dialog) .window-header {
+  border-bottom: 1px solid var(--g-line);
+}
+:is(.application.genesis-advancement, body.genesis-open .application.dialog) :is(.window-title, h1, h2, h3, h4, legend) {
+  font-family: var(--g-font-display);
+  color: var(--g-gold-bright);
+  letter-spacing: 0.04em;
+  border-color: var(--g-line);
+}
+:is(.application.genesis-advancement, body.genesis-open .application.dialog) :is(label, .hint, .notes, p) { color: var(--g-ink); }
+:is(.application.genesis-advancement, body.genesis-open .application.dialog) :is(select, input:not([type=checkbox]):not([type=radio]), textarea, multi-select, .tags) {
+  background: var(--g-field);
+  color: var(--g-ink);
+  border: 1px solid var(--g-line);
+  border-radius: 4px;
+  font-family: var(--g-font-ui);
+}
+:is(.application.genesis-advancement, body.genesis-open .application.dialog) fieldset {
+  border: 1px solid var(--g-line);
+  border-radius: var(--g-radius);
+  background: transparent;
+}
+:is(.application.genesis-advancement, body.genesis-open .application.dialog) button {
+  background: transparent;
+  border: 1px solid var(--g-line-strong);
+  border-radius: 3px;
+  color: var(--g-ink);
   font-family: var(--g-font-display);
   letter-spacing: 0.06em;
+  box-shadow: none;
 }
+:is(.application.genesis-advancement, body.genesis-open .application.dialog) button:hover:not(:disabled) {
+  background: rgba(212, 174, 95, 0.15);
+  color: var(--g-gold-bright);
+  border-color: var(--g-gold);
+}
+:is(.application.genesis-advancement, body.genesis-open .application.dialog) :is(button[data-action=next], button[data-action=complete], button[data-action=yes], button[data-action=ok], button.default) {
+  background: linear-gradient(180deg, rgba(40, 31, 17, 0.92), rgba(14, 11, 7, 0.95));
+  color: var(--g-gold-bright);
+  border-color: var(--g-gold);
+}
+
+/* Embedded in the Features panel: no floating window chrome. */
+.genesis-advancement-slot { width: min(720px, 100%); margin-top: 16px; }
+.genesis-advancement-slot > .application.genesis-advancement {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  min-width: 0 !important;
+  z-index: auto !important;
+  transform: none !important;
+  margin: 0;
+  animation: genesis-rise 0.4s var(--g-ease);
+}
+.genesis-advancement-slot .window-header { cursor: default; justify-content: center; text-align: center; }
+.genesis-advancement-slot .window-header :is(.header-control, [data-action=close], [data-action=toggleControls], .window-icon) { display: none !important; }
+.genesis-advancement-slot .window-resize-handle { display: none; }
+
+/* Foundry notifications while the wizard is open (they're moved into it). */
+.character-genesis #notifications .notification {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 6px;
+  padding: 8px 24px;
+  border: 1px solid var(--g-line-strong);
+  border-radius: 3px;
+  background: linear-gradient(180deg, rgba(30, 24, 14, 0.95), rgba(12, 10, 7, 0.95));
+  color: var(--g-ink);
+  font-family: var(--g-font-display);
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  text-shadow: none;
+}
+.character-genesis #notifications .notification > i:first-child { display: none; }
+.character-genesis #notifications .notification :is(.close, [data-action=close], button) {
+  background: none;
+  border: none;
+  color: var(--g-dim);
+  font-size: 11px;
+}
+.character-genesis #notifications .notification.warning { border-color: #c9a227; }
+.character-genesis #notifications .notification.error { border-color: var(--g-danger); }
 
 /* --------------------------------------------------------------------------
    Sidebar button

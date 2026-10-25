@@ -20,6 +20,8 @@
     {{/each}}
   </ol>
 
+  {{#if running}}<div class="genesis-advancement-slot"></div>{{/if}}
+
   {{#if stale}}
   <p class="genesis-warning"><i class="fa-solid fa-triangle-exclamation"></i> {{localize "GENESIS.Features.Stale"}}</p>
   {{/if}}

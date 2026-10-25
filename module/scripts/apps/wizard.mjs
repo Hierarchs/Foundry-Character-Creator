@@ -269,6 +269,8 @@ export default class GenesisWizard extends HandlebarsApplicationMixin(Applicatio
       const step = this.currentStep;
       context.stepId = step.id;
       context.stepTemplate = step.template;
+      const quoteKey = `GENESIS.Quotes.${step.id}`;
+      context.quote = game.i18n.has(quoteKey) ? game.i18n.localize(quoteKey) : "";
       context.stepData = await step.prepare();
     }
     return context;

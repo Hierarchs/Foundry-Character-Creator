@@ -347,15 +347,9 @@ export class BackgroundStep extends GalleryStep {
   }
 }
 
-/** Months of the Tamrielic calendar; birthsign items carry their month in flags.character-genesis.month. */
-const MONTHS = ["Morning Star", "Sun's Dawn", "First Seed", "Rain's Hand", "Second Seed", "Midyear",
-  "Sun's Height", "Last Seed", "Hearthfire", "Frostfall", "Sun's Dusk", "Evening Star"];
-
 export class BirthsignStep extends GalleryStep {
   static id = "birthsign";
   static kind = "birthsign";
-
-  birthMonth = "";
 
   get available() {
     return (this.app.mode === "create") && (setting("birthsignStep") !== "off");
@@ -369,10 +363,6 @@ export class BirthsignStep extends GalleryStep {
     return getBirthsigns();
   }
 
-  monthOf(entry) {
-    return entry?.index?.flags?.[MODULE_ID]?.month ?? null;
-  }
-
   async prepare() {
     const context = await super.prepare();
     if ( context.focus ) {
@@ -383,17 +373,11 @@ export class BirthsignStep extends GalleryStep {
   }
 
   async extras() {
-    return {
-      quote: t("Birthsign.Quote"),
-      birthsign: true,
-      optional: setting("birthsignStep") === "optional",
-      months: MONTHS.map((name, i) => ({ value: String(i + 1), label: name, selected: this.birthMonth === String(i + 1) }))
-    };
+    return { birthsign: true, optional: setting("birthsignStep") === "optional" };
   }
 
   async onAction(action, event, target) {
     switch ( action ) {
-      case "rollBirthday": return this.rollBirthday();
       case "noBirthsign": {
         if ( this.selected ) this.app.invalidateBuild();
         this.selected = null;
@@ -402,38 +386,6 @@ export class BirthsignStep extends GalleryStep {
       }
       default: return super.onAction(action, event, target);
     }
-  }
-
-  async onInput(event) {
-    if ( event.target.name !== "birthMonth" ) return super.onInput(event);
-    this.birthMonth = event.target.value;
-    const entry = (await this.entries()).find(e => String(this.monthOf(e)) === this.birthMonth);
-    if ( entry ) await this.setFocus(entry.uuid);
-  }
-
-  /** Roll a birthday: 1d13 where 13 is the wandering Serpent, otherwise a month and a day. */
-  async rollBirthday() {
-    const entries = await this.entries();
-    const signRoll = await new Roll("1d13").evaluate();
-    const dayRoll = await new Roll("1d30").evaluate();
-    const month = signRoll.total <= 12 ? signRoll.total : null;
-    const entry = month ? entries.find(e => this.monthOf(e) === month)
-      : entries.find(e => this.monthOf(e) === null) ?? entries.find(e => e.identifier.includes("serpent"));
-    if ( !entry ) return;
-    this.birthMonth = month ? String(month) : "";
-    const day = dayRoll.total;
-    const suffix = ((day % 100) >= 11) && ((day % 100) <= 13) ? "th" : ({ 1: "st", 2: "nd", 3: "rd" }[day % 10] ?? "th");
-    const when = month ? t("Birthsign.BornOn", { day: `${day}${suffix}`, month: MONTHS[month - 1] }) : t("Birthsign.Wandering");
-    const message = t("Birthsign.Rolled", { when, sign: entry.name });
-    if ( setting("rollsToChat") ) {
-      await ChatMessage.implementation.create({
-        speaker: ChatMessage.implementation.getSpeaker({ user: game.user }),
-        flavor: t("Birthsign.RollFlavor"), content: `<p>${message}</p>`, rolls: [signRoll, dayRoll]
-      });
-    }
-    ui.notifications.info(message);
-    this.focus = null;
-    await this.setFocus(entry.uuid);
   }
 }
 

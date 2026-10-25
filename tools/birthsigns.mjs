@@ -214,11 +214,10 @@ export function birthsignItems() {
   return SIGNS.map((s, order) => {
     const _id = id("gbs", s.key);
     const img = `modules/${MODULE_ID}/assets/birthsigns/${s.key}.webp`;
-    const season = s.month ? `${MONTH_NAMES[s.month - 1]}` : "No fixed month: the Serpent wanders";
-    const charge = s.guardian ? ` · Charge of the ${s.guardian}` : "";
+    const charge = s.guardian ? `Charge of the ${s.guardian}` : "A wandering constellation";
     const description = [
       p(`<em>${s.lore}</em>`),
-      p(`<strong>Month:</strong> ${season}${charge}`),
+      p(`<strong>${charge}.</strong>`),
       p(`<strong>Benefit.</strong> ${s.benefit}`),
       s.drawback ? p(`<strong>Drawback (optional rule).</strong> ${s.drawback}`) : ""
     ].join("");

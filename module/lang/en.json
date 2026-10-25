@@ -74,11 +74,23 @@
       "species": { "Heading": "Choose Your Species", "Empty": "No species were found in your compendiums.", "Incomplete": "Choose a species to continue." }
     },
 
-    "Birthsign": {
-      "Quote": "The skies are marked with numberless sparks, each a fire, and every one a sign.",
-      "BornIn": "Born in", "Roll": "Roll a birthday", "None": "No birthsign",
-      "BornOn": "the {day} of {month}", "Wandering": "under the wandering Serpent",
-      "Rolled": "Born {when}: {sign}.", "RollFlavor": "Birthday (1d13 sign, 1d30 day)"
+    "Birthsign": { "None": "No birthsign" },
+
+    "Quotes": {
+      "class": "Steel, spell, or shadow: the road remembers how you choose to walk it.",
+      "subclass": "Every calling has a sharper edge for those who seek it.",
+      "background": "Before the road, there was a life. Remember who you were.",
+      "species": "From the marshes of Argonia to the peaks of Skyrim, every people carries its own fire.",
+      "birthsign": "The skies are marked with numberless sparks, each a fire, and every one a sign.",
+      "abilities": "What you are born with is only the measure of what you may become.",
+      "features": "Gifts of blood, of training, and of the stars, gathered into a single soul.",
+      "spells": "Magic flows through all things. The wise learn to shape it.",
+      "equipment": "No one walks out of the dark empty-handed.",
+      "details": "A name is the first thing the world learns of you. Choose it well.",
+      "review": "The gate stands open. Tamriel awaits.",
+      "levelupClass": "Rest, and reflect on all you have learned.",
+      "levelupApply": "Experience settles into skill.",
+      "levelupDone": "Stronger than you were at dawn."
     },
 
     "Facts": {

@@ -1,3 +1,6 @@
 <main class="genesis-stage" data-step="{{stepId}}">
-  {{> (lookup this "stepTemplate") stepData}}
+  {{#if quote}}<blockquote class="genesis-quote">{{quote}}</blockquote>{{/if}}
+  <div class="genesis-stage-body">
+    {{> (lookup this "stepTemplate") stepData}}
+  </div>
 </main>

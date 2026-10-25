@@ -7,7 +7,9 @@ import { TEMPLATES } from "../../constants.mjs";
 import { Rules } from "../../rules.mjs";
 import { getDocument, getEntries } from "../../data/compendium.mjs";
 import { resolveArt } from "../../data/art.mjs";
-import { addNewClass, cancelActiveAdvancement, itemDataFrom, levelUpExisting } from "../../engine/advancement.mjs";
+import {
+  addNewClass, cancelActiveAdvancement, embedActiveManager, itemDataFrom, levelUpExisting
+} from "../../engine/advancement.mjs";
 import { castingClasses, spellItemData } from "../../engine/spells.mjs";
 import { loc, setting, t } from "../../utils.mjs";
 
@@ -161,6 +163,10 @@ export class LevelUpApplyStep extends Step {
       running: this.running,
       canBuild: !!lu.name && !state.levelup.applied
     };
+  }
+
+  activate() {
+    embedActiveManager();
   }
 
   async onAction(action) {

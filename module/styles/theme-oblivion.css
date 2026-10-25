@@ -25,7 +25,9 @@
     0 8px 22px rgba(0, 0, 0, 0.55);
 }
 
-.character-genesis.genesis-theme-oblivion {
+.character-genesis.genesis-theme-oblivion,
+body.genesis-theme-oblivion .application.genesis-advancement,
+body.genesis-theme-oblivion.genesis-open .application.dialog {
   --g-ink: var(--o-ink);
   --g-muted: var(--o-ink-soft);
   --g-dim: #87693f;
@@ -228,11 +230,45 @@
 .genesis-theme-oblivion .genesis-busy-inner { padding: 22px 40px; background: var(--o-parchment); border: 1px solid var(--o-bronze); box-shadow: var(--o-frame); }
 .genesis-theme-oblivion .genesis-busy-inner i { color: var(--o-highlight); }
 
-/* dnd5e advancement windows opened by the wizard */
-body.genesis-theme-oblivion .application.genesis-advancement {
-  border-color: #6e4a22;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6), 0 24px 80px rgba(0, 0, 0, 0.85), 0 0 30px rgba(220, 196, 147, 0.25);
+/* dnd5e advancement steps and dialogs: parchment pages like the rest of the wizard */
+:is(body.genesis-theme-oblivion .application.genesis-advancement, body.genesis-theme-oblivion.genesis-open .application.dialog) {
+  background: var(--o-parchment);
+  border: 1px solid var(--o-bronze);
+  box-shadow: var(--o-frame);
+  font-size: 15px;
 }
-body.genesis-theme-oblivion .application.genesis-advancement .window-header .window-title {
-  font-family: "IM Fell English SC", Georgia, serif;
+:is(body.genesis-theme-oblivion .application.genesis-advancement, body.genesis-theme-oblivion.genesis-open .application.dialog) :is(.window-title, h1, h2, h3, h4, legend) {
+  color: var(--o-ink);
+  text-shadow: 0 1px 0 rgba(255, 248, 225, 0.6);
 }
+:is(body.genesis-theme-oblivion .application.genesis-advancement, body.genesis-theme-oblivion.genesis-open .application.dialog) :is(select, input:not([type=checkbox]):not([type=radio]), textarea, multi-select, .tags) {
+  background: rgba(255, 250, 232, 0.75);
+  border-color: var(--o-bronze);
+  color: var(--o-ink);
+}
+:is(body.genesis-theme-oblivion .application.genesis-advancement, body.genesis-theme-oblivion.genesis-open .application.dialog) button {
+  background: linear-gradient(180deg, var(--o-parch-light), var(--o-parch-dark));
+  border-color: var(--o-bronze);
+  color: var(--o-ink);
+}
+:is(body.genesis-theme-oblivion .application.genesis-advancement, body.genesis-theme-oblivion.genesis-open .application.dialog) button:hover:not(:disabled) {
+  background: linear-gradient(180deg, var(--o-parch-light), var(--o-parch));
+  color: var(--o-highlight);
+  border-color: var(--o-highlight);
+}
+:is(body.genesis-theme-oblivion .application.genesis-advancement, body.genesis-theme-oblivion.genesis-open .application.dialog) :is(button[data-action=next], button[data-action=complete], button[data-action=yes], button[data-action=ok], button.default) {
+  background: var(--o-bronze);
+  color: var(--o-parch-light);
+  border-color: var(--o-ink);
+}
+
+/* Notifications inside the wizard */
+.genesis-theme-oblivion #notifications .notification {
+  background: var(--o-parchment) !important;
+  border: 1px solid var(--o-bronze) !important;
+  box-shadow: var(--o-frame) !important;
+  color: var(--o-ink) !important;
+  font-family: var(--g-font-display) !important;
+}
+.genesis-theme-oblivion #notifications .notification.warning { border-color: #8a5a12 !important; }
+.genesis-theme-oblivion #notifications .notification.error { border-color: #8b1a1a !important; }

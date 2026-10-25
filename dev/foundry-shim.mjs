@@ -560,10 +560,10 @@ class MockAdvancementManager {
     await this.#apply();
     const el = this.element = document.createElement("div");
     el.className = "application genesis-advancement harness-manager";
-    el.innerHTML = `<header class="window-header"><h1 class="window-title">Advancement — ${this.item.name}</h1></header>
+    el.innerHTML = `<header class="window-header"><h1 class="window-title">Advancement</h1><span class="window-subtitle">${this.item.name} • Step 1 of 2</span><button type="button" class="header-control" data-action="close">✕</button></header>
       <section class="window-content"><p>(harness) dnd5e would ask for this item's choices here.</p>
       <p>Granted: ${this.clone.items.filter(i => i.type === "feat").map(i => i.name).join(", ") || "—"}</p>
-      <footer><button type="button" data-x="cancel">Cancel</button> <button type="button" data-x="complete">Complete</button></footer></section>`;
+      <fieldset><legend>Languages</legend><label>Choose any 2 languages</label><select><option>Select 2 more Languages</option></select></fieldset><footer><button type="button" data-x="cancel" data-action="previous">Previous</button> <button type="button" data-x="complete" data-action="next">Next</button></footer></section>`;
     el.addEventListener("click", e => {
       const x = e.target.closest("[data-x]")?.dataset.x;
       if ( x === "complete" ) this.#complete();
@@ -592,7 +592,7 @@ class MockAdvancementManager {
     return this;
   }
 }
-MockAdvancementManager.autoComplete = true;
+MockAdvancementManager.autoComplete = !new URLSearchParams(location.search).has("manual");
 
 const skillLabels = { acr: "Acrobatics", ani: "Animal Handling", arc: "Arcana", ath: "Athletics", dec: "Deception", his: "History", ins: "Insight", itm: "Intimidation", inv: "Investigation", med: "Medicine", nat: "Nature", prc: "Perception", prf: "Performance", per: "Persuasion", rel: "Religion", slt: "Sleight of Hand", ste: "Stealth", sur: "Survival" };
 
@@ -729,7 +729,7 @@ function notify(type, message) {
   const host = document.getElementById("notifications");
   const li = document.createElement("li");
   li.className = `notification ${type}`;
-  li.textContent = message;
+  li.innerHTML = `<i class="fa-solid fa-circle-info"></i><p>${message}</p>`;
   host.append(li);
   setTimeout(() => li.remove(), 4000);
   console[type === "error" ? "error" : "info"](`[${type}]`, message);

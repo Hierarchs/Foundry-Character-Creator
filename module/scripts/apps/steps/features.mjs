@@ -4,7 +4,7 @@
  */
 import Step from "./base.mjs";
 import { TEMPLATES } from "../../constants.mjs";
-import { buildCharacter, cancelActiveAdvancement } from "../../engine/advancement.mjs";
+import { buildCharacter, cancelActiveAdvancement, embedActiveManager } from "../../engine/advancement.mjs";
 import { summarize } from "../../engine/summary.mjs";
 import { t } from "../../utils.mjs";
 
@@ -60,6 +60,10 @@ export default class FeaturesStep extends Step {
     };
   }
 
+  activate() {
+    embedActiveManager();
+  }
+
   async onAction(action) {
     if ( action === "build" ) return this.build();
     if ( action === "cancelBuild" ) return cancelActiveAdvancement();
@@ -106,10 +110,8 @@ export default class FeaturesStep extends Step {
     if ( data ) {
       state.build = data;
       state.buildKey = this.app.buildKey();
-      ui.notifications.info(t("Features.Done"));
-    } else if ( !failed ) {
-      ui.notifications.info(t("Features.Cancelled"));
     }
+    // Success and cancel are visible in the panel itself (ticks / the Begin button), so no toast.
     await this.app.refresh({ chrome: true });
   }
 }

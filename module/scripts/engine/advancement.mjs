@@ -59,6 +59,10 @@ export function installAdvancementHooks() {
     return false;
   });
 
+  Hooks.on("renderAdvancementManager", manager => {
+    if ( active?.manager === manager ) embedActiveManager();
+  });
+
   Hooks.on("dnd5e.advancementManagerComplete", manager => {
     const entry = pending.get(manager);
     if ( entry && !entry.capture ) entry.result = true;
@@ -118,7 +122,7 @@ function drive(manager, { capture, answers }) {
     };
 
     try {
-      manager.render(true);
+      Promise.resolve(manager.render(true)).then(() => embedActiveManager()).catch(err => console.error(err));
     } catch(err) {
       console.error(err);
       settle(capture ? null : false);
@@ -136,6 +140,26 @@ export async function cancelActiveAdvancement() {
 
 export function advancementInProgress() {
   return !!active;
+}
+
+/**
+ * Move the running advancement window into the wizard's Features panel (`.genesis-advancement-slot`)
+ * so the system's choices appear inline and themed instead of as a floating window. Safe to call
+ * repeatedly; the step re-attaches it whenever the stage re-renders.
+ */
+export function embedActiveManager() {
+  const element = active?.manager?.element;
+  const slot = document.querySelector(".character-genesis .genesis-advancement-slot");
+  if ( !element || !slot ) return false;
+  // The manager handles its own buttons; keep their clicks (data-action="next", ...) from also
+  // reaching the wizard's identically named actions.
+  if ( !slot.dataset.genesisGuard ) {
+    slot.addEventListener("click", event => event.stopPropagation());
+    slot.dataset.genesisGuard = "true";
+  }
+  element.classList.add("genesis-embedded");
+  if ( element.parentElement !== slot ) slot.append(element);
+  return true;
 }
 
 /** Turn a birthsign's optional drawback effects on or off to match the GM setting. */
