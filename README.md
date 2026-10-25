@@ -22,8 +22,7 @@ A cinematic, full-screen character creator and level-up wizard for **Foundry VTT
   wins. Reassign scenes in `module/scripts/data/backdrops.mjs`, or turn off *Scene Backdrops*.
 - **Birthsigns.** An optional step after Species: the 13 signs of Tamriel, shown over a
   planetarium under the line *"The skies are marked with numberless sparks, each a fire, and every one
-  a sign."* Pick a sign, choose a birth month (the sign follows from it), or roll a birthday (1 in 13
-  is the wandering Serpent). They ship as real dnd5e feats in the **Birthsigns of Tamriel** compendium,
+  a sign."* They ship as real dnd5e feats in the **Birthsigns of Tamriel** compendium,
   with Advancements, once-per-long-rest powers, and effects, so you can edit them or add your own
   (any feat of type *Birthsign* appears). Settings: *Birthsign Step* (off/optional/required) and
   *Birthsign Drawbacks*. Sign data lives in `tools/birthsigns.mjs`, and the release workflow
